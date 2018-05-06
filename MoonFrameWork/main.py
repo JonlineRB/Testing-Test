@@ -4,8 +4,13 @@ import subprocess
 print ("Testing MoonGen Simple")
 
 outFile = open('result', 'w')
+<<<<<<< HEAD
 p = subprocess.Popen(['/../../../Moongen/moongen-simple', 'start',
                               'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],stdout=outFile)
+=======
+p = subprocess.Popen(['moongen-simple', 'start',
+                              'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'])
+>>>>>>> parent of 579e77a... using abs path
 subprocess.Popen.wait(p)
 
 #class TestMoonGenSimple(unittest.TestCase):
