@@ -11,7 +11,7 @@ def callsimple1():
     call("./../../../MoonGen/moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m",shell=True)
 
 def callsimplelocal():
-    call("moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m",shell=True)
+    call("./moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m",shell=True)
 
 def echotest():
     call("echo TEST",shell=True)
