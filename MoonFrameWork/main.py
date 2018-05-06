@@ -8,7 +8,7 @@ outFile = open('result', 'w')
 # p = subprocess.Popen(['/home/borowski/Moongen/moongen-simple', 'start',
 #                       'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'], stdout=outFile)
 p = subprocess.Popen(['moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-                     stdout=outFile, cwd='~/borowski/Moongen')
+                     stdout=outFile, cwd='home/borowski/Moongen')
 
 subprocess.Popen.wait(p)
 
