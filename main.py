@@ -1,3 +1,3 @@
-    from subprocess import call
+from subprocess import call
 
-    print ("Testing MoonGen Simple")
+print ("Testing MoonGen Simple")
