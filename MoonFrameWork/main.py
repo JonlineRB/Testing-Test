@@ -15,4 +15,4 @@ def echotest():
     call(["echo Test", "l"])
 
 
-echoTest()
+echotest()
