@@ -4,9 +4,9 @@ import unittest
 print ("Testing MoonGen Simple")
 
 
-class TestMoonGenSimple(unittest.TestCase):
+#class TestMoonGenSimple(unittest.TestCase):
 
-    def testSimpleUdp(self):
+    #def testSimpleUdp(self):
         # use a file for output
         #outFile = open('result', 'w')
         # execute MoonGenSimple: udp-simple
