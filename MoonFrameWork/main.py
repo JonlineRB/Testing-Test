@@ -1,8 +1,12 @@
+#import unittest
 import subprocess
-import unittest
 
 print ("Testing MoonGen Simple")
 
+outFile = open('result', 'w')
+p = subprocess.Popen(['moongen-simple', 'start',
+                              'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'], stdout=outFile)
+subprocess.Popen.wait(p)
 
 #class TestMoonGenSimple(unittest.TestCase):
 
@@ -26,5 +30,3 @@ print ("Testing MoonGen Simple")
 # def echotest():
 #     call("echo TEST",shell=True)
 
-
-outFile = open('result', 'w')
