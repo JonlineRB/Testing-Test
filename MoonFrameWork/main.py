@@ -16,9 +16,8 @@ result = subprocess.Popen.wait(p)
 if result == 0:
     print('==TestFramework: test terminated, everything worked out.')
 else:
-    print('==TestFramework: exit code not 0: Something went wrong!')
-    #parse file
-    
+    print('==TestFramework: exit code %s: Something went wrong!' % result)
+    # parse file
 
 outFile.close()
 
