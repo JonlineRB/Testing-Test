@@ -7,10 +7,15 @@ outFile = open('result', 'w')
 
 # p = subprocess.Popen(['/home/borowski/Moongen/moongen-simple', 'start',
 #                       'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'], stdout=outFile)
-p = subprocess.Popen(['moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-                     stdout=outFile, cwd='../../../Moongen')
+p = subprocess.Popen(['./../../../MoonGen/moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
+                     stdout=outFile)
 
-subprocess.Popen.wait(p)
+result = subprocess.Popen.wait(p)
+
+if result == 0:
+    print('test terminated, everything worked out.')
+else
+    print('exit code: Something went wrong!')
 
 # class TestMoonGenSimple(unittest.TestCase):
 
