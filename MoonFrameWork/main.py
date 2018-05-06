@@ -1,7 +1,7 @@
 # import unittest
 import subprocess
 
-print ("Testing MoonGen Simple")
+print ("Testing MoonGen Simple Case: udp-simple")
 
 outFile = open('result', 'w')
 
@@ -14,9 +14,13 @@ p = subprocess.Popen(
 result = subprocess.Popen.wait(p)
 
 if result == 0:
-    print('test terminated, everything worked out.')
+    print('==TestFramework: test terminated, everything worked out.')
 else:
-    print('exit code: Something went wrong!')
+    print('==TestFramework: exit code not 0: Something went wrong!')
+    #parse file
+    
+
+outFile.close()
 
 # class TestMoonGenSimple(unittest.TestCase):
 
