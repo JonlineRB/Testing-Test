@@ -4,8 +4,8 @@ import subprocess
 print ("Testing MoonGen Simple")
 
 outFile = open('result', 'w')
-p = subprocess.Popen(['moongen-simple', 'start',
-                              'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'])
+p = subprocess.Popen(['/home/borowski/Moongen/moongen-simple', 'start',
+                              'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],stdout=outFile)
 subprocess.Popen.wait(p)
 
 #class TestMoonGenSimple(unittest.TestCase):
