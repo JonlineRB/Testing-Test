@@ -6,4 +6,4 @@ print ("Testing MoonGen Simple")
 
 moonGenPath = "~/MoonGen/"
 simpleFlow = "moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m"
-call(["sudo ./%s%s" % (moonGenPath, simpleFlow)])
+call(["sudo ./~/MoonGen/moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m])
