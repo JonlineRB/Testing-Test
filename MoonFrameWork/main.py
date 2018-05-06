@@ -12,7 +12,7 @@ def callsimple1():
 
 
 def echotest():
-    call(["ls"])
+    call(["echo TEST"])
 
 
 echotest()
