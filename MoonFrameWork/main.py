@@ -6,9 +6,9 @@ print ("Testing MoonGen Simple")
 
 class TestMoonGenSimple(unittest.TestCase):
 
-    def testSimpleUdp():
+    def testSimpleUdp(self):
         # use a file for output
-        outFile = open('result', 'w')
+        #outFile = open('result', 'w')
         # execute MoonGenSimple: udp-simple
         # p = self.subprocess.Popen([])
 
@@ -27,4 +27,4 @@ class TestMoonGenSimple(unittest.TestCase):
 #     call("echo TEST",shell=True)
 
 
-TestMoonGenSimple.testSimpleUdp()
+outFile = open('result', 'w')
