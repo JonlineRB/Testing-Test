@@ -4,12 +4,12 @@ print ("Testing MoonGen Simple")
 
 # go to MoonGen repo and execute a simple flow
 
-def callSimple1:
+def callSimple1():
     # moonGenPath = "~/MoonGen/"
     # simpleFlow = "moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m"
     call(["./../../../MoonGen/moongen-simple start load-latency:0:1:rate=10Mp/s,time=3m"])
 
-def echoTest:
+def echoTest():
     call(["echo Test"])
 
 echoTest()
