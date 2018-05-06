@@ -1,25 +1,24 @@
-#import unittest
+# import unittest
 import subprocess
 
 print ("Testing MoonGen Simple")
 
 outFile = open('result', 'w')
-<<<<<<< HEAD
-p = subprocess.Popen(['/../../../Moongen/moongen-simple', 'start',
-                              'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],stdout=outFile)
-=======
-p = subprocess.Popen(['moongen-simple', 'start',
-                              'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'])
->>>>>>> parent of 579e77a... using abs path
+
+# p = subprocess.Popen(['/home/borowski/Moongen/moongen-simple', 'start',
+#                       'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'], stdout=outFile)
+p = subprocess.Popen('/home/borowski/Moongen/moongen-simple start udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson',
+                     shell=True, stdout=outFile)
+
 subprocess.Popen.wait(p)
 
-#class TestMoonGenSimple(unittest.TestCase):
+# class TestMoonGenSimple(unittest.TestCase):
 
-    #def testSimpleUdp(self):
-        # use a file for output
-        #outFile = open('result', 'w')
-        # execute MoonGenSimple: udp-simple
-        # p = self.subprocess.Popen([])
+# def testSimpleUdp(self):
+# use a file for output
+# outFile = open('result', 'w')
+# execute MoonGenSimple: udp-simple
+# p = self.subprocess.Popen([])
 
 
 # go to MoonGen repo and execute a simple flow
@@ -34,4 +33,3 @@ subprocess.Popen.wait(p)
 
 # def echotest():
 #     call("echo TEST",shell=True)
-
