@@ -28,6 +28,8 @@ else:
     errorFile = open('result', 'r')
     if 'Found 0 usable devices' in errorFile.read():
         print('No network devices were available. Suggestion: Try running as su, or binding devices.')
+    else:
+        print('Unknown error')
     errorFile.close()
 
 print('Framework: end')
