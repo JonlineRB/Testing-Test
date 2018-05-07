@@ -21,10 +21,10 @@ except subprocess.CalledProcessError as e:
 
 # result = subprocess.Popen.wait(p)
 
-if result == 0:
-    print('==TestFramework: test terminated, everything works.')
-else:
-    print('==TestFramework: exit code %s: Something went wrong!' % result)
+# if result == 0:
+#     print('==TestFramework: test terminated, everything works.')
+# else:
+#     print('==TestFramework: exit code %s: Something went wrong!' % result)
     # parse file
 
 # outFile.close()
