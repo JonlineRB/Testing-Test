@@ -27,7 +27,7 @@ else:
     # parse file for known reasons
     errorFile = open('result', 'r')
     if 'Found 0 usable devices' in errorFile.read():
-        print('No were devices available. Suggestion: Try running as su, or binding devices.')
+        print('No network devices were available. Suggestion: Try running as su, or binding devices.')
     errorFile.close()
 
 print('Framework: end')
