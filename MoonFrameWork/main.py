@@ -8,7 +8,7 @@ outFile = open('result', 'w')
 
 p = subprocess.Popen(
     ['./../../../MoonGen/moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-    stdout=outFile, cwd='home/borowski/MoonGen/')
+    stdout=outFile, cwd='/home/borowski/MoonGen/')
 
 # try:
 #     p = subprocess.check_output(
