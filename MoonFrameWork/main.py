@@ -14,7 +14,8 @@ print ("Testing MoonGen Simple Case: udp-simple")
 #     stdout=outFile)
 
 try:
-    p = subprocess.check_output(['./../../../MoonGen/moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'])
+    # p = subprocess.check_output(['./../../../MoonGen/moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'])
+    p = subprocess.check_output(['ls'])
     print("=== No Errors===")
 except subprocess.CalledProcessError as e:
     print(e)
