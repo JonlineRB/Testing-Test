@@ -2,24 +2,34 @@
 import subprocess
 
 print('Framework: start')
-print ("Testing MoonGen Simple Case: udp-simple")
 
 outFile = open('result', 'w')
 
+# parse the necessary directories
+# general setup, unbind all devices so that each test case may set up and tear down
+# call a subprocess for dpdk-devbind, store the relevant results in a file
+# create a file
+initialBinds = open('inintialBindState','w')
+# start this process
+p = subprocess.Popen(
+    ['./dpdk-devbind.py', '-s'], stdout=initialBinds, cwd='home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
+)
+initialBinds.close()
+#parse and store the results
+
+
+# parse the required test cases
+#
+# This should be a called test case
+print ("Testing MoonGen Simple Case: udp-simple")
 p = subprocess.Popen(
     ['./moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
     stdout=outFile, cwd='/home/borowski/MoonGen/')
 
-# try:
-#     p = subprocess.check_output(
-#         ['./../../../MoonGen/moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'])
-#     print("=== No Errors===")
-# except subprocess.CalledProcessError as e:
-#     print(e)
-
 result = subprocess.Popen.wait(p)
 outFile.close()
 
+# move the feedback of tests to the test case
 if result == 0:
     print('==TestFramework: test terminated, everything works.')
 else:
