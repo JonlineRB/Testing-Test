@@ -12,7 +12,7 @@ outFile = open('result', 'w')
 initialBinds = open('inintialBindState','w')
 # start this process
 p = subprocess.Popen(
-    ['./dpdk-devbind.py', '-s'], stdout=initialBinds, cwd='home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
+    ['./dpdk-devbind.py', '-s'], stdout=initialBinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
 )
 initialBinds.close()
 #parse and store the results
