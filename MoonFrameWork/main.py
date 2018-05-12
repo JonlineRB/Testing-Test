@@ -4,7 +4,7 @@ import utility
 
 print('Framework: start')
 
-outFile = open('result', 'w')
+outFile = open('result', 'r+')
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
