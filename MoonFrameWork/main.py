@@ -19,7 +19,8 @@ initialBinds = open('inintialBindState', 'r')
 # parse and store the results
 parsedLines = initialBinds.readlines()
 initialBinds.close()
-for x in parsedLines:
+# for x in parsedLines:
+for x in initialBinds.readlines():
     print x
     # if 'DPDK-compatible driver' in x:
 
