@@ -21,7 +21,7 @@ parsedLines = initialBinds.readlines()
 initialBinds.close()
 for x in parsedLines:
     if 'Network devices using DPDK-compatible driver' in x:
-        print(x)
+        print(parsedLines.index(x))
 
 exit()  # tmp
 
