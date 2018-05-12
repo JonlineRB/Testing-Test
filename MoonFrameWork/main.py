@@ -16,12 +16,10 @@ p = subprocess.Popen(
 )
 # parse and store the results
 parsedLines = initialBinds.readlines()
-print(parsedLines)
+for x in parsedLines:
+    print(x)
 
-
-
-
-exit() # tmp
+exit()  # tmp
 
 # parse the required test cases
 #
