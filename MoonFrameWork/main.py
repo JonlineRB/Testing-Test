@@ -17,7 +17,7 @@ p = subprocess.Popen(
 # parse and store the results
 parsedLines = initialBinds.readlines()
 for x in parsedLines:
-    if 'DPDK-compatible driver' in x:
+    if 'Network devices using DPDK-compatible driver' in x:
         print(x)
 
 exit()  # tmp
