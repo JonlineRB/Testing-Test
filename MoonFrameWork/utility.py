@@ -1,7 +1,9 @@
 import subprocess
 
+# utility class for the MoonGen Testing framework
 
 def parsedevices(dpdkdevlist):
+    print(Framework: Parsing DPDK bound devices)
     # call a subprocess for dpdk-devbind, store the relevant results in a file
     # create a file
     initialbinds = open('initialBindState', 'r+')
@@ -24,3 +26,7 @@ def parsedevices(dpdkdevlist):
                 dpdkindex += 1
             break
     return dpdkdevlist
+
+def unbinddevices(devicelist):
+    for x in devicelist:
+        print(x)

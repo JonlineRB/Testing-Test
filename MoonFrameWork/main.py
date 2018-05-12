@@ -8,30 +8,9 @@ outFile = open('result', 'w')
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
-# # call a subprocess for dpdk-devbind, store the relevant results in a file
-# # create a file
-# initialBinds = open('initialBindState', 'r+')
-# # start this process
-# p = subprocess.Popen(
-#     ['./dpdk-devbind.py', '-s'], stdout=initialBinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
-# )
-# # parse and store the results
-# initialBinds.close()
-# initialBinds = open('initialBindState', 'r')
-# parsedLines = initialBinds.readlines()
-# initialBinds.close()
-# for x in parsedLines:
-#     if 'Network devices using DPDK-compatible driver' in x:
-#         dpdkIndex = parsedLines.index(x) + 2
-#         dpdkDevList = list()
-#         # get all devices in this category on a list
-#         while parsedLines[dpdkIndex] != '\n':
-#             dpdkDevList.append(parsedLines[dpdkIndex])
-#             dpdkIndex += 1
-#         break
 dpdkdevlist = list()
 utility.parsedevices(dpdkdevlist)
-print (dpdkdevlist)
+utility.unbinddevices(dpdkdevlist)
 exit()  # tmp
 
 # parse the required test cases
