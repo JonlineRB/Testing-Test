@@ -17,9 +17,9 @@ p = subprocess.Popen(
 initialBinds.close()
 initialBinds = open('inintialBindState', 'r')
 # parse and store the results
-lines = initialBinds.readlines()
+parsedLines = initialBinds.readlines()
 initialBinds.close()
-for x in lines:
+for x in parsedLines:
     print x
     # if 'DPDK-compatible driver' in x:
 
