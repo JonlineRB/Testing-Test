@@ -30,7 +30,7 @@ outFile = open('result', 'w')
 #             dpdkIndex += 1
 #         break
 dpdkdevlist = list()
-utility.parsedevices()
+utility.parsedevices(dpdkdevlist)
 print (dpdkdevlist)
 exit()  # tmp
 
