@@ -9,7 +9,7 @@ outFile = open('result', 'w')
 # general setup, unbind all devices so that each test case may set up and tear down
 # call a subprocess for dpdk-devbind, store the relevant results in a file
 # create a file
-initialBinds = open('inintialBindState', 'w')
+initialBinds = open('initialBindState', 'w')
 # start this process
 p = subprocess.Popen(
     ['./dpdk-devbind.py', '-s'], stdout=initialBinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
