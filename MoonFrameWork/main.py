@@ -22,7 +22,7 @@ initialBinds.close()
 for x in parsedLines:
     if 'Network devices using DPDK-compatible driver' in x:
         dpdkIndex = parsedLines.index(x)
-        dpdkDevList = list()
+        dpdkDevList = []
         # get all devices in this category on a list
         while parsedLines(dpdkIndex) != '\n':
             dpdkDevList.append(parsedLines[dpdkIndex])
