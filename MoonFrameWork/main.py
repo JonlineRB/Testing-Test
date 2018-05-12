@@ -14,12 +14,14 @@ initialBinds = open('inintialBindState','w')
 p = subprocess.Popen(
     ['./dpdk-devbind.py', '-s'], stdout=initialBinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
 )
-initialBinds.close()
+
 # parse and store the results
 lines = initialBinds.readlines()
 for x in lines:
     if 'DPDK-compatible driver' in x:
         print x
+
+initialBinds.close()
 
 # parse the required test cases
 #
