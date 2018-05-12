@@ -9,9 +9,10 @@ def parsedevices(dpdkdevlist):
     # create a file
     initialbinds = open('initialBindState', 'r+')
     # start this process
-    subprocess.Popen(
+    p = subprocess.Popen(
         ['./dpdk-devbind.py', '-s'], stdout=initialbinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
     )
+    p.wait()
     # parse and store the results
     initialbinds.close()
     initialbinds = open('initialBindState', 'r')
