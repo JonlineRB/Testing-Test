@@ -7,7 +7,7 @@ def parsedevices(dpdkdevlist):
     print('Framework: Parsing DPDK bound devices')
     # call a subprocess for dpdk-devbind, store the relevant results in a file
     # create a file
-    initialbinds = open('initialBindState', 'w')
+    initialbinds = open('initialBindState', 'r+')
     # start this process
     subprocess.Popen(
         ['./dpdk-devbind.py', '-s'], stdout=initialbinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
