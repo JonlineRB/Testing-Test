@@ -20,8 +20,8 @@ initialBinds = open('test', 'r')
 parsedLines = initialBinds.readlines()
 # initialBinds.close()
 # for x in parsedLines:
-for x in initialBinds.readlines():
-    print x
+for line in initialBinds:
+    print line
     # if 'DPDK-compatible driver' in x:
 
 
