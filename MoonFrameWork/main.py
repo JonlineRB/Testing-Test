@@ -8,7 +8,7 @@ outFile = open('result', 'w')
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
-dpdkdevlist = list()
+dpdkdevlist = []
 utility.parsedevices(dpdkdevlist)
 print('parsed list is:')
 print(dpdkdevlist)
