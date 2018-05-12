@@ -18,7 +18,7 @@ initialBinds.close()
 initialBinds = open('inintialBindState', 'r')
 # parse and store the results
 parsedLines = initialBinds.readlines()
-initialBinds.close()
+#initialBinds.close()
 # for x in parsedLines:
 for x in initialBinds.readlines():
     print x
