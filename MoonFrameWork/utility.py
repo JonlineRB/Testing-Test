@@ -31,4 +31,4 @@ def parsedevices(dpdkdevlist):
 
 def unbinddevices(devicelist):
     for x in devicelist:
-        print(x)
+        print(x.split()[0])
