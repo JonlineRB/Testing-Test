@@ -24,6 +24,8 @@ for x in lines:
 
 initialBinds.close()
 
+exit() # tmp
+
 # parse the required test cases
 #
 # This should be a called test case
