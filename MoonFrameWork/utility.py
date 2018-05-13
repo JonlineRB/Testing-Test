@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 
@@ -27,6 +28,7 @@ def parsedevices(dpdkdevlist):
                 dpdkdevlist.append(parsedlines[dpdkindex])
                 dpdkindex += 1
             break
+    os.remove('initialBindState')
     return dpdkdevlist
 
 
