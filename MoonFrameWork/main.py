@@ -9,7 +9,6 @@ outFile = open('result', 'w')
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
 dpdkdevlist = list()
-print(dpdkdevlist)
 utility.parsedevices(dpdkdevlist)
 if not dpdkdevlist:
     print('No devices are DPDK bound')
