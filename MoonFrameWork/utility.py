@@ -24,7 +24,6 @@ def parsedevices(dpdkdevlist):
             dpdkindex = parsedlines.index(x) + 2
             while parsedlines[dpdkindex] != '\n' and parsedlines[dpdkindex] != '<none>\n':
                 dpdkdevlist.append(parsedlines[dpdkindex])
-                print(dpdkdevlist)
                 dpdkindex += 1
             break
     os.remove('initialBindState')
