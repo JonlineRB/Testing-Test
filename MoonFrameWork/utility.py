@@ -37,3 +37,11 @@ def unbinddevices(devicelist):
             ['./dpdk-devbind.py', '-u', current], cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
         )
         p.wait()
+
+
+def binddevices(devicelist):
+    if not devicelist:
+        return
+    for x in devicelist:
+        current = x.split()[0]
+        print(current)

@@ -17,6 +17,8 @@ else:
     print(dpdkdevlist)
     print
     utility.unbinddevices(dpdkdevlist)
+
+utility.binddevices(dpdkdevlist)
 exit()  # tmp
 
 # parse the required test cases
