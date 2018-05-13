@@ -22,14 +22,11 @@ def parsedevices(dpdkdevlist):
     for x in parsedlines:
         if 'Network devices using DPDK-compatible driver' in x:
             dpdkindex = parsedlines.index(x) + 2
-            if parsedlines[dpdkindex] == '<none>':
-                break
-            else:
-                while parsedlines[dpdkindex] != '\n':
-                    dpdkdevlist.append(parsedlines[dpdkindex])
-                    print(dpdkdevlist)
-                    dpdkindex += 1
-                break
+            while parsedlines[dpdkindex] != '\n' and parsedlines[dpdkindex] != '<none>\n':
+                dpdkdevlist.append(parsedlines[dpdkindex])
+                print(dpdkdevlist)
+                dpdkindex += 1
+            break
     os.remove('initialBindState')
     return dpdkdevlist
 
