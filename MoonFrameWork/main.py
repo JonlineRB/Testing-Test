@@ -14,7 +14,7 @@ utility.parsedevices(dpdkdevlist)
 if not dpdkdevlist:
     print('No devices are boud')
 else:
-    print('parsed list is: \n')
+    print('parsed list is:')
     print(dpdkdevlist)
     print()
     utility.unbinddevices(dpdkdevlist)
