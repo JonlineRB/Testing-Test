@@ -10,9 +10,13 @@ outFile = open('result', 'w')
 # general setup, unbind all devices so that each test case may set up and tear down
 dpdkdevlist = list()
 utility.parsedevices(dpdkdevlist)
-print('parsed list is:')
-print(dpdkdevlist)
-utility.unbinddevices(dpdkdevlist)
+if not dpdkdevlist:
+    print('No devices are boud')
+else:
+    print('parsed list is: \n')
+    print(dpdkdevlist)
+    print()
+    utility.unbinddevices(dpdkdevlist)
 exit()  # tmp
 
 # parse the required test cases
