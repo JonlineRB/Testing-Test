@@ -13,9 +13,7 @@ utility.parsedevices(dpdkdevlist)
 if not dpdkdevlist:
     print('No devices are DPDK bound')
 else:
-    print('parsed list is:')
-    print(dpdkdevlist)
-    print
+    print('Unbinding DPDL bound devices')
     utility.unbinddevices(dpdkdevlist)
 
 utility.binddevices(dpdkdevlist)

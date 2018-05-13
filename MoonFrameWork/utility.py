@@ -46,4 +46,4 @@ def binddevices(devicelist):
             ['./dpdk-devbind.py', '--bind=igb_uio', x.split()[0]], cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
         )
         p.wait()
-        print('bound device: ' + x.split()[0])
+    print('bound devices as they were')
