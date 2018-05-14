@@ -9,17 +9,17 @@ outFile = open('result', 'w')
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
 dpdkdevlist = list()
-utility.parsedevices(dpdkdevlist)
-if not dpdkdevlist:
-    print('No devices are DPDK bound')
-else:
-    print('parsed list is:')
-    for x in range(0, len(dpdkdevlist)):
-        print('device %d: ' % (x) + dpdkdevlist[x])
-    # print(dpdkdevlist)
-    utility.unbinddevices(dpdkdevlist)
-
-utility.binddevices(dpdkdevlist)
+utility.initdevices(dpdkdevlist)
+# utility.parsedevices(dpdkdevlist)
+# if not dpdkdevlist:
+#     print('No devices are DPDK bound')
+# else:
+#     print('parsed list is:')
+#     for x in range(0, len(dpdkdevlist)):
+#         print('device %d: ' % (x) + dpdkdevlist[x])
+#     utility.unbinddevices(dpdkdevlist)
+#
+# utility.binddevices(dpdkdevlist)
 exit()  # tmp
 
 # parse the required test cases
