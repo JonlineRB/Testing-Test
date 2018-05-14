@@ -18,7 +18,7 @@ print('Framework: start')
 parser = ConfigParser.ConfigParser()
 parser.read('FrameworkConfig.cfg')
 print(parser.sections())
-print(parser.get(section='Section1'))
+print(parser.get('Section1', 'value1'))
 
 exit()  # tmp
 
