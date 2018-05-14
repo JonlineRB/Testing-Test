@@ -15,9 +15,10 @@ print('Framework: start')
 # outFile.close()
 
 # just check the parser functionality
-confparser = ConfigParser.RawConfigParser
-configFile = open('FrameworkConfig.cfg')
-print(ConfigParser.RawConfigParser(confparser, 'Section1'))
+parser = ConfigParser.ConfigParser()
+parser.read('FrameworkConfig.cfg')
+print(parser.sections())
+print(parser.get(section='Section1'))
 
 exit()  # tmp
 
