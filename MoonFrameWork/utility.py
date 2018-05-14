@@ -38,12 +38,24 @@ def unbinddevices(devicelist):
         p.wait()
 
 
+def initdevices(devicelist):
+    parsedevices(devicelist)
+    if not devicelist:
+        print('No devices are DPDK bound')
+    else:
+        print('parsed list is:')
+        for x in range(0, len(devicelist)):
+            print('device %d: ' % (x) + devicelist[x])
+        unbinddevices(devicelist)
+
+
 def binddevices(devicelist):
     if not devicelist:
         return
     for x in devicelist:
         p = subprocess.Popen(
-            ['./dpdk-devbind.py', '--bind=igb_uio', x.split()[0]], cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
+            ['./dpdk-devbind.py', '--bind=igb_uio', x.split()[0]],
+            cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
         )
         p.wait()
     print('bound devices as they were')

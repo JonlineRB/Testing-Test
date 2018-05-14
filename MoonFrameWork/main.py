@@ -1,22 +1,24 @@
 # import unittest
 import subprocess
 import utility
+import ConfigParser
 
 print('Framework: start')
 
-outFile = open('result', 'w')
+# outFile = open('result', 'w')
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
-dpdkdevlist = list()
-utility.parsedevices(dpdkdevlist)
-if not dpdkdevlist:
-    print('No devices are DPDK bound')
-else:
-    print('Unbinding DPDL bound devices')
-    utility.unbinddevices(dpdkdevlist)
+# dpdkdevlist = list()
+# utility.initdevices(dpdkdevlist)
+# utility.binddevices(dpdkdevlist)
+# outFile.close()
 
-utility.binddevices(dpdkdevlist)
+# just check the parser functionality
+confparser = ConfigParser.RawConfigParser
+configFile = open('FrameworkConfig.cfg')
+print(ConfigParser.RawConfigParser(confparser, 'Section1'))
+
 exit()  # tmp
 
 # parse the required test cases
