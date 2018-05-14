@@ -19,7 +19,7 @@ utility.initdevices(dpdkdevlist)
 #         print('device %d: ' % (x) + dpdkdevlist[x])
 #     utility.unbinddevices(dpdkdevlist)
 #
-# utility.binddevices(dpdkdevlist)
+utility.binddevices(dpdkdevlist)
 exit()  # tmp
 
 # parse the required test cases
