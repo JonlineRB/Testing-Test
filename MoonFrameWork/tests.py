@@ -23,7 +23,12 @@ class BindDevices(unittest.TestCase):
     def tearDownClass(cls):
         cls.testlog.close()
         utility.unbinddevices(cls.devicelist)
-    # def setUp(self):  # set the devices
+
+    def setUp(self):  # set the devices
+        utility.binddevices(self.devicelist)
+
+    def tearDown(self):
+        utility.unbinddevices(self.devicelist)
 
 
 class TestSimpleUDP(BindDevices):
