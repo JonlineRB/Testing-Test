@@ -24,19 +24,19 @@ class BindDevices(unittest.TestCase):
         cls.testlog.close()
         utility.unbinddevices(cls.devicelist)
 
-    def setUp(self):  # set the devices
-        utility.binddevices(self.devicelist)
+    # def setUp(self):  # set the devices
+    #     utility.binddevices(self.devicelist)
+    #
+    # def tearDown(self):
+    #     utility.unbinddevices(self.devicelist)
 
-    def tearDown(self):
-        utility.unbinddevices(self.devicelist)
 
-
-class TestSimpleUDP(BindDevices):
-    def runTest(self):
-        print("Testing MoonGen Simple Case: udp-simple")
-        p = subprocess.Popen([
-            './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-            stdout=self.testlog, cwd=self.path)
+# class TestSimpleUDP(BindDevices):
+#     def runTest(self):
+#         print("Testing MoonGen Simple Case: udp-simple")
+#         p = subprocess.Popen([
+#             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
+#             stdout=self.testlog, cwd=self.path)
         # this subprocess does not terminate if it runs correctly
         # TO DO: solve this issue
 
@@ -50,3 +50,7 @@ class TestTimeStampCapabilities(BindDevices):
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
         self.assertEquals(p.wait(), 0)
+
+
+def executetest():
+    unittest.main()
