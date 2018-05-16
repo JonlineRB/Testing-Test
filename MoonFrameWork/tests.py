@@ -62,8 +62,10 @@ class TestTimeStampCapabilities(BindDevices):
                 print 'found an error'
                 # parse line by line to get all errors, then get back to the cases
                 lines = self.testlog.readlines()
+                print'The length of lines is: '
+                print len(lines)
                 for index in range(0, len(lines)):
-                    print lines[index]
+                    # print lines[index]
                     if 'Error' in lines[index]:
                         print 'Found error in a line!'
                         target = ''
