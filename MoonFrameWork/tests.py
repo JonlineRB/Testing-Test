@@ -5,7 +5,7 @@ import utility
 
 class BindDevices(unittest.TestCase):
     devicelist = list()
-    testlog = file()
+    testlog = open('testlog', 'w')
     path = ''
 
     def __init__(self, devicelist, path):
@@ -15,7 +15,7 @@ class BindDevices(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.testlog = open('testlog', 'w')
+        # cls.testlog = open('testlog', 'w')
         utility.binddevices(self.devicelist)
 
     @classmethod
