@@ -64,6 +64,7 @@ class TestTimeStampCapabilities(BindDevices):
                 lines = self.testlog.readlines()
                 for index in range(0, len(lines)):
                     if 'Error' in lines[index]:
+                        print 'Found error in a line!'
                         target = ''
                         backtrack = 0
                         while target != '\n':
