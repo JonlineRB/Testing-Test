@@ -51,6 +51,9 @@ class TestTimeStampCapabilities(BindDevices):
                               '0', '1'], stdout=self.testlog, cwd=self.path)
         self.assertEquals(p.wait(), 0)
 
+    def runTest:
+        print 'runTest Method'
+
 
 if __name__ == '__main__':
     unittest.main()
