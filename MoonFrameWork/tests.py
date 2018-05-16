@@ -43,7 +43,7 @@ class BindDevices(unittest.TestCase):
 
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
-    def test_timestamp(self):
+    def runTest(self):
         print("Testing MoonGen TimeStamp Capabilities of devices: %s and %s"
               % (self.devicelist[0], self.devicelist[1]))
         p = subprocess.Popen(['./build/MoonGen',
