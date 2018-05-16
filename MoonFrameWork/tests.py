@@ -50,7 +50,3 @@ class TestTimeStampCapabilities(BindDevices):
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
         self.assertEquals(p.wait(), 0)
-
-def executetest():
-    #unittest.main()
-
