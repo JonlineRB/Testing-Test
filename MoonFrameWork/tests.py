@@ -56,6 +56,17 @@ class TestTimeStampCapabilities(BindDevices):
             #  about the possible capabilities of these NICs
         else:
             print'Test result: something went wrong...'
-            # parse out file for the cause of the test
-# if __name__ == '__main__':
-#     unittest.main()
+            self.testlog.close()
+            self.testlog = open('testlog', 'r')
+            if 'Error' in self.testlog.read():
+                # parse line by line to get all errors, then get back to the cases
+                lines = self.testlog.readlines()
+                for index in range(0, len(lines)):
+                    if 'Error' in lines[index]:
+                        target = ''
+                        backtrack = 0
+                        while target != '\n':
+                            target = lines[index - backtrack]
+                            backtrack -= 1
+                        print'Following case failed:'
+                        print(target)
