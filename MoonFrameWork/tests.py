@@ -58,20 +58,20 @@ class TestTimeStampCapabilities(BindDevices):
             print'Test result: something went wrong...'
             self.testlog.close()
             self.testlog = open('testlog', 'r')
-            if 'Error' in self.testlog.read():
-                print 'found an error'
+            # if 'Error' in self.testlog.read():
+            #     print 'found an error'
                 # parse line by line to get all errors, then get back to the cases
-                lines = self.testlog.readlines()
-                print'The length of lines is: '
-                print len(lines)
-                for index in range(0, len(lines)):
-                    # print lines[index]
-                    if 'Error' in lines[index]:
-                        print 'Found error in a line!'
-                        target = ''
-                        backtrack = 0
-                        while target != '\n':
-                            target = lines[index - backtrack]
-                            backtrack -= 1
-                        print'Following case failed:'
-                        print(target)
+
+            lines = self.testlog.readlines()
+            print'The length of lines is: '
+            print len(lines)
+            for index in range(0, len(lines)):
+                if 'Error' in lines[index]:
+                    print 'Found error in a line!'
+                    target = ''
+                    backtrack = 0
+                    while target != '\n':
+                        target = lines[index - backtrack]
+                        backtrack -= 1
+                    print'Following case failed:'
+                    print(target)
