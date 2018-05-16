@@ -4,9 +4,9 @@ import utility
 
 
 class BindDevices(unittest.TestCase):
-    devicelist = list()
+    # devicelist = list()
     testlog = open('testlog', 'w')
-    path = ''
+    # path = ''
 
     def __init__(self, devicelist, path):
         super(BindDevices, self).__init__()
@@ -37,8 +37,8 @@ class BindDevices(unittest.TestCase):
 #         p = subprocess.Popen([
 #             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
 #             stdout=self.testlog, cwd=self.path)
-        # this subprocess does not terminate if it runs correctly
-        # TO DO: solve this issue
+# this subprocess does not terminate if it runs correctly
+# TO DO: solve this issue
 
 
 class TestTimeStampCapabilities(BindDevices):
@@ -50,3 +50,7 @@ class TestTimeStampCapabilities(BindDevices):
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
         self.assertEquals(p.wait(), 0)
+
+
+if __name__ == '__main__':
+    unittest.main()
