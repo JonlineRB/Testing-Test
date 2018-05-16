@@ -69,9 +69,11 @@ class TestTimeStampCapabilities(BindDevices):
                 if 'Error' in lines[index]:
                     print 'Found error in a line!'
                     target = ''
+                    out = ''
                     backtrack = 0
                     while target != '\n':
+                        out = target
                         target = lines[index - backtrack]
                         backtrack -= 1
                     print'Following case failed:'
-                    print(target)
+                    print(out)
