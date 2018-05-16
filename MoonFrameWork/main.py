@@ -2,6 +2,7 @@
 import subprocess
 import utility
 import ConfigParser
+import tests
 
 print('Framework: start')
 
@@ -9,16 +10,31 @@ print('Framework: start')
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
-# dpdkdevlist = list()
-# utility.initdevices(dpdkdevlist)
-# utility.binddevices(dpdkdevlist)
+MoonGenPath = ''
+dpdkdevlist = list()
+utility.initdevices(dpdkdevlist)
+
 # outFile.close()
 
 # just check the parser functionality
 parser = ConfigParser.ConfigParser()
 parser.read('FrameworkConfig.cfg')
-print(parser.sections())
-print(parser.get('Section1', 'value1'))
+print(parser.sections())  # just for testing
+MoonGenPath = parser.get('Meta', 'path')
+if parser.get('Section1', 'test') == 'timestamp':
+    print('constructing timestamp test')
+    index1 = int(parser.get('Section1', 'device1'))
+    index2 = int(parser.get('Section1', 'device2'))
+    tmpList = list()
+    tmpList.append(dpdkdevlist[index1])
+    tmpList.append(dpdkdevlist[index2])
+    test = tests.TestTimeStampCapabilities(tmpList, MoonGenPath)
+    print('running test!')
+    test.runTest()
+    print('test concluded!')
+else:
+    print('unknown test case')
+utility.binddevices(dpdkdevlist)
 
 exit()  # tmp
 
