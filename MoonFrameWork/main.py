@@ -34,6 +34,8 @@ if parser.get('Section1', 'test') == 'timestamp':
     print('test concluded!')
 else:
     print('unknown test case')
+print('Printind device list before exit')
+print(dpdkdevlist)
 utility.binddevices(dpdkdevlist)
 
 exit()  # tmp
