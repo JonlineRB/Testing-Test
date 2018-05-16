@@ -30,7 +30,7 @@ if parser.get('Section1', 'test') == 'timestamp':
     tmpList.append(dpdkdevlist[index2])
     test = tests.TestTimeStampCapabilities(tmpList, MoonGenPath)
     print('running test!')
-    tests.executetest()
+    test.run()
     print('test concluded!')
 else:
     print('unknown test case')
