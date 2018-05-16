@@ -6,6 +6,7 @@ import utility
 class BindDevices(unittest.TestCase):
     # devicelist = list()
     testlog = open('testlog', 'w')
+
     # path = ''
 
     def __init__(self, devicelist, path):
@@ -49,7 +50,12 @@ class TestTimeStampCapabilities(BindDevices):
         p = subprocess.Popen(['./build/MoonGen',
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
-        self.assertEquals(p.wait(), 0)
-
+        if self.assertEquals(p.wait(), 0):
+            print("Test result: everything works!")
+            # in this case, parse the out file in order to recieve information
+            #  about the possible capabilities of these NICs
+        else:
+            print'Test result: something went wrong...'
+            # parse out file for the cause of the test
 # if __name__ == '__main__':
 #     unittest.main()
