@@ -9,7 +9,7 @@ class BindDevices(unittest.TestCase):
     path = ''
 
     def __init__(self, devicelist, path):
-        super(self)
+        super(BindDevices, self).__init__()
         self.devicelist = devicelist
         self.path = path
 
