@@ -16,12 +16,13 @@ class BindDevices(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # cls.testlog = open('testlog', 'w')
-        utility.binddevices(self.devicelist)
+        print('binding devices')
+        utility.binddevices(cls.devicelist)
 
     @classmethod
     def tearDownClass(cls):
         cls.testlog.close()
-        utility.unbinddevices(self.devicelist)
+        utility.unbinddevices(cls.devicelist)
     # def setUp(self):  # set the devices
 
 
@@ -38,8 +39,8 @@ class TestSimpleUDP(BindDevices):
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
     def runTest(self):
-        print("Testing MoonGen TimeStamp Capabilities of devices: %d and %d"
-              % (int(self.devicelist[0]), int(self.devicelist[1])))
+        print("Testing MoonGen TimeStamp Capabilities of devices: %s and %s"
+              % (self.devicelist[0], self.devicelist[1]))
         p = subprocess.Popen(['./build/MoonGen',
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
