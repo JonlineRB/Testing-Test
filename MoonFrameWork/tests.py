@@ -24,11 +24,11 @@ class BindDevices(unittest.TestCase):
         cls.testlog.close()
         utility.unbinddevices(cls.devicelist)
 
-    # def setUp(self):  # set the devices
-    #     utility.binddevices(self.devicelist)
-    #
-    # def tearDown(self):
-    #     utility.unbinddevices(self.devicelist)
+    def setUp(self):  # set the devices
+        utility.binddevices(self.devicelist)
+
+    def tearDown(self):
+        utility.unbinddevices(self.devicelist)
 
 
 # class TestSimpleUDP(BindDevices):
@@ -50,7 +50,6 @@ class TestTimeStampCapabilities(BindDevices):
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
         self.assertEquals(p.wait(), 0)
-
 
 # if __name__ == '__main__':
 #     unittest.main()
