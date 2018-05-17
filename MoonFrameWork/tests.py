@@ -68,6 +68,7 @@ class TestTimeStampCapabilities(BindDevices):
             for index in range(0, len(lines)):
                 if 'Error' in lines[index] or 'ERROR' in lines[index]:
                     print 'Found error in a line!'
+                    print(lines[index])
                     target = ''
                     out = ''
                     backtrack = 0
