@@ -66,7 +66,7 @@ class TestTimeStampCapabilities(BindDevices):
             print'The length of lines is: '
             print len(lines)
             for index in range(0, len(lines)):
-                if 'Error' in lines[index]:
+                if 'Error' in lines[index] or 'ERROR' in lines[index]:
                     print 'Found error in a line!'
                     target = ''
                     out = ''
