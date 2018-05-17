@@ -74,6 +74,6 @@ class TestTimeStampCapabilities(BindDevices):
                     while target != '\n':
                         out = target
                         target = lines[index - backtrack]
-                        backtrack -= 1
+                        backtrack += 1
                     print'Following case failed:'
                     print(out)
