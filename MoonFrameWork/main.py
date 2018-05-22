@@ -3,6 +3,7 @@ import subprocess
 import utility
 import ConfigParser
 import tests
+from FrameworkSubprocess import SubHandler
 
 print('Framework: start')
 
@@ -32,6 +33,12 @@ if parser.get('Section1', 'test') == 'timestamp':
     print('running test!')
     test.run()
     print('test concluded!')
+elif parser.get('Section1', 'test') == 'experiment':
+    # using this to test some functionality
+    handler = SubHandler(MoonGenPath)
+    expOutFile = open('expOutFile', 'w')
+    handler.popen(['ls'], expOutFile)
+    expOutFile.close()
 else:
     print('unknown test case')
 print('Printind device list before exit')
