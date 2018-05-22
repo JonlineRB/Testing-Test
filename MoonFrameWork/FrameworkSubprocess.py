@@ -12,4 +12,11 @@ class SubHandler(object):
         self.moonpath = path
 
     def popen(self, args, outfile):
-        subprocess.Popen(args, cwd=self.moonpath, stdout=outfile)
+        return subprocess.Popen(args, cwd=self.moonpath, stdout=outfile)
+
+    def wait(self, subproc):
+        subproc.wait()
+
+    def popenwait(self, args, outfile):
+        p = self.popen(args, outfile)
+        self.wait(p)
