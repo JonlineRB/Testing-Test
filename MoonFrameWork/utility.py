@@ -82,6 +82,8 @@ def parsetestcases(devicelist):
             tmplist = list()
             tmplist.append(devicelist[index1])
             tmplist.append(devicelist[index2])
+            print('devices to test are:')
+            print tmplist
             if parser.get(section, 'test') == 'timestamp':
                 # run timestamp test
                 test = tests.TestTimeStampCapabilities(tmplist, path)
