@@ -127,6 +127,7 @@ class TestQosForeground(TerminatingTest):
             './moongen-simple', 'start', 'qos-foreground:0:1 qos-background:0:1'],
             stdout=self.testlog, cwd=self.path)
 
+
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
     def runTest(self):
