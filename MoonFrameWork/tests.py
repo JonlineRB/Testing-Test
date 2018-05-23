@@ -62,11 +62,12 @@ class TerminatingTest(BindDevices):
         return subprocess.Popen()
 
     def evaluate(self):
-        return self.assertTrue(True)
+        return self.assertEquals(True, True)
 
 
 class TestSimpleUDP(TerminatingTest):
     testlog = open('udpSimpleTestLog', 'w')
+    casename = 'udp simple'
 
     # def runTest(self):
     #     print("Testing MoonGen Simple Case: udp-simple")
@@ -91,6 +92,7 @@ class TestSimpleUDP(TerminatingTest):
 
 class TestLoadLatency(TerminatingTest):
     testlog = open('loadlatencylog', 'w')
+    casename = 'load latency'
 
     # def runTest(self):
     #     print("Testing MoonGen Simple Case: load-latency")
@@ -103,6 +105,7 @@ class TestLoadLatency(TerminatingTest):
         return subprocess.Popen([
             './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
             stdout=self.testlog, cwd=self.path)
+
 
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
