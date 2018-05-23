@@ -1,5 +1,6 @@
 import os
 import subprocess
+import ConfigParser
 
 
 # utility class for the MoonGen Testing framework
@@ -59,3 +60,13 @@ def binddevices(devicelist):
         )
         p.wait()
     print('bound devices as they were')
+
+
+def parsetestcases(configfile):
+    parser = ConfigParser.ConfigParser()
+    parser.read(configfile)
+    for section in parser.sections():
+        # parse the list, and handle test cases with respect to the listed NICs
+        # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
+        # test with print
+        print(section)
