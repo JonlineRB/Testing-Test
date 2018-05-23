@@ -35,22 +35,16 @@ class BindDevices(unittest.TestCase):
 
 
 class TerminatingTest(BindDevices):
-
     duration = 20
+    casename = ''
 
     def terminate(self, process):
         time.sleep(self.duration)
         process.terminate()
 
-
-class TestSimpleUDP(TerminatingTest):
-    testlog = open('udpSimpleTestLog', 'w')
-
     def runTest(self):
-        print("Testing MoonGen Simple Case: udp-simple")
-        p = subprocess.Popen([
-            './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-            stdout=self.testlog, cwd=self.path)
+        print("Testing MoonGen Simple Case: %s" % casename)
+        p = self.executetest()
         # p.wait()
         # print 'udp simple test launched, terminates in 20 seconds'
         # time.sleep(20)
@@ -59,12 +53,56 @@ class TestSimpleUDP(TerminatingTest):
         self.testlog.close()
         print('terminated, closed test log')
         # sucess yet to be specified
-        self.assertTrue(True)
+        if self.evaluate():
+            print('test successful')
+        else:
+            print'test failed'
+
+    def executetest(self):
+        return subprocess.Popen()
+
+    def evaluate(self):
+        return self.assertTrue(True)
 
 
-# this subprocess does not terminate if it runs correctly
-# TO DO: solve this issue
+class TestSimpleUDP(TerminatingTest):
+    testlog = open('udpSimpleTestLog', 'w')
 
+    # def runTest(self):
+    #     print("Testing MoonGen Simple Case: udp-simple")
+    #     p = subprocess.Popen([
+    #         './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
+    #         stdout=self.testlog, cwd=self.path)
+    #     # p.wait()
+    #     # print 'udp simple test launched, terminates in 20 seconds'
+    #     # time.sleep(20)
+    #     # p.terminate()
+    #     self.terminate(p)
+    #     self.testlog.close()
+    #     print('terminated, closed test log')
+    #     # sucess yet to be specified
+    #     self.assertTrue(True)
+
+    def executetest(self):
+        return subprocess.Popen([
+            './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
+            stdout=self.testlog, cwd=self.path)
+
+
+class TestLoadLatency(TerminatingTest):
+    testlog = open('loadlatencylog', 'w')
+
+    # def runTest(self):
+    #     print("Testing MoonGen Simple Case: load-latency")
+    #     p = subprocess.Popen([
+    #         './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
+    #         stdout=self.testlog, cwd=self.path)
+    #     self.terminate(p)
+    #     self.testlog.close()
+    def executetest(self):
+        return subprocess.Popen([
+            './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
+            stdout=self.testlog, cwd=self.path)
 
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
