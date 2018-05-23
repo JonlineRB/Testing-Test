@@ -95,4 +95,4 @@ def parsetestcases(devicelist):
             if section == 'Meta':
                 pass
             else:
-                print ('section %s has no test option' % section)
+                print ('section %s has no test option, or devices' % section)
