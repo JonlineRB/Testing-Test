@@ -56,7 +56,7 @@ class TestTimeStampCapabilities(BindDevices):
         self.testlog = open('testlog', 'r')
         lines = self.testlog.readlines()
         testquant = 0
-        for (index in range(0, len(lines))):
+        for index in range(0, len(lines)):
             if 'Testing' in lines[index]:
                 testquant += 1
         print("number of tests is: %d" % testquant)
