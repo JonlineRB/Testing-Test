@@ -109,7 +109,7 @@ class TestLoadLatency(TerminatingTest):
 
 
 class TestUdpLoad(TerminatingTest):
-    testlog = open('udploadlog')
+    testlog = open('udploadlog', 'w')
     casename = 'udp load'
 
     def executetest(self):
@@ -119,7 +119,7 @@ class TestUdpLoad(TerminatingTest):
 
 
 class TestQosForeground(TerminatingTest):
-    testlog = open('qoslog')
+    testlog = open('qoslog', 'w')
     casename = 'qos-foreground'
 
     def executetest(self):
