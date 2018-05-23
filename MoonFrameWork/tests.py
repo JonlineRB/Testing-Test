@@ -1,6 +1,7 @@
 import unittest
 import subprocess
 import utility
+import signal
 from FrameworkSubprocess import SubHandler
 
 
@@ -33,12 +34,12 @@ class BindDevices(unittest.TestCase):
         utility.unbinddevices(self.devicelist)
 
 
-# class TestSimpleUDP(BindDevices):
-#     def runTest(self):
-#         print("Testing MoonGen Simple Case: udp-simple")
-#         p = subprocess.Popen([
-#             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-#             stdout=self.testlog, cwd=self.path)
+class TestSimpleUDP(BindDevices):
+    def runTest(self):
+        print("Testing MoonGen Simple Case: udp-simple")
+        p = subprocess.Popen([
+            './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
+            stdout=self.testlog, cwd=self.path)
 # this subprocess does not terminate if it runs correctly
 # TO DO: solve this issue
 

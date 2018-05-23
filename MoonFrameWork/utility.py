@@ -48,7 +48,7 @@ def initdevices(devicelist):
     else:
         print('parsed list is:')
         for x in range(0, len(devicelist)):
-            print('device %d: ' % (x) + devicelist[x])
+            print('device %d: ' % x + devicelist[x])
         unbinddevices(devicelist)
 
 
@@ -85,6 +85,9 @@ def parsetestcases(devicelist):
             if parser.get(section, 'test') == 'timestamp':
                 # run timestamp test
                 test = tests.TestTimeStampCapabilities(tmplist, path)
+                test.run()
+            elif parser.get(section, 'test') == 'udpsimple':
+                test = tests.TestSimpleUDP(tmplist, path)
                 test.run()
             else:
                 print 'unknown test'
