@@ -62,9 +62,9 @@ def binddevices(devicelist):
     print('bound devices as they were')
 
 
-def parsetestcases(configfile):
+def parsetestcases():
     parser = ConfigParser.ConfigParser()
-    parser.read(configfile)
+    parser.read('FrameworkConfig.cfg')
     for i in range(0, len(parser.sections())):
         # parse the list, and handle test cases with respect to the listed NICs
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices

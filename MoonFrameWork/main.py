@@ -23,7 +23,7 @@ parser.read('FrameworkConfig.cfg')
 print(parser.sections())  # just for testing
 MoonGenPath = parser.get('Meta', 'path')
 
-utility.parsetestcases(parser)
+utility.parsetestcases()
 
 # if parser.get('Section1', 'test') == 'timestamp':
 #     print('constructing timestamp test')
