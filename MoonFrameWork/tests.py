@@ -40,6 +40,7 @@ class TestSimpleUDP(BindDevices):
         p = subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
+        p.wait()
 # this subprocess does not terminate if it runs correctly
 # TO DO: solve this issue
 
