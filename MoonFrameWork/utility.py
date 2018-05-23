@@ -66,7 +66,7 @@ def parsetestcases():
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
     # for i in range(0, len(parser.sections())):
-    for section in parser.sections()
+    for section in parser.sections():
         # parse the list, and handle test cases with respect to the listed NICs
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
         # test with print
