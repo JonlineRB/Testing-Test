@@ -75,4 +75,5 @@ def parsetestcases():
         except ConfigParser.NoOptionError:
             if section == 'Meta':
                 pass
-            print ('section %s has no test option' % section)
+            else:
+                print ('section %s has no test option' % section)
