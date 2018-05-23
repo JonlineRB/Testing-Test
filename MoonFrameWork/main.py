@@ -22,26 +22,29 @@ parser = ConfigParser.ConfigParser()
 parser.read('FrameworkConfig.cfg')
 print(parser.sections())  # just for testing
 MoonGenPath = parser.get('Meta', 'path')
-if parser.get('Section1', 'test') == 'timestamp':
-    print('constructing timestamp test')
-    index1 = int(parser.get('Section1', 'device1'))
-    index2 = int(parser.get('Section1', 'device2'))
-    tmpList = list()
-    tmpList.append(dpdkdevlist[index1])
-    tmpList.append(dpdkdevlist[index2])
-    test = tests.TestTimeStampCapabilities(tmpList, MoonGenPath)
-    print('running test!')
-    test.run()
-    print('test concluded!')
-elif parser.get('Section1', 'test') == 'experiment':
-    # using this to test some functionality
-    handler = SubHandler(MoonGenPath)
-    expOutFile = open('expOutFile', 'w')
-    handler.popen(['ls'], expOutFile)
-    expOutFile.close()
-else:
-    print('unknown test case')
-print('Printind device list before exit')
+
+utility.parsetestcases(parser)
+
+# if parser.get('Section1', 'test') == 'timestamp':
+#     print('constructing timestamp test')
+#     index1 = int(parser.get('Section1', 'device1'))
+#     index2 = int(parser.get('Section1', 'device2'))
+#     tmpList = list()
+#     tmpList.append(dpdkdevlist[index1])
+#     tmpList.append(dpdkdevlist[index2])
+#     test = tests.TestTimeStampCapabilities(tmpList, MoonGenPath)
+#     print('running test!')
+#     test.run()
+#     print('test concluded!')
+# elif parser.get('Section1', 'test') == 'experiment':
+#     # using this to test some functionality
+#     handler = SubHandler(MoonGenPath)
+#     expOutFile = open('expOutFile', 'w')
+#     handler.popen(['ls'], expOutFile)
+#     expOutFile.close()
+# else:
+#     print('unknown test case')
+print('Printing device list before exit')
 print(dpdkdevlist)
 utility.binddevices(dpdkdevlist)
 
