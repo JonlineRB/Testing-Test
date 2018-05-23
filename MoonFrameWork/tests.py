@@ -50,6 +50,7 @@ class TerminatingTest(BindDevices):
         # time.sleep(20)
         # p.terminate()
         self.terminate(p)
+        p.kill()  # this ensures the process has ended
         self.testlog.close()
         print('terminated, closed test log')
         # sucess yet to be specified
