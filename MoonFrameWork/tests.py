@@ -35,10 +35,11 @@ class BindDevices(unittest.TestCase):
 
 
 class TerminatingTest(BindDevices):
+
     duration = 20
 
     def terminate(self, process):
-        time.sleep(duration)
+        time.sleep(self.duration)
         process.terminate()
 
 
