@@ -2,6 +2,7 @@ import os
 import subprocess
 import ConfigParser
 from FrameworkSubprocess import SubHandler
+import tests
 
 
 # utility class for the MoonGen Testing framework
@@ -63,15 +64,28 @@ def binddevices(devicelist):
     print('bound devices as they were')
 
 
-def parsetestcases():
+def parsetestcases(devicelist):
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
+    try:
+        path = parser.get('Meta', 'path')
+    except ConfigParser.NoOptionError:
+        print 'Path is not set. Please set a path in the config file in the [Meta] section'
     # for i in range(0, len(parser.sections())):
     for section in parser.sections():
         # parse the list, and handle test cases with respect to the listed NICs
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
         # test with print
         try:
+            index1 = int(parser.get(section, 'device1'))
+            index2 = int(parser.get(section, 'device2'))
+            tmplist = list()
+            tmplist.append(devicelist[index1])
+            tmplist.append(devicelist[index2])
+            if parser.get(section, 'test') == 'timestamp':
+            # run timestamp test
+            test = tests.TestTimeStampCapabilities(tmplist, path)
+            test.run()
             print parser.get(section, 'test')
         except ConfigParser.NoOptionError:
             if section == 'Meta':
