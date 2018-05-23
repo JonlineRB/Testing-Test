@@ -92,7 +92,6 @@ def parsetestcases(devicelist):
                 test = tests.TestTimeStampCapabilities(tmplist, path)
                 test.run()
             elif parsedcase == 'udpsimple':
-                print'ENTERED UDP SIMPLE!'
                 test = tests.TestSimpleUDP(tmplist, path)
                 test.run()
             elif parsedcase == 'loadlatency':

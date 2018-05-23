@@ -86,6 +86,7 @@ class TestSimpleUDP(TerminatingTest):
     #     self.assertTrue(True)
 
     def executetest(self):
+        print'ENTERED EXECUTION OF TEST IN UDP SIMPLE'
         return subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
