@@ -84,26 +84,26 @@ def parsetestcases(devicelist):
             tmplist.append(devicelist[index2])
             print('devices to test are:')
             print tmplist
-            run = True
-            test = None
             parsedcase = parser.get(section, 'test')
             # the following section should be a dictionary...
             if parsedcase == 'timestamp':
                 # run timestamp test
                 test = tests.TestTimeStampCapabilities(tmplist, path)
+                test.run()
             elif parsedcase == 'udpsimple':
                 test = tests.TestSimpleUDP(tmplist, path)
+                test.run()
             elif parsedcase == 'loadlatency':
                 test = tests.TestLoadLatency(tmplist, path)
+                test.run()
             elif parsedcase == 'qos':
                 test = tests.TestQosForeground(tmplist, path)
+                test.run()
             elif parsedcase == 'udpload':
                 test = tests.TestUdpLoad(tmplist, path)
+                test.run()
             else:
                 print 'unknown test'
-                run = False
-            if run:
-                test.run()
         except ConfigParser.NoOptionError:
             if section == 'Meta':
                 pass
