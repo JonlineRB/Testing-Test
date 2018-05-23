@@ -56,12 +56,11 @@ class TestTimeStampCapabilities(BindDevices):
         self.testlog = open('testlog', 'r')
         lines = self.testlog.readlines()
         testquant = 0
-        for index in range(0, len(lines)):
-            if 'Testing' in lines[index]:
-                testquant += 1
         print("number of tests is: %d" % testquant)
         errorcounter = 0
         for index in range(0, len(lines)):
+            if 'Testing' in lines[index]:
+                testquant += 1
             if 'Error' in lines[index] or 'ERROR' in lines[index]:
                 errorcounter += 1
                 print 'Found error in a line!'
@@ -77,35 +76,6 @@ class TestTimeStampCapabilities(BindDevices):
                 print(out)
 
         if not self.assertEquals(errorcounter, testquant):
-            print 'Tests successful'
+            print('Tests successful, Conducted %d tests, %d occured' % testquant, errorcounter)
         else:
             print 'All tests failed'
-
-        # if self.assertEquals(p.wait(), 0):
-        #     print("Test result: everything works!")
-        #     # in this case, parse the out file in order to recieve information
-        #     #  about the possible capabilities of these NICs
-        # else:
-        #     print'Test result: something went wrong...'
-        #     self.testlog.close()
-        #     self.testlog = open('testlog', 'r')
-        #     # if 'Error' in self.testlog.read():
-        #     #     print 'found an error'
-        #     # parse line by line to get all errors, then get back to the cases
-        #
-        #     lines = self.testlog.readlines()
-        #     print'The length of lines is: '
-        #     print len(lines)
-        #     for index in range(0, len(lines)):
-        #         if 'Error' in lines[index] or 'ERROR' in lines[index]:
-        #             print 'Found error in a line!'
-        #             print(lines[index])
-        #             target = ''
-        #             out = ''
-        #             backtrack = 0
-        #             while target != '\n':
-        #                 out = target
-        #                 target = lines[index - backtrack]
-        #                 backtrack += 1
-        #             print'Following case failed:'
-        #             print(out)
