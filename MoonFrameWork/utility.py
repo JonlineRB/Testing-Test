@@ -83,10 +83,11 @@ def parsetestcases(devicelist):
             tmplist.append(devicelist[index1])
             tmplist.append(devicelist[index2])
             if parser.get(section, 'test') == 'timestamp':
-            # run timestamp test
-            test = tests.TestTimeStampCapabilities(tmplist, path)
-            test.run()
-            print parser.get(section, 'test')
+                # run timestamp test
+                test = tests.TestTimeStampCapabilities(tmplist, path)
+                test.run()
+            else:
+                print 'unknown test'
         except ConfigParser.NoOptionError:
             if section == 'Meta':
                 pass
