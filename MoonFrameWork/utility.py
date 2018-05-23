@@ -73,4 +73,4 @@ def parsetestcases():
         try:
             print parser.get(section, 'test')
         except ConfigParser.NoOptionError:
-            print ('section %s has no test option')
+            print ('section %s has no test option' % section)
