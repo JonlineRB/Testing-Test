@@ -61,7 +61,7 @@ def binddevices(devicelist):
             cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
         )
         p.wait()
-    print('bound devices as they were')
+    # print('bound devices as they were')
 
 
 def parsetestcases(devicelist):

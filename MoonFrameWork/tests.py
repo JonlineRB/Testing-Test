@@ -1,7 +1,7 @@
 import unittest
 import subprocess
 import utility
-import signal
+import time
 from FrameworkSubprocess import SubHandler
 
 
@@ -35,14 +35,20 @@ class BindDevices(unittest.TestCase):
 
 
 class TestSimpleUDP(BindDevices):
+
+    testlog = open('udpSimpleTestLog', 'w')
+
     def runTest(self):
-        self.setUp()
         print("Testing MoonGen Simple Case: udp-simple")
         p = subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
-        p.wait()
-        self.tearDown()
+        # p.wait()
+        print 'udp simple test launched, terminates in 20 seconds'
+        time.sleep(20)
+        p.terminate()
+        self.testlog.close()
+        print('terminated, closed test log')
 # this subprocess does not terminate if it runs correctly
 # TO DO: solve this issue
 
@@ -50,7 +56,6 @@ class TestSimpleUDP(BindDevices):
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
     def runTest(self):
-        self.setUp()
         print("Testing MoonGen TimeStamp Capabilities of devices: %s and %s"
               % (self.devicelist[0], self.devicelist[1]))
         p = subprocess.Popen(['./build/MoonGen',
@@ -85,4 +90,3 @@ class TestTimeStampCapabilities(BindDevices):
         else:
             print 'All tests failed'
         self.testlog.close()
-        self.tearDown()
