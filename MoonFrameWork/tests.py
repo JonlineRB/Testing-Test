@@ -43,7 +43,7 @@ class TerminatingTest(BindDevices):
         process.terminate()
 
     def runTest(self):
-        print("Testing MoonGen Simple Case: %s" % casename)
+        print("Testing MoonGen Simple Case: %s" % self.casename)
         p = self.executetest()
         # p.wait()
         # print 'udp simple test launched, terminates in 20 seconds'
