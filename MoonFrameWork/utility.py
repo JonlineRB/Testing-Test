@@ -69,4 +69,4 @@ def parsetestcases():
         # parse the list, and handle test cases with respect to the listed NICs
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
         # test with print
-        print(section[x])
+        print(parser.sections()[x])
