@@ -36,11 +36,13 @@ class BindDevices(unittest.TestCase):
 
 class TestSimpleUDP(BindDevices):
     def runTest(self):
+        self.setUp()
         print("Testing MoonGen Simple Case: udp-simple")
         p = subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
         p.wait()
+        self.tearDown()
 # this subprocess does not terminate if it runs correctly
 # TO DO: solve this issue
 
@@ -48,6 +50,7 @@ class TestSimpleUDP(BindDevices):
 class TestTimeStampCapabilities(BindDevices):
     # test timestamp between NICs
     def runTest(self):
+        self.setUp()
         print("Testing MoonGen TimeStamp Capabilities of devices: %s and %s"
               % (self.devicelist[0], self.devicelist[1]))
         p = subprocess.Popen(['./build/MoonGen',
@@ -82,3 +85,4 @@ class TestTimeStampCapabilities(BindDevices):
         else:
             print 'All tests failed'
         self.testlog.close()
+        self.tearDown()
