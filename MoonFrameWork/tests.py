@@ -34,8 +34,15 @@ class BindDevices(unittest.TestCase):
         utility.unbinddevices(self.devicelist)
 
 
-class TestSimpleUDP(BindDevices):
+class TerminatingTest(BindDevices):
+    duration = 20
 
+    def terminate(self, process):
+        time.sleep(duration)
+        process.terminate()
+
+
+class TestSimpleUDP(TerminatingTest):
     testlog = open('udpSimpleTestLog', 'w')
 
     def runTest(self):
@@ -44,11 +51,14 @@ class TestSimpleUDP(BindDevices):
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
         # p.wait()
-        print 'udp simple test launched, terminates in 20 seconds'
-        time.sleep(20)
-        p.terminate()
+        # print 'udp simple test launched, terminates in 20 seconds'
+        # time.sleep(20)
+        # p.terminate()
+        self.terminate(p)
         self.testlog.close()
         print('terminated, closed test log')
+
+
 # this subprocess does not terminate if it runs correctly
 # TO DO: solve this issue
 
