@@ -84,23 +84,23 @@ def parsetestcases(devicelist):
             tmplist.append(devicelist[index2])
             print('devices to test are:')
             print tmplist
-            parsedcase = parser.get(section, 'test')
-            print('====parsed case is: %s ' % parsedcase)
+            # parsedcase = parser.get(section, 'test')
+            # print('====parsed case is: %s ' % parsedcase)
             # the following section should be a dictionary...
-            if parsedcase == 'timestamp':
+            if parser.get(section, 'test') == 'timestamp':
                 # run timestamp test
                 test = tests.TestTimeStampCapabilities(tmplist, path)
                 test.run()
-            elif parsedcase == 'udpsimple':
+            elif parser.get(section, 'test') == 'udpsimple':
                 test = tests.TestSimpleUDP(tmplist, path)
                 test.run()
-            elif parsedcase == 'loadlatency':
+            elif parser.get(section, 'test') == 'loadlatency':
                 test = tests.TestLoadLatency(tmplist, path)
                 test.run()
-            elif parsedcase == 'qos':
+            elif parser.get(section, 'test') == 'qos':
                 test = tests.TestQosForeground(tmplist, path)
                 test.run()
-            elif parsedcase == 'udpload':
+            elif parser.get(section, 'test') == 'udpload':
                 test = tests.TestUdpLoad(tmplist, path)
                 test.run()
             else:
