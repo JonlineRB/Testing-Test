@@ -57,6 +57,8 @@ class TestSimpleUDP(TerminatingTest):
         self.terminate(p)
         self.testlog.close()
         print('terminated, closed test log')
+        # sucess yet to be specified
+        self.assertTrue(True)
 
 
 # this subprocess does not terminate if it runs correctly
