@@ -85,6 +85,7 @@ def parsetestcases(devicelist):
             print('devices to test are:')
             print tmplist
             run = True
+            test = None
             parsedcase = parser.get(section, 'test')
             # the following section should be a dictionary...
             if parsedcase == 'timestamp':
