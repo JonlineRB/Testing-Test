@@ -81,3 +81,4 @@ class TestTimeStampCapabilities(BindDevices):
             print('Tests successful, Conducted %d tests, %d occured' % testquant, errorcounter)
         else:
             print 'All tests failed'
+        self.testlog.close()
