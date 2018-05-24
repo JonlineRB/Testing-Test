@@ -70,61 +70,40 @@ class TestSimpleUDP(TerminatingTest):
     testlog = open('udpSimpleTestLog', 'w')
     casename = 'udp simple'
 
-    # def runTest(self):
-    #     print("Testing MoonGen Simple Case: udp-simple")
-    #     p = subprocess.Popen([
-    #         './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
-    #         stdout=self.testlog, cwd=self.path)
-    #     # p.wait()
-    #     # print 'udp simple test launched, terminates in 20 seconds'
-    #     # time.sleep(20)
-    #     # p.terminate()
-    #     self.terminate(p)
-    #     self.testlog.close()
-    #     print('terminated, closed test log')
-    #     # sucess yet to be specified
-    #     self.assertTrue(True)
-
     def executetest(self):
         return subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
 
-# class TestLoadLatency(TerminatingTest):
-#     testlog = open('loadlatencylog', 'w')
-#     casename = 'load latency'
-#
-#     # def runTest(self):
-#     #     print("Testing MoonGen Simple Case: load-latency")
-#     #     p = subprocess.Popen([
-#     #         './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
-#     #         stdout=self.testlog, cwd=self.path)
-#     #     self.terminate(p)
-#     #     self.testlog.close()
-#     def executetest(self):
-#         return subprocess.Popen([
-#             './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
-#             stdout=self.testlog, cwd=self.path)
+
+class TestLoadLatency(TerminatingTest):
+    testlog = open('loadlatencylog', 'w')
+    casename = 'load latency'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
+            stdout=self.testlog, cwd=self.path)
 
 
-# class TestUdpLoad(TerminatingTest):
-#     testlog = open('udploadlog', 'w')
-#     casename = 'udp load'
-#
-#     def executetest(self):
-#         return subprocess.Popen([
-#             './moongen-simple', 'start', 'udp-load:0:1:rate=1mp/s,mode=all,timestamp'],
-#             stdout=self.testlog, cwd=self.path)
+class TestUdpLoad(TerminatingTest):
+    testlog = open('udploadlog', 'w')
+    casename = 'udp load'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './moongen-simple', 'start', 'udp-load:0:1:rate=1mp/s,mode=all,timestamp'],
+            stdout=self.testlog, cwd=self.path)
 
 
-# class TestQosForeground(TerminatingTest):
-#     testlog = open('qoslog', 'w')
-#     casename = 'qos-foreground'
-#
-#     def executetest(self):
-#         return subprocess.Popen([
-#             './moongen-simple', 'start', 'qos-foreground:0:1 qos-background:0:1'],
-#             stdout=self.testlog, cwd=self.path)
+class TestQosForeground(TerminatingTest):
+    testlog = open('qoslog', 'w')
+    casename = 'qos-foreground'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './moongen-simple', 'start', 'qos-foreground:0:1 qos-background:0:1'],
+            stdout=self.testlog, cwd=self.path)
 
 
 class TestTimeStampCapabilities(BindDevices):
