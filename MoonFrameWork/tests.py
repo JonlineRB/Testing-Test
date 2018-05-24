@@ -41,6 +41,13 @@ class TerminatingTest(BindDevices):
     def terminate(self, process):
         time.sleep(self.duration)
         process.terminate()
+        # check if process terminated, if not report a bug
+        print'Printing process.poll():-----'
+        print process.poll()
+        if process.poll() is None:
+            process.kill()
+            print'Process not terminated!--'
+
 
     def runTest(self):
         print("=====Testing MoonGen Simple Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
@@ -50,7 +57,6 @@ class TerminatingTest(BindDevices):
         # time.sleep(20)
         # p.terminate()
         self.terminate(p)
-        p.kill()  # this ensures the process has ended
         self.testlog.close()
         print('terminated, closed test log')
         # sucess yet to be specified
