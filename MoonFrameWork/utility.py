@@ -93,6 +93,7 @@ def parsetestcases(devicelist):
                 test.run()
             elif parsedcase == 'udpsimple':
                 test = tests.TestSimpleUDP(tmplist, path)
+                print'HERE'
                 test.run()
             elif parsedcase == 'loadlatency':
                 test = tests.TestLoadLatency(tmplist, path)

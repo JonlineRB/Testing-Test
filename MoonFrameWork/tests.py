@@ -15,7 +15,6 @@ class BindDevices(unittest.TestCase):
         super(BindDevices, self).__init__()
         self.devicelist = devicelist
         self.path = path
-        print'CONSTRUCTION BINDDEVICES CLASS!'
 
     @classmethod
     def setUpClass(cls):
