@@ -90,6 +90,9 @@ class TestSimpleUDP(TerminatingTest):
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
 
+    def runTest(self):
+        print'HERE'
+
 
 # class TestLoadLatency(TerminatingTest):
 #     testlog = open('loadlatencylog', 'w')
