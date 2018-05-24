@@ -44,7 +44,7 @@ class TerminatingTest(BindDevices):
         # check if process terminated, if not report a bug
         print'Printing process.poll():-----'
         print process.poll()
-        time.sleep(2) # trying a delay before the poll
+        # time.sleep(2) # trying a delay before the poll
         if process.poll() is None:
             process.kill()
             print'Process not terminated!--'
