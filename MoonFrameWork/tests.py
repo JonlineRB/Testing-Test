@@ -43,7 +43,7 @@ class TerminatingTest(BindDevices):
         process.terminate()
 
     def runTest(self):
-        print("=====Testing MoonGen Simple Case: %s, this will take %d seconds" % self.casename, self.duration)
+        print("=====Testing MoonGen Simple Case: %s, this will take %d seconds" % self.casename, int(self.duration))
         p = self.executetest()
         # p.wait()
         # print 'udp simple test launched, terminates in 20 seconds'
@@ -89,10 +89,6 @@ class TestSimpleUDP(TerminatingTest):
         return subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
-
-    def runTest(self):
-        return super(TestSimpleUDP,self).runTest()
-
 
 # class TestLoadLatency(TerminatingTest):
 #     testlog = open('loadlatencylog', 'w')
