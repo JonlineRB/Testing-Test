@@ -91,7 +91,7 @@ class TestSimpleUDP(TerminatingTest):
             stdout=self.testlog, cwd=self.path)
 
     def runTest(self):
-        print'HERE'
+        return super(TestSimpleUDP,self).runTest()
 
 
 # class TestLoadLatency(TerminatingTest):
