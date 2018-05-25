@@ -51,6 +51,7 @@ class TerminatingTest(BindDevices):
             time.sleep(self.termloopdelta)
             timecounter += self.termloopdelta
         print process.poll()
+        print('Time it took to terminate: %d' % timecounter)
         # if process.poll() is None:
         if process.returncode is None:
             process.kill()
