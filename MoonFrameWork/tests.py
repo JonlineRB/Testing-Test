@@ -43,13 +43,12 @@ class TerminatingTest(BindDevices):
         process.terminate()
         # check if process terminated, if not report a bug
         print'Printing process.poll():-----'
+        time.sleep(20)  # trying a delay before the poll
         print process.poll()
-        # time.sleep(2) # trying a delay before the poll
         # if process.poll() is None:
         if process.returncode is None:
             process.kill()
             print'Process not terminated!--'
-
 
     def runTest(self):
         print("=====Testing MoonGen Simple Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
