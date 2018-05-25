@@ -37,7 +37,7 @@ class BindDevices(unittest.TestCase):
 class TerminatingTest(BindDevices):
     duration = 20
     casename = ''
-    termtimelimit = 10
+    termtimelimit = 4
     termloopdelta = 0.5
 
     def terminate(self, process):
