@@ -37,13 +37,19 @@ class BindDevices(unittest.TestCase):
 class TerminatingTest(BindDevices):
     duration = 20
     casename = ''
+    termtimelimit = 10
+    termloopdelta = 0.5
 
     def terminate(self, process):
         time.sleep(self.duration)
         process.terminate()
         # check if process terminated, if not report a bug
         print'Printing process.poll():-----'
-        time.sleep(20)  # trying a delay before the poll
+        # time.sleep(20)  # trying a delay before the poll
+        timecounter = 0
+        while process.poll() is None or timecounter <= self.termtimelimit:
+            time.sleep(self.termloopdelta)
+            timecounter += self.termloopdelta
         print process.poll()
         # if process.poll() is None:
         if process.returncode is None:
