@@ -8,8 +8,7 @@ from FrameworkSubprocess import SubHandler
 class BindDevices(unittest.TestCase):
     # devicelist = list()
     testlog = open('testlog', 'w')
-
-    # path = ''
+    logname = ''
 
     def __init__(self, devicelist, path):
         super(BindDevices, self).__init__()
@@ -81,13 +80,23 @@ class TerminatingTest(BindDevices):
 
 
 class TestSimpleUDP(TerminatingTest):
-    testlog = open('udpSimpleTestLog', 'w')
+    logname = 'udpSimplTestLog'
+    testlog = open(logname, 'w')
     casename = 'udp simple'
 
     def executetest(self):
         return subprocess.Popen([
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
+
+    def evaluate(self):
+        # parse the log file, assert crateria
+        self.testlog = open(self.logname, 'r')
+        lines = self.testlog.readlines()
+        for index in range(0, len(lines)) :
+            # make sure device: id=0
+            if '[Device: id=0]' in lines[index]:
+                # store value
 
 
 class TestLoadLatency(TerminatingTest):
