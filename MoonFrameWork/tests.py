@@ -50,7 +50,8 @@ class TerminatingTest(BindDevices):
     def terminate(self, process):
         timecounter = 0
         while timecounter < self.duration:
-            sys.stdout.write('.')
+            # sys.stdout.write('.')
+            print'.'
             time.sleep(self.pollrate)
             timecounter += self.pollrate
         process.terminate()
