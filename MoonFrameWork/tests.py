@@ -142,6 +142,9 @@ class TestLoadLatency(TerminatingTest):
             './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
             stdout=self.testlog, cwd=self.path)
 
+    def evaluate(self):
+        self.assertTrue(False)  # just to experiment
+
 
 class TestUdpLoad(TerminatingTest):
     testlog = open('udploadlog', 'w')
