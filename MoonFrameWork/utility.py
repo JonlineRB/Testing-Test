@@ -72,7 +72,7 @@ def parsetestcases(devicelist):
         path = parser.get('Meta', 'path')
     except ConfigParser.NoOptionError:
         print 'Path is not set. Please set a path in the config file in the [Meta] section'
-    # for i in range(0, len(parser.sections())):
+    suite = unittest.TestSuite()
     for section in parser.sections():
         # parse the list, and handle test cases with respect to the listed NICs
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
@@ -104,9 +104,11 @@ def parsetestcases(devicelist):
             if test is not None:
                 # test.run()
                 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(test)
-                unittest.TextTestRunner(verbosity=2).run(test)
+                # unittest.TextTestRunner(verbosity=2).run(test)
+                suite.addTest(test)
         except ConfigParser.NoOptionError:
             if section == 'Meta':
                 pass
             else:
                 print ('section %s has no test option, or devices' % section)
+    unittest.TextTestRunner(verbosity=2).run(suite)
