@@ -41,13 +41,18 @@ class BindDevices(unittest.TestCase):
 
 class TerminatingTest(BindDevices):
     duration = 20
+    pollrate = 2
     casename = 'default terminating / simple case name'
     termtimelimit = 4
     termloopdelta = 0.5
     resulttolorance = 0.9
 
     def terminate(self, process):
-        time.sleep(self.duration)
+        timecounter = 0
+        while timecounter < self.duration:
+            sys.stdout.write('.')
+            time.sleep(self.pollrate)
+            timecounter += self.pollrate
         process.terminate()
         # check if process terminated, if not report a bug
         print'Printing process.poll():-----'
@@ -102,6 +107,7 @@ class TestSimpleUDP(TerminatingTest):
         # parse the log file, assert crateria
         self.testlog = open(self.logname, 'r')
         lines = self.testlog.readlines()
+        result = True
         for i in range(0, len(lines)):
             # make sure device: id=0
             if '[Device: id=0]' in lines[i]:
@@ -116,7 +122,9 @@ class TestSimpleUDP(TerminatingTest):
                         for k in range(0, len(line2)):
                             if '[0m: ' in line2[k]:
                                 rxvalue = float(line2[k + 1])
-                                return self.assertGreaterEqual(rxvalue, txvalue * self.resulttolorance)
+                                # return self.assertGreaterEqual(rxvalue, txvalue * self.resulttolorance)
+                                result = result and (rxvalue < txvalue * self.resulttolorance)
+        self.assertTrue(result)
 
 
 class TestLoadLatency(TerminatingTest):
