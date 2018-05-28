@@ -2,13 +2,16 @@ import unittest
 import subprocess
 import utility
 import time
+import sys
 from FrameworkSubprocess import SubHandler
 
 
 class BindDevices(unittest.TestCase):
     # devicelist = list()
-    testlog = open('testlog', 'w')
-    logname = ''
+    logname = 'defaultLog'
+    casename = 'default case name'
+
+    # testlog = open(logname, 'w') # this has to be overridden by subclass
 
     def __init__(self, devicelist, path):
         super(BindDevices, self).__init__()
@@ -18,26 +21,30 @@ class BindDevices(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # cls.testlog = open('testlog', 'w')
-        print('binding devices')
+        print('called setup class')
         utility.binddevices(cls.devicelist)
 
     @classmethod
     def tearDownClass(cls):
+        print('called teardown class')
         cls.testlog.close()
         utility.unbinddevices(cls.devicelist)
 
     def setUp(self):  # set the devices
+        print'printing setup'
         utility.binddevices(self.devicelist)
 
     def tearDown(self):
+        print'printing teardown'
         utility.unbinddevices(self.devicelist)
 
 
 class TerminatingTest(BindDevices):
     duration = 20
-    casename = ''
+    casename = 'default terminating / simple case name'
     termtimelimit = 4
     termloopdelta = 0.5
+    resulttolorance = 0.9
 
     def terminate(self, process):
         time.sleep(self.duration)
@@ -49,6 +56,7 @@ class TerminatingTest(BindDevices):
         while process.poll() is None or timecounter <= self.termtimelimit:
             time.sleep(self.termloopdelta)
             timecounter += self.termloopdelta
+            sys.stdout('.')
         print process.poll()
         print('Time it took to terminate: %d' % timecounter)
         # if process.poll() is None:
@@ -67,10 +75,11 @@ class TerminatingTest(BindDevices):
         self.testlog.close()
         print('terminated, closed test log')
         # sucess yet to be specified
-        if self.evaluate():
-            print('test successful')
-        else:
-            print'test failed'
+        self.evaluate()
+        # if self.evaluate():
+        #     print('test successful')
+        # else:
+        #     print'test failed'
 
     def executetest(self):
         return subprocess.Popen()
@@ -93,14 +102,26 @@ class TestSimpleUDP(TerminatingTest):
         # parse the log file, assert crateria
         self.testlog = open(self.logname, 'r')
         lines = self.testlog.readlines()
-        for index in range(0, len(lines)) :
+        for i in range(0, len(lines)):
             # make sure device: id=0
-            if '[Device: id=0]' in lines[index]:
+            if '[Device: id=0]' in lines[i]:
                 # store value
+                line1 = lines[i].split()
+                for j in range(0, len(line1)):
+                    if '[0m: ' in line1[j]:
+                        txvalue = float(line1[j + 1])
+                        if '[Device: id=0]' not in lines[i + 1]:
+                            pass
+                        line2 = lines[i + 1].split()
+                        for k in range(0, len(line2)):
+                            if '[0m: ' in line2[k]:
+                                rxvalue = float(line2[k + 1])
+                                return self.assertGreaterEqual(rxvalue, txvalue * self.resulttolorance)
 
 
 class TestLoadLatency(TerminatingTest):
-    testlog = open('loadlatencylog', 'w')
+    logname = 'loadlatencylog'
+    testlog = open(logname, 'w')
     casename = 'load latency'
 
     def executetest(self):
