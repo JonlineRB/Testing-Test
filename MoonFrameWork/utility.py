@@ -3,6 +3,7 @@ import subprocess
 import ConfigParser
 from FrameworkSubprocess import SubHandler
 import tests
+import unittest
 
 
 # utility class for the MoonGen Testing framework
@@ -101,7 +102,9 @@ def parsetestcases(devicelist):
                 print 'unknown test'
                 test = None
             if test is not None:
-                test.run()
+                # test.run()
+                # suite = unittest.defaultTestLoader.loadTestsFromTestCase(test)
+                unittest.TextTestRunner(verbosity=2).run(test)
         except ConfigParser.NoOptionError:
             if section == 'Meta':
                 pass
