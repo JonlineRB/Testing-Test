@@ -56,7 +56,7 @@ class TerminatingTest(BindDevices):
         while process.poll() is None or timecounter <= self.termtimelimit:
             time.sleep(self.termloopdelta)
             timecounter += self.termloopdelta
-            sys.stdout('.')
+            sys.stdout.write('.')
         print process.poll()
         print('Time it took to terminate: %d' % timecounter)
         # if process.poll() is None:
@@ -89,7 +89,7 @@ class TerminatingTest(BindDevices):
 
 
 class TestSimpleUDP(TerminatingTest):
-    logname = 'udpSimplTestLog'
+    logname = 'udpSimpleTestLog'
     testlog = open(logname, 'w')
     casename = 'udp simple'
 
