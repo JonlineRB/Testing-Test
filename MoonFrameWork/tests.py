@@ -43,7 +43,7 @@ class TerminatingTest(BindDevices):
     duration = 20
     pollrate = 2
     casename = 'default terminating / simple case name'
-    termtimelimit = 4
+    termtimelimit = 2  # was 4
     termloopdelta = 0.5
     resulttolorance = 0.9
 
