@@ -127,6 +127,7 @@ class TestSimpleUDP(TerminatingTest):
                                 # return self.assertGreaterEqual(rxvalue, txvalue * self.resulttolorance)
                                 result = result and (rxvalue < txvalue * self.resulttolorance)
         self.assertTrue(result)
+        print("result is: %s" % result)
 
 
 class TestLoadLatency(TerminatingTest):
