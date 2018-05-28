@@ -18,17 +18,17 @@ class BindDevices(unittest.TestCase):
         self.devicelist = devicelist
         self.path = path
 
-    @classmethod
-    def setUpClass(cls):
-        # cls.testlog = open('testlog', 'w')
-        print('called setup class')
-        utility.binddevices(cls.devicelist)
-
-    @classmethod
-    def tearDownClass(cls):
-        print('called teardown class')
-        cls.testlog.close()
-        utility.unbinddevices(cls.devicelist)
+    # @classmethod
+    # def setUpClass(cls):
+    #     # cls.testlog = open('testlog', 'w')
+    #     print('called setup class')
+    #     utility.binddevices(cls.devicelist)
+    #
+    # @classmethod
+    # def tearDownClass(cls):
+    #     print('called teardown class')
+    #     cls.testlog.close()
+    #     utility.unbinddevices(cls.devicelist)
 
     def setUp(self):  # set the devices
         print'printing setup'
