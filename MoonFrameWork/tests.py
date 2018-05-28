@@ -54,6 +54,7 @@ class TerminatingTest(BindDevices):
             sys.stdout.flush()
             time.sleep(self.pollrate)
             timecounter += self.pollrate
+        print()
         process.terminate()
         # check if process terminated, if not report a bug
         print'Printing process.poll():-----'
@@ -64,6 +65,7 @@ class TerminatingTest(BindDevices):
             timecounter += self.termloopdelta
             sys.stdout.write('.')
             sys.stdout.flush()
+        print()
         print process.poll()
         print('Time it took to terminate: %d' % timecounter)
         # if process.poll() is None:
