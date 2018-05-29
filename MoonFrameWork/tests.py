@@ -113,6 +113,10 @@ class TestSimpleUDP(TerminatingTest):
         lines = self.testlog.readlines()
         result = True
         for i in range(0, len(lines)):
+            # exit condition: found 0 usable devices
+            if 'Found 0 usable devices:' in lines[i]:
+                self.testlog.close()
+                self.assertTrue(False, msg='There are no usable devices')
             # make sure device: id=0
             if '[Device: id=0]' in lines[i]:
                 # store value
@@ -128,8 +132,10 @@ class TestSimpleUDP(TerminatingTest):
                                 rxvalue = float(line2[k + 1])
                                 # return self.assertGreaterEqual(rxvalue, txvalue * self.resulttolorance)
                                 result = result and (rxvalue < txvalue * self.resulttolorance)
-        self.assertTrue(result)
-        print("result is: %s" % result)
+        self.testlog.close()
+        self.assertTrue(result,
+                        msg='This means that the RX values were not over d% percent of TX values at all times'
+                            % (self.resulttolorance * 100.0))
 
 
 class TestLoadLatency(TerminatingTest):
