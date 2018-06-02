@@ -173,6 +173,8 @@ class TestQosForeground(TerminatingTest):
 
 
 class TestTimeStampCapabilities(BindDevices):
+    reqpasses = 2
+
     # test timestamp between NICs
     def runTest(self):
         print("Testing MoonGen TimeStamp Capabilities of devices: %s and %s"
@@ -203,6 +205,9 @@ class TestTimeStampCapabilities(BindDevices):
                     backtrack += 1
                 print'Following case failed:'
                 print(out)
+
+        self.assertTrue(testquant-errorcounter > self.reqpasses, 'Selected devices have passed less than %d tests'
+                                                                 'in Test Timestamping Capabilities' % self.reqpasses)
 
         if not self.assertEquals(errorcounter, testquant):
             print('Tests successful, Conducted %d tests, %d occured' % testquant, errorcounter)
