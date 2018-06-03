@@ -134,6 +134,8 @@ class TerminatingTest(BindDevices):
         lines = self.testlog.readlines()
         self.testlog.close()
         index = self.checkdevicesfound(lines)
+        print 'value of index is: '
+        print index
         self.evaluate(lines, index)
 
     def checkvaluesarezero(self, value1, value2):
