@@ -113,8 +113,7 @@ class TerminatingTest(BindDevices):
                                 break
                         break
         self.assertTrue(result,
-                        msg='This means that the RX values were not over %d \% of TX values at all times'
-                            % (self.resulttolorance * 100.0))
+                        msg='This means that the RX values were not over 90 percent of TX values at all times')
 
     # def getloglines(self):
     #     self.testlog = open(self.logname, 'r')
