@@ -128,6 +128,7 @@ class TerminatingTest(BindDevices):
                 self.assertTrue(False, msg='Found 0 usable devices. Possible reasons: no devices, hugepages')
             elif '2 devices are up' in lines[i]:
                 return i
+        self.assertTrue(False, msg='Devices are not up')
 
     def checkresult(self):
         self.testlog = open(self.logname, 'r')
@@ -153,40 +154,40 @@ class TestSimpleUDP(TerminatingTest):
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
 
-    def evaluate(self, lines, index):
-        # parse the log file, assert crateria
-        # self.testlog = open(self.logname, 'r')
-        # lines = self.testlog.readlines()
-        # self.testlog.close()
-        result = True
-        for i in range(index, len(lines)):
-            if not result:
-                break
-            if '[FATAL]' in lines[i]:
-                self.assertTrue(False, msg='FATAL error')
-            # exit condition: found 0 usable devices
-            # if 'Found 0 usable devices:' in lines[i]:
-            #     self.assertTrue(False, msg='There are no usable devices')
-            # make sure device: id=0
-            if '[Device: id=0]' in lines[i]:
-                # store value
-                line1 = lines[i].split()
-                for j in range(0, len(line1)):
-                    if '[0m: ' in line1[j]:
-                        txvalue = float(line1[j + 1])
-                        if '[Device: id=1]' not in lines[i + 1]:
-                            continue
-                        line2 = lines[i + 1].split()
-                        for k in range(0, len(line2)):
-                            if '[0m: ' in line2[k]:
-                                rxvalue = float(line2[k + 1])
-                                self.checkvaluesarezero(txvalue, rxvalue)
-                                result = result and (rxvalue > txvalue * self.resulttolorance)
-                                break
-                        break
-        self.assertTrue(result,
-                        msg='This means that the RX values were not over %d \% of TX values at all times'
-                            % (self.resulttolorance * 100.0))
+    # def evaluate(self, lines, index):
+    #     # parse the log file, assert crateria
+    #     # self.testlog = open(self.logname, 'r')
+    #     # lines = self.testlog.readlines()
+    #     # self.testlog.close()
+    #     result = True
+    #     for i in range(index, len(lines)):
+    #         if not result:
+    #             break
+    #         if '[FATAL]' in lines[i]:
+    #             self.assertTrue(False, msg='FATAL error')
+    #         # exit condition: found 0 usable devices
+    #         # if 'Found 0 usable devices:' in lines[i]:
+    #         #     self.assertTrue(False, msg='There are no usable devices')
+    #         # make sure device: id=0
+    #         if '[Device: id=0]' in lines[i]:
+    #             # store value
+    #             line1 = lines[i].split()
+    #             for j in range(0, len(line1)):
+    #                 if '[0m: ' in line1[j]:
+    #                     txvalue = float(line1[j + 1])
+    #                     if '[Device: id=1]' not in lines[i + 1]:
+    #                         continue
+    #                     line2 = lines[i + 1].split()
+    #                     for k in range(0, len(line2)):
+    #                         if '[0m: ' in line2[k]:
+    #                             rxvalue = float(line2[k + 1])
+    #                             self.checkvaluesarezero(txvalue, rxvalue)
+    #                             result = result and (rxvalue > txvalue * self.resulttolorance)
+    #                             break
+    #                     break
+    #     self.assertTrue(result,
+    #                     msg='This means that the RX values were not over %d \% of TX values at all times'
+    #                         % (self.resulttolorance * 100.0))
 
 
 class TestLoadLatency(TerminatingTest):
