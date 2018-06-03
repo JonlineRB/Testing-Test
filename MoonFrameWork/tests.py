@@ -45,7 +45,8 @@ class TerminatingTest(BindDevices):
     casename = 'default terminating / simple case name'
     termtimelimit = 2  # was 4
     termloopdelta = 0.5
-    resulttolorance = 0.9
+    resulttolorance = 0.9  # type: float
+    testlog = None
 
     def terminate(self, process):
         timecounter = 0
@@ -84,17 +85,60 @@ class TerminatingTest(BindDevices):
         self.testlog.close()
         print('terminated, closed test log')
         # sucess yet to be specified
-        self.evaluate()
-        # if self.evaluate():
-        #     print('test successful')
-        # else:
-        #     print'test failed'
+        self.checkresult()
 
     def executetest(self):
         return subprocess.Popen()
 
-    def evaluate(self):
-        return self.assertEquals(True, True)
+    def evaluate(self, lines, index):
+        result = True
+        for i in range(index, len(lines)):
+            if not result:
+                break
+            if '[FATAL]' in lines[i]:
+                self.assertTrue(False, msg='FATAL error')
+            if '[Device: id=0]' in lines[i]:
+                line1 = lines[i].split()
+                for j in range(0, len(line1)):
+                    if 'TX:' in line1[j]:
+                        txvalue = float(line1[j + 1])
+                        if '[Device: id=1]' not in lines[i + 1]:
+                            continue
+                        line2 = lines[i + 1].split()
+                        for k in range(0, len(line2)):
+                            if 'RX:' in line2[k]:
+                                rxvalue = float(line2[k + 1])
+                                self.checkvaluesarezero(txvalue, rxvalue)
+                                result = result and (rxvalue > txvalue * self.resulttolorance)
+                                break
+                        break
+        self.assertTrue(result,
+                        msg='This means that the RX values were not over %d \% of TX values at all times'
+                            % (self.resulttolorance * 100.0))
+
+    # def getloglines(self):
+    #     self.testlog = open(self.logname, 'r')
+    #     lines = self.testlog.readlines()
+    #     self.testlog.close()
+    #     return lines
+
+    def checkdevicesfound(self, lines):
+        for i in range(0, len(lines)):
+            if 'Found 0 usable devices:' in lines[i]:
+                self.assertTrue(False, msg='Found 0 usable devices. Possible reasons: no devices, hugepages')
+            elif '2 devices are up' in lines[i]:
+                return i
+
+    def checkresult(self):
+        self.testlog = open(self.logname, 'r')
+        lines = self.testlog.readlines()
+        self.testlog.close()
+        index = self.checkdevicesfound(lines)
+        self.evaluate(lines, index)
+
+    def checkvaluesarezero(self, value1, value2):
+        if value1 == 0.0 and value2 == 0.0:
+            self.assertTrue(False, msg='TX / RX values are 0. Test might not be suited for testd devices')
 
 
 class TestSimpleUDP(TerminatingTest):
@@ -107,16 +151,20 @@ class TestSimpleUDP(TerminatingTest):
             './moongen-simple', 'start', 'udp-simple:0:1:rate=1000mbit/s,ratePattern=poisson'],
             stdout=self.testlog, cwd=self.path)
 
-    def evaluate(self):
+    def evaluate(self, lines, index):
         # parse the log file, assert crateria
-        self.testlog = open(self.logname, 'r')
-        lines = self.testlog.readlines()
+        # self.testlog = open(self.logname, 'r')
+        # lines = self.testlog.readlines()
+        # self.testlog.close()
         result = True
-        for i in range(0, len(lines)):
+        for i in range(index, len(lines)):
+            if not result:
+                break
+            if '[FATAL]' in lines[i]:
+                self.assertTrue(False, msg='FATAL error')
             # exit condition: found 0 usable devices
-            if 'Found 0 usable devices:' in lines[i]:
-                self.testlog.close()
-                self.assertTrue(False, msg='There are no usable devices')
+            # if 'Found 0 usable devices:' in lines[i]:
+            #     self.assertTrue(False, msg='There are no usable devices')
             # make sure device: id=0
             if '[Device: id=0]' in lines[i]:
                 # store value
@@ -124,17 +172,18 @@ class TestSimpleUDP(TerminatingTest):
                 for j in range(0, len(line1)):
                     if '[0m: ' in line1[j]:
                         txvalue = float(line1[j + 1])
-                        if '[Device: id=0]' not in lines[i + 1]:
-                            pass
+                        if '[Device: id=1]' not in lines[i + 1]:
+                            continue
                         line2 = lines[i + 1].split()
                         for k in range(0, len(line2)):
                             if '[0m: ' in line2[k]:
                                 rxvalue = float(line2[k + 1])
-                                # return self.assertGreaterEqual(rxvalue, txvalue * self.resulttolorance)
-                                result = result and (rxvalue < txvalue * self.resulttolorance)
-        self.testlog.close()
+                                self.checkvaluesarezero(txvalue, rxvalue)
+                                result = result and (rxvalue > txvalue * self.resulttolorance)
+                                break
+                        break
         self.assertTrue(result,
-                        msg='This means that the RX values were not over d% percent of TX values at all times'
+                        msg='This means that the RX values were not over %d \% of TX values at all times'
                             % (self.resulttolorance * 100.0))
 
 
@@ -148,12 +197,34 @@ class TestLoadLatency(TerminatingTest):
             './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
             stdout=self.testlog, cwd=self.path)
 
-    def evaluate(self):
-        self.assertTrue(False)  # just to experiment
+    # def evaluate(self, lines, index):
+    #     result = True
+    #     for i in range(index, len(lines)):
+    #         if not result:
+    #             break
+    #         if '[Device: id=0]' in lines[i]:
+    #             line1 = lines[i].split()
+    #             for j in range(0, len(line1)):
+    #                 if 'TX:' in line1[j]:
+    #                     txvalue = float(line1[j + 1])
+    #                     if '[Device: id=1]' not in lines[i + 1]:
+    #                         continue
+    #                     line2 = lines[i + 1].split()
+    #                     for k in range(0, len(line2)):
+    #                         if 'RX:' in line2[k]:
+    #                             rxvalue = float(line2[k + 1])
+    #                             self.checkvaluesarezero(txvalue, rxvalue)
+    #                             result = result and (rxvalue > txvalue * self.resulttolorance)
+    #                             break
+    #                     break
+    #     self.assertTrue(result,
+    #                     msg='This means that the RX values were not over %d \% of TX values at all times'
+    #                         % (self.resulttolorance * 100.0))
 
 
 class TestUdpLoad(TerminatingTest):
-    testlog = open('udploadlog', 'w')
+    logname = 'udploadlog'
+    testlog = open(logname, 'w')
     casename = 'udp load'
 
     def executetest(self):
@@ -163,7 +234,8 @@ class TestUdpLoad(TerminatingTest):
 
 
 class TestQosForeground(TerminatingTest):
-    testlog = open('qoslog', 'w')
+    logname = 'qoslog'
+    testlog = open(logname, 'w')
     casename = 'qos-foreground'
 
     def executetest(self):
@@ -206,8 +278,8 @@ class TestTimeStampCapabilities(BindDevices):
                 print'Following case failed:'
                 print(out)
 
-        self.assertTrue(testquant-errorcounter > self.reqpasses, 'Selected devices have passed less than %d tests'
-                                                                 'in Test Timestamping Capabilities' % self.reqpasses)
+        self.assertTrue(testquant - errorcounter > self.reqpasses, 'Selected devices have passed less than %d tests'
+                                                                   'in Test Timestamping Capabilities' % self.reqpasses)
 
         if not self.assertEquals(errorcounter, testquant):
             print('Tests successful, Conducted %d tests, %d occured' % testquant, errorcounter)
