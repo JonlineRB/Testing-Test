@@ -252,6 +252,7 @@ class TestQosForeground(TerminatingTest):
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
+    waitinterval = 0.5
     # testlog = open(logname, 'w')
 
     # test timestamp between NICs
@@ -261,7 +262,11 @@ class TestTimeStampCapabilities(BindDevices):
         p = subprocess.Popen(['./build/MoonGen',
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
                               '0', '1'], stdout=self.testlog, cwd=self.path)
-        p.wait()
+        while p.poll() is None:
+            time.sleep(self.waitinterval)
+            sys.stdout.write('.')
+            sys.stdout.flush()
+        print()
         self.testlog.close()
         self.testlog = open(self.logname, 'r')
         lines = self.testlog.readlines()
