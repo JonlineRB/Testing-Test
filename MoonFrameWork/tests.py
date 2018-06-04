@@ -253,6 +253,7 @@ class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
     waitinterval = 0.5
+
     # testlog = open(logname, 'w')
 
     # test timestamp between NICs
@@ -266,12 +267,11 @@ class TestTimeStampCapabilities(BindDevices):
             time.sleep(self.waitinterval)
             sys.stdout.write('.')
             sys.stdout.flush()
-        print()
+        print''
         self.testlog.close()
         self.testlog = open(self.logname, 'r')
         lines = self.testlog.readlines()
         testquant = 0
-        print("number of tests is: %d" % testquant)
         errorcounter = 0
         for index in range(0, len(lines)):
             if 'Testing' in lines[index]:
@@ -290,11 +290,6 @@ class TestTimeStampCapabilities(BindDevices):
                 print'Following case failed:'
                 print(out)
 
-        self.assertTrue(testquant - errorcounter > self.reqpasses, 'Selected devices have passed less than %d tests'
-                                                                   'in Test Timestamping Capabilities' % self.reqpasses)
-
-        if not self.assertEquals(errorcounter, testquant):
-            print('Tests successful, Conducted %d tests, %d occured' % testquant, errorcounter)
-        else:
-            print 'All tests failed'
-        self.testlog.close()
+        self.assertTrue(testquant - errorcounter > self.reqpasses,
+                        msg='Selected devices have passed less than %d tests in Test Timestamping Capabilities'
+                            % self.reqpasses)
