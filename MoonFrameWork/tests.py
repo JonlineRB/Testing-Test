@@ -10,6 +10,7 @@ class BindDevices(unittest.TestCase):
     # devicelist = list()
     logname = 'defaultLog'
     casename = 'default case name'
+    testlog = open(logname, 'w')
 
     # testlog = open(logname, 'w') # this has to be overridden by subclass
 
@@ -248,6 +249,8 @@ class TestQosForeground(TerminatingTest):
 
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
+    logname = 'timestamplog'
+    testlog = open(logname, 'w')
 
     # test timestamp between NICs
     def runTest(self):
