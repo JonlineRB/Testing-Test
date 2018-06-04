@@ -10,7 +10,7 @@ class BindDevices(unittest.TestCase):
     # devicelist = list()
     logname = 'defaultLog'
     casename = 'default case name'
-    testlog = open(logname, 'w')
+    testlog = None
 
     # testlog = open(logname, 'w') # this has to be overridden by subclass
 
@@ -34,10 +34,12 @@ class BindDevices(unittest.TestCase):
     def setUp(self):  # set the devices
         print'printing setup'
         utility.binddevices(self.devicelist)
+        self.testlog = open(self.logname, 'w')
 
     def tearDown(self):
         print'printing teardown'
         utility.unbinddevices(self.devicelist)
+        self.testlog.close()
 
 
 class TerminatingTest(BindDevices):
@@ -146,7 +148,7 @@ class TerminatingTest(BindDevices):
 
 class TestSimpleUDP(TerminatingTest):
     logname = 'udpSimpleTestLog'
-    testlog = open(logname, 'w')
+    # testlog = open(logname, 'w')
     casename = 'udp simple'
 
     def executetest(self):
@@ -192,7 +194,7 @@ class TestSimpleUDP(TerminatingTest):
 
 class TestLoadLatency(TerminatingTest):
     logname = 'loadlatencylog'
-    testlog = open(logname, 'w')
+    # testlog = open(logname, 'w')
     casename = 'load latency'
 
     def executetest(self):
@@ -227,7 +229,7 @@ class TestLoadLatency(TerminatingTest):
 
 class TestUdpLoad(TerminatingTest):
     logname = 'udploadlog'
-    testlog = open(logname, 'w')
+    # testlog = open(logname, 'w')
     casename = 'udp load'
 
     def executetest(self):
@@ -238,7 +240,7 @@ class TestUdpLoad(TerminatingTest):
 
 class TestQosForeground(TerminatingTest):
     logname = 'qoslog'
-    testlog = open(logname, 'w')
+    # testlog = open(logname, 'w')
     casename = 'qos-foreground'
 
     def executetest(self):
@@ -250,7 +252,7 @@ class TestQosForeground(TerminatingTest):
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
-    testlog = open(logname, 'w')
+    # testlog = open(logname, 'w')
 
     # test timestamp between NICs
     def runTest(self):
@@ -261,7 +263,7 @@ class TestTimeStampCapabilities(BindDevices):
                               '0', '1'], stdout=self.testlog, cwd=self.path)
         p.wait()
         self.testlog.close()
-        self.testlog = open('testlog', 'r')
+        self.testlog = open(self.logname, 'r')
         lines = self.testlog.readlines()
         testquant = 0
         print("number of tests is: %d" % testquant)
