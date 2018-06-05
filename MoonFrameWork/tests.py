@@ -267,7 +267,7 @@ class TestDeviceStatistics(TerminatingTest):
 
     def executetest(self):
         return subprocess.Popen([
-            './build/Moongen', './examples/device-statistics.lua', '0', '1'],
+            './build/MoonGen', './examples/device-statistics.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
 
 
