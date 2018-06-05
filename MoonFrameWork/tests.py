@@ -19,27 +19,22 @@ class BindDevices(unittest.TestCase):
         self.devicelist = devicelist
         self.path = path
 
-    # @classmethod
-    # def setUpClass(cls):
-    #     # cls.testlog = open('testlog', 'w')
-    #     print('called setup class')
-    #     utility.binddevices(cls.devicelist)
-    #
-    # @classmethod
-    # def tearDownClass(cls):
-    #     print('called teardown class')
-    #     cls.testlog.close()
-    #     utility.unbinddevices(cls.devicelist)
-
     def setUp(self):  # set the devices
         print'printing setup'
         utility.binddevices(self.devicelist)
-        self.testlog = open(self.logname, 'w')
+        self.initTestlog()
 
     def tearDown(self):
         print'printing teardown'
         utility.unbinddevices(self.devicelist)
         self.testlog.close()
+
+    def initTestlog(self):
+        self.testlog = open(self.logname, 'w')
+
+    def writetoread(self):
+        self.testlog.close()
+        self.testlog = open(self.logname, 'r')
 
 
 class TerminatingTest(BindDevices):
@@ -85,7 +80,7 @@ class TerminatingTest(BindDevices):
         # time.sleep(20)
         # p.terminate()
         self.terminate(p)
-        self.testlog.close()
+        self.writetoread()
         print('terminated, closed test log')
         # sucess yet to be specified
         self.checkresult()
@@ -133,9 +128,7 @@ class TerminatingTest(BindDevices):
         self.assertTrue(False, msg='Devices are not up')
 
     def checkresult(self):
-        self.testlog = open(self.logname, 'r')
         lines = self.testlog.readlines()
-        self.testlog.close()
         index = self.checkdevicesfound(lines)
         print 'value of index is: '
         print index
@@ -147,7 +140,7 @@ class TerminatingTest(BindDevices):
 
 
 class TestSimpleUDP(TerminatingTest):
-    logname = 'udpSimpleTestLog'
+    logname = 'logs/udpSimpleTestLog'
     # testlog = open(logname, 'w')
     casename = 'udp simple'
 
