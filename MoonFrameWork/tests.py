@@ -35,10 +35,10 @@ class BindDevices(unittest.TestCase):
         if os.path.isfile(self.logname):
             print 'found log file'
             i = 2
-            while os.path.isfile(self.logname+i):
+            while os.path.isfile(self.logname+str(i)):
                 print 'found log file: %d' % i
                 i += 1
-            self.logname += i
+            self.logname += str(i)
         self.testlog = open(self.logname, 'w')
 
     def writetoread(self):
