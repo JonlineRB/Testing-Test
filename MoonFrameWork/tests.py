@@ -261,6 +261,16 @@ class TestQosBackground(TerminatingTest):
             stdout=self.testlog, cwd=self.path)
 
 
+class TestDeviceStatistics(TerminatingTest):
+    logname = 'devicestatisticslog'
+    casename = 'device statistics'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/Moongen', './examples/device-statistics.lua', '0', '1'],
+            stdout=self.testlog, cwd=self.path)
+
+
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'

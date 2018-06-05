@@ -100,6 +100,8 @@ def parsetestcases(devicelist):
                 test = tests.TestQosBackground(tmplist, path)
             elif parsedcase == 'udpload':
                 test = tests.TestUdpLoad(tmplist, path)
+            elif parsedcase == 'statistics':
+                test = tests.TestDeviceStatistics(tmplist, path)
             else:
                 print 'unknown test'
                 test = None
