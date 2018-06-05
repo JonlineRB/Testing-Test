@@ -22,12 +22,10 @@ class BindDevices(unittest.TestCase):
         self.path = path
 
     def setUp(self):  # set the devices
-        print'printing setup'
         utility.binddevices(self.devicelist)
         self.initTestlog()
 
     def tearDown(self):
-        print'printing teardown'
         utility.unbinddevices(self.devicelist)
         self.testlog.close()
 
@@ -65,7 +63,7 @@ class TerminatingTest(BindDevices):
         print''
         process.terminate()
         # check if process terminated, if not report a bug
-        print'Printing process.poll():-----'
+        print'Waiting for termination'
         # time.sleep(20)  # trying a delay before the poll
         timecounter = 0
         while process.poll() is None or timecounter <= self.termtimelimit:
@@ -74,7 +72,6 @@ class TerminatingTest(BindDevices):
             sys.stdout.write('.')
             sys.stdout.flush()
         print''
-        print process.poll()
         print('Time it took to terminate: %d' % timecounter)
         # if process.poll() is None:
         if process.returncode is None:
