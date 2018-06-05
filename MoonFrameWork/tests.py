@@ -36,7 +36,7 @@ class BindDevices(unittest.TestCase):
         # check if a file exists with this name
         if os.path.isfile(self.logname):
             i = 2
-            while os.path.isfile(self.logname+str(i)):
+            while os.path.isfile(self.logname + str(i)):
                 i += 1
             self.logname += str(i)
         self.testlog = open(self.logname, 'w')
@@ -241,23 +241,24 @@ class TestUdpLoad(TerminatingTest):
 
 
 class TestQosForeground(TerminatingTest):
-    logname = 'qoslog'
+    logname = 'qosforegroundlog'
     # testlog = open(logname, 'w')
     casename = 'qos-foreground'
 
     def executetest(self):
         return subprocess.Popen([
-            './moongen-simple', 'start', 'qos-foreground:0:1 qos-background:0:1'],
+            './moongen-simple', 'start', 'qos-foreground:0:1'],
             stdout=self.testlog, cwd=self.path)
 
-    # this might be a temporary solution for qos
-    def checkdevicesfound(self, lines):
-        for i in range(0, len(lines)):
-            if 'Found 0 usable devices:' in lines[i]:
-                self.assertTrue(False, msg='Found 0 usable devices. Possible reasons: no devices, hugepages')
-            elif '1 device is up' in lines[i]:
-                return i
-        self.assertTrue(False, msg='Devices are not up')
+
+class TestQosBackground(TerminatingTest):
+    logname = 'qosbackgroundlog'
+    casename = 'qos-background'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './moongen-simple', 'start', 'qos-background:0:1'],
+            stdout=self.testlog, cwd=self.path)
 
 
 class TestTimeStampCapabilities(BindDevices):

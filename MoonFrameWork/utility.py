@@ -94,8 +94,10 @@ def parsetestcases(devicelist):
                 test = tests.TestSimpleUDP(tmplist, path)
             elif parsedcase == 'loadlatency':
                 test = tests.TestLoadLatency(tmplist, path)
-            elif parsedcase == 'qos':
+            elif parsedcase == 'qosforeground':
                 test = tests.TestQosForeground(tmplist, path)
+            elif parsedcase == 'qosbackground':
+                test = tests.TestQosBackground(tmplist, path)
             elif parsedcase == 'udpload':
                 test = tests.TestUdpLoad(tmplist, path)
             else:
