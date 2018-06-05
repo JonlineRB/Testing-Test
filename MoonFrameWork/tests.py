@@ -3,6 +3,7 @@ import subprocess
 import utility
 import time
 import sys
+import os.path
 from FrameworkSubprocess import SubHandler
 
 
@@ -30,6 +31,14 @@ class BindDevices(unittest.TestCase):
         self.testlog.close()
 
     def initTestlog(self):
+        # check if a file exists with this name
+        if os.path.isfile(self.logname):
+            print 'found log file'
+            i = 2
+            while os.path.isfile(self.logname+i):
+                print 'found log file: %d' % i
+                i += 1
+            self.logname += i
         self.testlog = open(self.logname, 'w')
 
     def writetoread(self):
