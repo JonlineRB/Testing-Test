@@ -290,6 +290,7 @@ class TestTimeStampCapabilities(BindDevices):
                 print'Following case failed:'
                 print(out)
 
+        print'Timestamping conducted %d tests, %d errors came up' %
         self.assertTrue(testquant - errorcounter > self.reqpasses,
                         msg='Selected devices have passed less than %d tests in Test Timestamping Capabilities'
                             % self.reqpasses)
