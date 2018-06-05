@@ -9,6 +9,7 @@ from FrameworkSubprocess import SubHandler
 
 class BindDevices(unittest.TestCase):
     # devicelist = list()
+    logdir = 'logs/'
     logname = 'defaultLog'
     casename = 'default case name'
     testlog = None
@@ -31,12 +32,11 @@ class BindDevices(unittest.TestCase):
         self.testlog.close()
 
     def initTestlog(self):
+        self.logname = self.logdir + self.logname
         # check if a file exists with this name
         if os.path.isfile(self.logname):
-            print 'found log file'
             i = 2
             while os.path.isfile(self.logname+str(i)):
-                print 'found log file: %d' % i
                 i += 1
             self.logname += str(i)
         self.testlog = open(self.logname, 'w')
@@ -149,7 +149,7 @@ class TerminatingTest(BindDevices):
 
 
 class TestSimpleUDP(TerminatingTest):
-    logname = 'logs/udpSimpleTestLog'
+    logname = 'udpSimpleTestLog'
     # testlog = open(logname, 'w')
     casename = 'udp simple'
 
