@@ -250,11 +250,20 @@ class TestQosForeground(TerminatingTest):
             './moongen-simple', 'start', 'qos-foreground:0:1 qos-background:0:1'],
             stdout=self.testlog, cwd=self.path)
 
+    # this might be a temporary solution for qos
+    def checkdevicesfound(self, lines):
+        for i in range(0, len(lines)):
+            if 'Found 0 usable devices:' in lines[i]:
+                self.assertTrue(False, msg='Found 0 usable devices. Possible reasons: no devices, hugepages')
+            elif '1 device is up' in lines[i]:
+                return i
+        self.assertTrue(False, msg='Devices are not up')
+
 
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
-    waitinterval = 0.5
+    waitinterval = 2
 
     # testlog = open(logname, 'w')
 
