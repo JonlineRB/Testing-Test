@@ -72,7 +72,7 @@ class TerminatingTest(BindDevices):
             sys.stdout.write('.')
             sys.stdout.flush()
         print''
-        print('Time it took to terminate: %d' % timecounter)
+        print('Time it took to terminate: %d sec' % timecounter)
         # if process.poll() is None:
         if process.returncode is None:
             process.kill()
