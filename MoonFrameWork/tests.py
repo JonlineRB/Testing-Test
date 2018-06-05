@@ -105,8 +105,7 @@ class TerminatingTest(BindDevices):
             # if '[FATAL]' in lines[i]:
             #     self.assertTrue(False, msg='FATAL error')
             if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
-                print'line of interest: '
-                print lines[i]
+                print'--line of interest: ' + lines[i]
             elif '[Device: id=0]' in lines[i]:
                 line1 = lines[i].split()
                 for j in range(0, len(line1)):
