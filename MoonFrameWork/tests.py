@@ -34,7 +34,7 @@ class BindDevices(unittest.TestCase):
         # check if, in the log dir, a dir with this date is available
         now = datetime.now()
         datesuffix = str(now.day) + '-' + str(now.month) + '-' + str(now.year)
-        self.logdir += datesuffix
+        self.logdir += datesuffix +'/'
         if not os.path.isdir(self.logdir):
             os.mkdir('logs/' + datesuffix)
         self.logname = self.logdir + self.logname
