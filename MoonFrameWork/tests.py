@@ -31,14 +31,14 @@ class BindDevices(unittest.TestCase):
         self.testlog.close()
 
     def initTestlog(self):
-        self.logname = self.logdir + self.logname
         # check if, in the log dir, a dir with this date is available
         now = datetime.now()
         datesuffix = str(now.day) + '-' + str(now.month) + '-' + str(now.year)
-        print 'date suffix is: ' + datesuffix  # only tmp for testing
-        if not os.path.isdir("logs/" + datesuffix):
+        self.logdir += datesuffix
+        if not os.path.isdir(self.logdir):
             os.mkdir('logs/' + datesuffix)
-        self.logname += str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
+        self.logname = self.logdir + self.logname
+        self.logname += '_' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
 
         # obselete
         # if os.path.isfile(self.logname):
