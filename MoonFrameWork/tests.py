@@ -14,6 +14,7 @@ class BindDevices(unittest.TestCase):
     logname = 'defaultLog'
     casename = 'default case name'
     testlog = None
+    summarylog = None
 
     # testlog = open(logname, 'w') # this has to be overridden by subclass
 
@@ -29,12 +30,13 @@ class BindDevices(unittest.TestCase):
     def tearDown(self):
         utility.unbinddevices(self.devicelist)
         self.testlog.close()
+        self.summarylog.close()
 
     def initTestlog(self):
         # check if, in the log dir, a dir with this date is available
         now = datetime.now()
         datesuffix = str(now.day) + '-' + str(now.month) + '-' + str(now.year)
-        self.logdir += datesuffix +'/'
+        self.logdir += datesuffix + '/'
         if not os.path.isdir(self.logdir):
             os.mkdir('logs/' + datesuffix)
         self.logname = self.logdir + self.logname
@@ -47,6 +49,8 @@ class BindDevices(unittest.TestCase):
         #         i += 1
         #     self.logname += str(i)
         self.testlog = open(self.logname, 'w')
+        # open a summary log
+        self.summarylog = open(self.logname + '_summary', 'w')
 
     def writetoread(self):
         self.testlog.close()
@@ -105,14 +109,17 @@ class TerminatingTest(BindDevices):
 
     def evaluate(self, lines, index):
         result = True
+        firstvalueskip = True
         for i in range(index, len(lines)):
             if not result:
                 break
-            # if '[FATAL]' in lines[i]:
-            #     self.assertTrue(False, msg='FATAL error')
             if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
                 print'--line of interest: ' + lines[i]
+                self.summarylog.write('line of interest: ' + lines[i])
             elif '[Device: id=0]' in lines[i]:
+                if firstvalueskip:
+                    firstvalueskip = False
+                    continue
                 line1 = lines[i].split()
                 for j in range(0, len(line1)):
                     if 'TX' in line1[j]:
@@ -127,6 +134,7 @@ class TerminatingTest(BindDevices):
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
+        self.summarylog.write('Has RX value always been at least ' + self.resulttolorance * 100 + 'percent: ' + result)
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
 
@@ -139,9 +147,12 @@ class TerminatingTest(BindDevices):
     def checkdevicesfound(self, lines):
         for i in range(0, len(lines)):
             if 'Found 0 usable devices:' in lines[i]:
-                self.assertTrue(False, msg='Found 0 usable devices. Possible reasons: no devices, hugepages')
+                msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
+                self.summarylog.write(msg)
+                self.assertTrue(False, msg=msg)
             elif '2 devices are up' in lines[i]:
                 return i
+        self.summarylog.write('Devices were not up')
         self.assertTrue(False, msg='Devices are not up')
 
     def checkresult(self):
@@ -151,7 +162,9 @@ class TerminatingTest(BindDevices):
 
     def checkvaluesarezero(self, value1, value2):
         if value1 == 0.0 and value2 == 0.0:
-            self.assertTrue(False, msg='TX / RX values are 0. Test might not be suited for testd devices')
+            msg = 'TX / RX values are 0. Test might not be suited for testd devices'
+            self.summarylog.write(msg)
+            self.assertTrue(False, msg=msg)
 
 
 class TestSimpleUDP(TerminatingTest):
