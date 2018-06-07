@@ -4,6 +4,9 @@ import utility
 import time
 import sys
 import os.path
+from datetime import date
+from datetime import time
+from datetime import datetime
 from FrameworkSubprocess import SubHandler
 
 
@@ -31,12 +34,20 @@ class BindDevices(unittest.TestCase):
 
     def initTestlog(self):
         self.logname = self.logdir + self.logname
-        # check if a file exists with this name
-        if os.path.isfile(self.logname):
-            i = 2
-            while os.path.isfile(self.logname + str(i)):
-                i += 1
-            self.logname += str(i)
+        # check if, in the log dir, a dir with this date is available
+        now = datetime.now()
+        datesuffix = str(now.day) + '-' + str(now.month) + '-' + str(now.year)
+        print 'date suffix is: ' + datesuffix  # only tmp for testing
+        if not os.path.isdir("logs/" + datesuffix):
+            os.mkdir('logs/' + datesuffix)
+        self.logname += str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
+
+        # obselete
+        # if os.path.isfile(self.logname):
+        #     i = 2
+        #     while os.path.isfile(self.logname + str(i)):
+        #         i += 1
+        #     self.logname += str(i)
         self.testlog = open(self.logname, 'w')
 
     def writetoread(self):
