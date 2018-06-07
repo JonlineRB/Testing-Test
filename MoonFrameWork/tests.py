@@ -4,8 +4,6 @@ import utility
 import time
 import sys
 import os.path
-from datetime import date
-from datetime import time
 from datetime import datetime
 from FrameworkSubprocess import SubHandler
 
