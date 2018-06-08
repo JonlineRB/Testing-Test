@@ -134,7 +134,8 @@ class TerminatingTest(BindDevices):
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
-        self.summarylog.write('Has RX value always been at least ' + str(self.resulttolorance * 100) + 'percent: ' + result)
+        self.summarylog.write(
+            'Has RX value always been at least ' + str(self.resulttolorance * 100) + 'percent: ' + str(result))
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
 
