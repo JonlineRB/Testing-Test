@@ -30,8 +30,7 @@ class BindDevices(unittest.TestCase):
     def tearDown(self):
         utility.unbinddevices(self.devicelist)
         self.testlog.close()
-        self.summarylog.write('')
-        self.summarylog.write('=== END OF SUMMARY ===')
+        self.summarylog.write('\n=== END OF SUMMARY ===')
         self.summarylog.close()
 
     def initTestlog(self):
@@ -53,8 +52,7 @@ class BindDevices(unittest.TestCase):
         self.testlog = open(self.logname, 'w')
         # open a summary log
         self.summarylog = open(self.logname + '_summary', 'w')
-        self.summarylog.write('=== SUMMARY ===')
-        self.summarylog.write('')
+        self.summarylog.write('=== SUMMARY ===\n\n')
 
     def writetoread(self):
         self.testlog.close()
@@ -119,7 +117,7 @@ class TerminatingTest(BindDevices):
                 break
             if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
                 print'--line of interest: ' + lines[i]
-                self.summarylog.write('line of interest: ' + lines[i])
+                self.summarylog.write('line of interest: ' + lines[i] + '\n')
             elif '[Device: id=0]' in lines[i]:
                 if firstvalueskip:
                     firstvalueskip = False
@@ -139,7 +137,8 @@ class TerminatingTest(BindDevices):
                                 break
                         break
         self.summarylog.write(
-            'Has RX value always been at least ' + str(self.resulttolorance * 100) + ' %% of TX: ' + str(result))
+            'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' %% of TX? : ' + str(
+                result) + '\n')
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
 
@@ -153,11 +152,11 @@ class TerminatingTest(BindDevices):
         for i in range(0, len(lines)):
             if 'Found 0 usable devices:' in lines[i]:
                 msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
-                self.summarylog.write(msg)
+                self.summarylog.write(msg + '\n')
                 self.assertTrue(False, msg=msg)
             elif '2 devices are up' in lines[i]:
                 return i
-        self.summarylog.write('Devices were not up')
+        self.summarylog.write('Devices were not up\n')
         self.assertTrue(False, msg='Devices are not up')
 
     def checkresult(self):
@@ -168,7 +167,7 @@ class TerminatingTest(BindDevices):
     def checkvaluesarezero(self, value1, value2):
         if value1 == 0.0 and value2 == 0.0:
             msg = 'TX / RX values are 0. Test might not be suited for testd devices'
-            self.summarylog.write(msg)
+            self.summarylog.write(msg + '\n')
             self.assertTrue(False, msg=msg)
 
 
