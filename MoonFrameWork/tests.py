@@ -109,7 +109,8 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
-    def adjustvaluesO(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txval, rxval):
+    def adjustvalues(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txval, rxval):
+        print'adjustValues Called!'
         if txval > txmax:
             txmax = txval
         if txval < txmin:
@@ -150,7 +151,7 @@ class TerminatingTest(BindDevices):
                                 rxvalue = float(line2[k + 1])
                                 self.checkvaluesarezero(txvalue, rxvalue)
                                 avgcounter += 1
-                                self.adjustvaluesO(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
+                                self.adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
