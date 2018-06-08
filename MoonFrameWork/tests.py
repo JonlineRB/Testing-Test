@@ -30,6 +30,8 @@ class BindDevices(unittest.TestCase):
     def tearDown(self):
         utility.unbinddevices(self.devicelist)
         self.testlog.close()
+        self.summarylog.write('')
+        self.summarylog.write('=== END OF SUMMARY ===')
         self.summarylog.close()
 
     def initTestlog(self):
@@ -51,6 +53,8 @@ class BindDevices(unittest.TestCase):
         self.testlog = open(self.logname, 'w')
         # open a summary log
         self.summarylog = open(self.logname + '_summary', 'w')
+        self.summarylog.write('=== SUMMARY ===')
+        self.summarylog.write('')
 
     def writetoread(self):
         self.testlog.close()
@@ -135,7 +139,7 @@ class TerminatingTest(BindDevices):
                                 break
                         break
         self.summarylog.write(
-            'Has RX value always been at least ' + str(self.resulttolorance * 100) + 'percent: ' + str(result))
+            'Has RX value always been at least ' + str(self.resulttolorance * 100) + ' %% of TX: ' + str(result))
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
 
