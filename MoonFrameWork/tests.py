@@ -109,8 +109,24 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
+    def adjustvaluesO(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txval, rxval):
+        if txval > txmax:
+            txmax = txval
+        if txval < txmin:
+            txmin = txval
+        if rxval > rxmax:
+            rxmax = rxval
+        if rxval < rxmin:
+            rxmin = rxval
+
+        txavg += txval
+        rxavg += rxval
+
     def evaluate(self, lines, index):
         result = True
+        # tx / rx values
+        txmax, rxmax, txavg, rxavg, txmin, rxmin, = 0.0
+        avgcounter = 0
         firstvalueskip = True
         for i in range(index, len(lines)):
             if not result:
@@ -133,20 +149,23 @@ class TerminatingTest(BindDevices):
                             if 'RX' in line2[k]:
                                 rxvalue = float(line2[k + 1])
                                 self.checkvaluesarezero(txvalue, rxvalue)
+                                avgcounter += 1
+                                self.adjustvaluesO(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
+        txavg /= float(avgcounter)
+        rxavg /= float(avgcounter)
+        self.summarylog.write('TX / RX Values of this test case')
+        self.summarylog.write(
+            'TX values are:\n MAX = ' + str(txmax) + '\n MIN = ' + str(txmin) + '\n AVG = ' + str(txavg) + '\n')
+        self.summarylog.write(
+            'RX values are:\n MAX = ' + str(rxmax) + '\n MIN = ' + str(rxmin) + '\n AVG = ' + str(rxavg) + '\n')
         self.summarylog.write(
             'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' %% of TX? : ' + str(
                 result) + '\n')
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
-
-    # def getloglines(self):
-    #     self.testlog = open(self.logname, 'r')
-    #     lines = self.testlog.readlines()
-    #     self.testlog.close()
-    #     return lines
 
     def checkdevicesfound(self, lines):
         for i in range(0, len(lines)):
