@@ -98,7 +98,7 @@ def parsetestcases(devicelist):
             print 'printing dict: \n'
             print dictionary
             try:
-                test = dictionary[parsedcase](tmplist, path)
+                test = eval(dictionary[parsedcase])(tmplist, path)
             except KeyError:
                 print 'unknown test'
                 test = None
