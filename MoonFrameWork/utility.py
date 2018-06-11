@@ -65,6 +65,19 @@ def binddevices(devicelist):
     # print('bound devices as they were')
 
 
+def getdeviceindex(devicelist, arg):
+    # case of PCI express handeled
+    if ':' in arg:
+        for i in range(0, len(devicelist)):
+            if arg == devicelist[i].split()[0]:
+                return i
+        return -1
+    elif int(arg) > len(devicelist) or int(arg) < 0:
+        return -1
+    else:
+        return int(arg)
+
+
 def parsetestcases(devicelist):
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
@@ -85,8 +98,14 @@ def parsetestcases(devicelist):
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
         # test with print
         try:
-            index1 = int(parser.get(section, 'device1'))
-            index2 = int(parser.get(section, 'device2'))
+            # handle case where the devices are not index, but rather PCI ports
+            index1 = getdeviceindex(devicelist, parser.get(section, 'device1'))
+            index2 = getdeviceindex(devicelist, parser.get(section, 'device2'))
+            if index1 == -1 or index2 == -1:
+                print 'Error parsing device, please use an index or PCI port'
+                continue
+            # index1 = int(parser.get(section, 'device1'))
+            # index2 = int(parser.get(section, 'device2'))
             tmplist = list()
             tmplist.append(devicelist[index1])
             tmplist.append(devicelist[index2])
