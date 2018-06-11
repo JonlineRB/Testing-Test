@@ -125,7 +125,8 @@ class TerminatingTest(BindDevices):
     def evaluate(self, lines, index):
         result = True
         # tx / rx values
-        txmax, rxmax, txavg, rxavg, txmin, rxmin, = (0.0,) * 6
+        txmax, rxmax, txavg, rxavg, = (0.0,) * 4
+        txmin, rxmin = (100.0,) * 2  # improvised max value, could be misleading
         avgcounter = 0
         firstvalueskip = True
         for i in range(index, len(lines)):
