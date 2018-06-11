@@ -1,0 +1,7 @@
+timestamp tests.TestTimeStampCapabilities
+udpsimple tests.TestSimpleUDP
+loadlatency tests.TestLoadLatency
+qosforeground tests.TestQosForeground
+qosbackground tests.TestQosBackground
+udpload tests.TestUdpLoad
+statistics tests.TestDeviceStatistics

@@ -73,6 +73,13 @@ def parsetestcases(devicelist):
     except ConfigParser.NoOptionError:
         print 'Path is not set. Please set a path in the config file in the [Meta] section'
     suite = unittest.TestSuite()
+    dictionary = {}
+    dictfile = open('CaseDict', 'r')
+    dictlines = dictfile.readlines()
+    dictfile.close()
+    for line in dictlines:
+        (key, value) = line.split()
+        dictionary[key] = value
     for section in parser.sections():
         # parse the list, and handle test cases with respect to the listed NICs
         # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
@@ -87,24 +94,33 @@ def parsetestcases(devicelist):
             print tmplist
             parsedcase = parser.get(section, 'test')
             print(' ==== parsed case is: %s ==== ' % parsedcase)
-            # the following section should be a dictionary...
-            if parsedcase == 'timestamp':
-                test = tests.TestTimeStampCapabilities(tmplist, path)
-            elif parsedcase == 'udpsimple':
-                test = tests.TestSimpleUDP(tmplist, path)
-            elif parsedcase == 'loadlatency':
-                test = tests.TestLoadLatency(tmplist, path)
-            elif parsedcase == 'qosforeground':
-                test = tests.TestQosForeground(tmplist, path)
-            elif parsedcase == 'qosbackground':
-                test = tests.TestQosBackground(tmplist, path)
-            elif parsedcase == 'udpload':
-                test = tests.TestUdpLoad(tmplist, path)
-            elif parsedcase == 'statistics':
-                test = tests.TestDeviceStatistics(tmplist, path)
-            else:
+            # trying dict implementation
+            try:
+                test = dictionary[parsedcase](tmplist, path)
+            except KeyError:
                 print 'unknown test'
                 test = None
+
+            # ---
+            # the following section should be a dictionary...
+            # if parsedcase == 'timestamp':
+            #     test = tests.TestTimeStampCapabilities(tmplist, path)
+            # elif parsedcase == 'udpsimple':
+            #     test = tests.TestSimpleUDP(tmplist, path)
+            # elif parsedcase == 'loadlatency':
+            #     test = tests.TestLoadLatency(tmplist, path)
+            # elif parsedcase == 'qosforeground':
+            #     test = tests.TestQosForeground(tmplist, path)
+            # elif parsedcase == 'qosbackground':
+            #     test = tests.TestQosBackground(tmplist, path)
+            # elif parsedcase == 'udpload':
+            #     test = tests.TestUdpLoad(tmplist, path)
+            # elif parsedcase == 'statistics':
+            #     test = tests.TestDeviceStatistics(tmplist, path)
+            # else:
+            #     print 'unknown test'
+            #     test = None
+            # ---
             if test is not None:
                 # test.run()
                 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(test)
