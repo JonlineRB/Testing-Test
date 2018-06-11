@@ -151,6 +151,8 @@ class TerminatingTest(BindDevices):
                                 rxvalue = float(line2[k + 1])
                                 self.checkvaluesarezero(txvalue, rxvalue)
                                 avgcounter += 1
+                                print 'tx value is: ' + str(txvalue)
+                                print 'rx value is: ' + str(rxvalue)
                                 self.adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
