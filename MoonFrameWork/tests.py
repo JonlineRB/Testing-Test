@@ -109,20 +109,18 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
-    @staticmethod
-    def adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txval, rxval):
-        if txval > txmax:
-            txmax = txval
-            print 'tx max is now : ' + str(txmax)
-        if txval < txmin:
-            txmin = txval
-        if rxval > rxmax:
-            rxmax = rxval
-        if rxval < rxmin:
-            rxmin = rxval
+    def adjustvalues(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue):
+        if txvalue > txmax:
+            txmax = txvalue
+        if txvalue < txmin:
+            txmin = txvalue
+        if rxvalue > rxmax:
+            rxmax = rxvalue
+        if rxvalue < rxmin:
+            rxmin = rxvalue
 
-        txavg += txval
-        rxavg += rxval
+        txavg += txvalue
+        rxavg += rxvalue
 
     def evaluate(self, lines, index):
         result = True
@@ -150,7 +148,17 @@ class TerminatingTest(BindDevices):
                         for k in range(0, len(line2)):
                             if 'RX' in line2[k]:
                                 rxvalue = float(line2[k + 1])
-                                self.checkvaluesarezero(txvalue, rxvalue)
+                                # self.checkvaluesarezero(txvalue, rxvalue)
+                                if txvalue > txmax:
+                                    txmax = txvalue
+                                if txvalue < txmin:
+                                    txmin = txvalue
+                                if rxvalue > rxmax:
+                                    rxmax = rxvalue
+                                if rxvalue < rxmin:
+                                    rxmin = rxvalue
+                                txavg += txvalue
+                                rxavg += rxvalue
                                 avgcounter += 1
                                 self.adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
