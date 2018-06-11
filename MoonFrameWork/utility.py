@@ -93,10 +93,8 @@ def parsetestcases(devicelist):
             print('devices to test are:')
             print tmplist
             parsedcase = parser.get(section, 'test')
-            print(' ==== parsed case is: %s ==== ' % parsedcase)
+            # print(' ==== parsed case is: %s ==== ' % parsedcase)
             # trying dict implementation
-            print 'printing dict: \n'
-            print dictionary
             try:
                 test = eval(dictionary[parsedcase])(tmplist, path)
             except KeyError:
