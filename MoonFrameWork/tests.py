@@ -109,7 +109,8 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
-    def adjustvalues(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txval, rxval):
+    @staticmethod
+    def adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txval, rxval):
         if txval > txmax:
             txmax = txval
             print 'tx max is now : ' + str(txmax)
