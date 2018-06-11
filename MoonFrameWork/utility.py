@@ -74,7 +74,7 @@ def parsetestcases(devicelist):
         print 'Path is not set. Please set a path in the config file in the [Meta] section'
     suite = unittest.TestSuite()
     dictionary = {}
-    dictfile = open('CaseDict', 'r')
+    dictfile = open('CaseDict.txt', 'r')
     dictlines = dictfile.readlines()
     dictfile.close()
     for line in dictlines:
