@@ -125,10 +125,10 @@ class TerminatingTest(BindDevices):
     def evaluate(self, lines, index):
         result = True
         # tx / rx values
-        txmax, rxmax, txavg, rxavg, = (0.0,) * 4
-        txmin, rxmin = (100.0,) * 2  # improvised max value, could be misleading
+        txmax, rxmax, txavg, rxavg, txmin, rxmin = (0.0,) * 6
         avgcounter = 0
         firstvalueskip = True
+        firstminmax = True
         for i in range(index, len(lines)):
             if not result:
                 break
@@ -152,10 +152,15 @@ class TerminatingTest(BindDevices):
                                 # self.checkvaluesarezero(txvalue, rxvalue)
                                 if txvalue > txmax:
                                     txmax = txvalue
+                                    if firstminmax:
+                                        txmin = txmax
                                 if txvalue < txmin:
                                     txmin = txvalue
                                 if rxvalue > rxmax:
                                     rxmax = rxvalue
+                                    if firstminmax:
+                                        rxmin = rxvalue
+                                        firstminmax = False
                                 if rxvalue < rxmin:
                                     rxmin = rxvalue
                                 txavg += txvalue
