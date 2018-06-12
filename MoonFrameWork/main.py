@@ -1,9 +1,9 @@
-# import unittest
+#!/usr/bin/env python
+
 import subprocess
 import utility
 import ConfigParser
-import tests
-from FrameworkSubprocess import SubHandler
+import sys
 
 print('Framework: start')
 
@@ -23,7 +23,8 @@ parser.read('FrameworkConfig.cfg')
 print(parser.sections())  # just for testing
 MoonGenPath = parser.get('Meta', 'path')
 
-utility.parsetestcases(dpdkdevlist)
+# option to parse test cases from the command line if present
+utility.parsetestcases(dpdkdevlist, sys.argv)
 
 # if parser.get('Section1', 'test') == 'timestamp':
 #     print('constructing timestamp test')

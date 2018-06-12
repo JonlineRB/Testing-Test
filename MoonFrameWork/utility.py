@@ -72,13 +72,13 @@ def getdeviceindex(devicelist, arg):
             if arg == devicelist[i].split()[0]:
                 return i
         return -1
-    elif int(arg) > len(devicelist) or int(arg) < 0:
+    elif int(arg) >= len(devicelist) or int(arg) < 0:
         return -1
     else:
         return int(arg)
 
 
-def parsetestcases(devicelist):
+def parsetestcases(devicelist, args):
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
     try:
@@ -93,61 +93,85 @@ def parsetestcases(devicelist):
     for line in dictlines:
         (key, value) = line.split()
         dictionary[key] = value
-    for section in parser.sections():
-        # parse the list, and handle test cases with respect to the listed NICs
-        # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
-        # test with print
-        try:
-            # handle case where the devices are not index, but rather PCI ports
-            index1 = getdeviceindex(devicelist, parser.get(section, 'device1'))
-            index2 = getdeviceindex(devicelist, parser.get(section, 'device2'))
-            if index1 == -1 or index2 == -1:
-                print 'Error parsing device, please use an index or PCI port'
-                continue
-            # index1 = int(parser.get(section, 'device1'))
-            # index2 = int(parser.get(section, 'device2'))
-            tmplist = list()
-            tmplist.append(devicelist[index1])
-            tmplist.append(devicelist[index2])
-            print('devices to test are:')
-            print tmplist
-            parsedcase = parser.get(section, 'test')
-            # print(' ==== parsed case is: %s ==== ' % parsedcase)
-            # trying dict implementation
-            try:
-                test = eval(dictionary[parsedcase])(tmplist, path)
-            except KeyError:
-                print 'unknown test'
-                test = None
 
-            # ---
-            # the following section should be a dictionary...
-            # if parsedcase == 'timestamp':
-            #     test = tests.TestTimeStampCapabilities(tmplist, path)
-            # elif parsedcase == 'udpsimple':
-            #     test = tests.TestSimpleUDP(tmplist, path)
-            # elif parsedcase == 'loadlatency':
-            #     test = tests.TestLoadLatency(tmplist, path)
-            # elif parsedcase == 'qosforeground':
-            #     test = tests.TestQosForeground(tmplist, path)
-            # elif parsedcase == 'qosbackground':
-            #     test = tests.TestQosBackground(tmplist, path)
-            # elif parsedcase == 'udpload':
-            #     test = tests.TestUdpLoad(tmplist, path)
-            # elif parsedcase == 'statistics':
-            #     test = tests.TestDeviceStatistics(tmplist, path)
-            # else:
-            #     print 'unknown test'
-            #     test = None
-            # ---
-            if test is not None:
-                # test.run()
-                # suite = unittest.defaultTestLoader.loadTestsFromTestCase(test)
-                # unittest.TextTestRunner(verbosity=2).run(test)
-                suite.addTest(test)
-        except ConfigParser.NoOptionError:
-            if section == 'Meta':
-                pass
+    # at this point, if the args flag is set, parse cases from the command line instead
+    if args[1] == '-t':
+        casename = ''
+        index1 = 0
+        index2 = 0
+        for i in range(2, len(args)):
+            if (i - 2) % 3 == 0:
+                casename = args[i]
+            elif (i - 2) % 3 == 1:
+                index1 = getdeviceindex(devicelist, args[i])
             else:
-                print ('section %s has no test option, or devices' % section)
+                index2 = getdeviceindex(devicelist, args[i])
+                if index1 == -1 or index2 == -1:
+                    print('index error')
+                    continue
+                tmplist = list()
+                tmplist.append(devicelist[index1])
+                tmplist.append(devicelist[index2])
+                try:
+                    test = eval(dictionary[casename])(tmplist, path)
+                    suite.addTest(test)
+                except KeyError:
+                    print 'unknown test'
+                    continue
+
+    else:
+        for section in parser.sections():
+            # parse the list, and handle test cases with respect to the listed NICs
+            # switch case statements here: look for all known tests, execute relevant test cases with relevant devices
+            # test with print
+            try:
+                # handle case where the devices are not index, but rather PCI ports
+                index1 = getdeviceindex(devicelist, parser.get(section, 'device1'))
+                index2 = getdeviceindex(devicelist, parser.get(section, 'device2'))
+                if index1 == -1 or index2 == -1:
+                    print 'Error parsing device, please use an index or PCI port'
+                    continue
+                # index1 = int(parser.get(section, 'device1'))
+                # index2 = int(parser.get(section, 'device2'))
+                tmplist = list()
+                tmplist.append(devicelist[index1])
+                tmplist.append(devicelist[index2])
+                print('devices to test are:')
+                print tmplist
+                parsedcase = parser.get(section, 'test')
+                # print(' ==== parsed case is: %s ==== ' % parsedcase)
+                # trying dict implementation
+                try:
+                    test = eval(dictionary[parsedcase])(tmplist, path)
+                except KeyError:
+                    print 'unknown test'
+                    test = None
+
+                # ---
+                # the following section should be a dictionary...
+                # if parsedcase == 'timestamp':
+                #     test = tests.TestTimeStampCapabilities(tmplist, path)
+                # elif parsedcase == 'udpsimple':
+                #     test = tests.TestSimpleUDP(tmplist, path)
+                # elif parsedcase == 'loadlatency':
+                #     test = tests.TestLoadLatency(tmplist, path)
+                # elif parsedcase == 'qosforeground':
+                #     test = tests.TestQosForeground(tmplist, path)
+                # elif parsedcase == 'qosbackground':
+                #     test = tests.TestQosBackground(tmplist, path)
+                # elif parsedcase == 'udpload':
+                #     test = tests.TestUdpLoad(tmplist, path)
+                # elif parsedcase == 'statistics':
+                #     test = tests.TestDeviceStatistics(tmplist, path)
+                # else:
+                #     print 'unknown test'
+                #     test = None
+                # ---
+                if test is not None:
+                    suite.addTest(test)
+            except ConfigParser.NoOptionError:
+                if section == 'Meta':
+                    pass
+                else:
+                    print ('section %s has no test option, or devices' % section)
     unittest.TextTestRunner(verbosity=2).run(suite)
