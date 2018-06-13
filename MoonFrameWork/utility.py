@@ -106,7 +106,7 @@ def parsetestcases(devicelist, args):
                     index1 = getdeviceindex(devicelist, args[i])
                 else:
                     index2 = getdeviceindex(devicelist, args[i])
-                    if index1 == -1 or index2 == -1:
+                    if index1 == -1 or index2 == -1 or index1 == index2:
                         print('index error')
                         continue
                     tmplist = list()
@@ -124,7 +124,7 @@ def parsetestcases(devicelist, args):
                     # handle case where the devices are not index, but rather PCI ports
                     index1 = getdeviceindex(devicelist, parser.get(section, 'device1'))
                     index2 = getdeviceindex(devicelist, parser.get(section, 'device2'))
-                    if index1 == -1 or index2 == -1:
+                    if index1 == -1 or index2 == -1 or index1 == index2:
                         print 'Error parsing device, please use an index or PCI port'
                         continue
                     tmplist = list()
