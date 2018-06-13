@@ -5,3 +5,4 @@ qosforeground tests.TestQosForeground
 qosbackground tests.TestQosBackground
 udpload tests.TestUdpLoad
 statistics tests.TestDeviceStatistics
+l2loadlatency tests.TestL2LoadLatency

@@ -329,6 +329,16 @@ class TestDeviceStatistics(TerminatingTest):
             stdout=self.testlog, cwd=self.path)
 
 
+class TestL2LoadLatency(TerminatingTest):
+    logname = 'l2loadlatencylog'
+    casename = 'L2 Log Latency'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/device-statistics.lua', '0', '1'],
+            stdout=self.testlog, cwd=self.path)
+
+
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
