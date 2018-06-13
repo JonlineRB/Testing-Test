@@ -331,11 +331,21 @@ class TestDeviceStatistics(TerminatingTest):
 
 class TestL2LoadLatency(TerminatingTest):
     logname = 'l2loadlatencylog'
-    casename = 'L2 Log Latency'
+    casename = 'L2 Load Latency'
 
     def executetest(self):
         return subprocess.Popen([
-            './build/MoonGen', './examples/device-statistics.lua', '0', '1'],
+            './build/MoonGen', './examples/l2-load-latency.lua', '0', '1'],
+            stdout=self.testlog, cwd=self.path)
+
+
+class TestL2PoissonLoadLatency(TerminatingTest):
+    logname = 'l2poissonloadlatencylog'
+    casename = 'L2 Poisson Load Latency'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/ls-poisson-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
 
 
