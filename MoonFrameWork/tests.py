@@ -36,7 +36,7 @@ class BindDevices(unittest.TestCase):
     def initTestlog(self):
         # check if, in the log dir, a dir with this date is available
         now = datetime.now()
-        datesuffix = str(now.day) + '-' + str(now.month) + '-' + str(now.year)
+        datesuffix = str(now.year) + '-' + str(now.month) + '-' + str(now.day)
         self.logdir += datesuffix + '/'
         if not os.path.isdir(self.logdir):
             os.mkdir('logs/' + datesuffix)
@@ -147,7 +147,6 @@ class TerminatingTest(BindDevices):
                 for j in range(0, len(line1)):
                     if 'TX' in line1[j]:
                         txvalue = float(line1[j + 1])
-                        # if '[Device: id=1]' not in lines[i + 1] or '[Device: id=1]' not in lines[i + 2]: # use if l2loadlatency is working as intended
                         if '[Device: id=1]' not in lines[i + 1]:
                             continue
                         line2 = lines[i + 1].split()
@@ -355,6 +354,7 @@ class TestL2PoissonLoadLatency(TerminatingTest):
             './build/MoonGen', './examples/l2-poisson-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
 
+
 class TestL3LoadLatency(TerminatingTest):
     logname = 'l3loadlatencylog'
     casename = 'L3 Load Latency'
@@ -363,6 +363,7 @@ class TestL3LoadLatency(TerminatingTest):
         return subprocess.Popen([
             './build/MoonGen', './examples/l3-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
+
 
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
