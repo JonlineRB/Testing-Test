@@ -135,6 +135,10 @@ class TerminatingTest(BindDevices):
             if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
                 print'--line of interest: ' + lines[i]
                 self.summarylog.write('line of interest: ' + lines[i] + '\n')
+            elif 'Saving histogram to' in lines[i]:
+                for j in range(i, len(lines)):
+                    self.summarylog.write(lines[j])
+                break
             elif '[Device: id=0]' in lines[i]:
                 if firstvalueskip:
                     firstvalueskip = False
