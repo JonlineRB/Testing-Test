@@ -347,7 +347,7 @@ class TestL2PoissonLoadLatency(TerminatingTest):
 
     def executetest(self):
         return subprocess.Popen([
-            './build/MoonGen', './examples/ls-poisson-load-latency.lua', '0', '1'],
+            './build/MoonGen', './examples/l2-poisson-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
 
 
