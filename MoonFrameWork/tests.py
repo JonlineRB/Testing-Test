@@ -30,7 +30,7 @@ class BindDevices(unittest.TestCase):
     def tearDown(self):
         utility.unbinddevices(self.devicelist)
         self.testlog.close()
-        self.summarylog.write('\n=== END OF SUMMARY ===')
+        self.summarylog.write('\n=== END OF SUMMARY ===\n')
         self.summarylog.close()
 
     def initTestlog(self):
