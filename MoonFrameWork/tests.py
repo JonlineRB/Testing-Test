@@ -147,7 +147,7 @@ class TerminatingTest(BindDevices):
                 for j in range(0, len(line1)):
                     if 'TX' in line1[j]:
                         txvalue = float(line1[j + 1])
-                        if '[Device: id=1]' not in lines[i + 1]:
+                        if '[Device: id=1]' not in lines[i + 1] or '[Device: id=1]' not in lines[i + 2]:
                             continue
                         line2 = lines[i + 1].split()
                         for k in range(0, len(line2)):
