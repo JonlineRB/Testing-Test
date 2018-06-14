@@ -166,7 +166,7 @@ class TerminatingTest(BindDevices):
                                 txavg += txvalue
                                 rxavg += rxvalue
                                 avgcounter += 1
-                                self.adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
+                                # self.adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
