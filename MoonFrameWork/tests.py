@@ -182,7 +182,7 @@ class TerminatingTest(BindDevices):
         self.summarylog.write(
             'RX values are:\n MAX = ' + str(rxmax) + '\n MIN = ' + str(rxmin) + '\n AVG = ' + str(rxavg) + '\n')
         self.summarylog.write(
-            'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' %% of TX? : ' + str(
+            'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX? : ' + str(
                 result) + '\n')
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
