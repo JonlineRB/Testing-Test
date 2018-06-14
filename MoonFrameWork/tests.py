@@ -109,18 +109,18 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
-    def adjustvalues(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue):
-        if txvalue > txmax:
-            txmax = txvalue
-        if txvalue < txmin:
-            txmin = txvalue
-        if rxvalue > rxmax:
-            rxmax = rxvalue
-        if rxvalue < rxmin:
-            rxmin = rxvalue
-
-        txavg += txvalue
-        rxavg += rxvalue
+    # def adjustvalues(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue):
+    #     if txvalue > txmax:
+    #         txmax = txvalue
+    #     if txvalue < txmin:
+    #         txmin = txvalue
+    #     if rxvalue > rxmax:
+    #         rxmax = rxvalue
+    #     if rxvalue < rxmin:
+    #         rxmin = rxvalue
+    #
+    #     txavg += txvalue
+    #     rxavg += rxvalue
 
     def evaluate(self, lines, index):
         result = True
@@ -337,6 +337,8 @@ class TestL2LoadLatency(TerminatingTest):
         return subprocess.Popen([
             './build/MoonGen', './examples/l2-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
+
+    # this class needs to read the log differently, it prints the values pairwise
 
 
 class TestL2PoissonLoadLatency(TerminatingTest):

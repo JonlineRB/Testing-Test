@@ -6,4 +6,4 @@ qosbackground tests.TestQosBackground
 udpload tests.TestUdpLoad
 statistics tests.TestDeviceStatistics
 l2loadlatency tests.TestL2LoadLatency
-l2poissonloadlatency test.TestL2PoissonLoadLatency
+l2poissonloadlatency tests.TestL2PoissonLoadLatency
