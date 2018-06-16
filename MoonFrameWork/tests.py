@@ -109,78 +109,126 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
-    # def adjustvalues(self, txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue):
-    #     if txvalue > txmax:
-    #         txmax = txvalue
-    #     if txvalue < txmin:
-    #         txmin = txvalue
-    #     if rxvalue > rxmax:
-    #         rxmax = rxvalue
-    #     if rxvalue < rxmin:
-    #         rxmin = rxvalue
-    #
-    #     txavg += txvalue
-    #     rxavg += rxvalue
+    valueindex = {'txmax': 0,
+                  'rxmax': 1,
+                  'txavg': 2,
+                  'rxavg': 3,
+                  'txmin': 4,
+                  'rxmin': 5}
+
+    def adjustvalues(self, vallist, txvalue, rxvalue, firstrun):
+        if txvalue > vallist[self.valueindex['txmax']]:
+            vallist[self.valueindex['txmax']] = txvalue
+            if firstrun is True:
+                vallist[self.valueindex['txmin']] = vallist[self.valueindex['txmax']]
+        if txvalue < vallist[self.valueindex['txmin']]:
+            vallist[self.valueindex['txmin']] = txvalue
+        if rxvalue > vallist[self.valueindex['rxmax']]:
+            vallist[self.valueindex['rxmax']] = rxvalue
+            if firstrun is True:
+                vallist[self.valueindex['rxmin']] = vallist[self.valueindex['rxmax']]
+        if rxvalue < vallist[self.valueindex['rxmin']]:
+            vallist[self.valueindex['rxmin']] = rxvalue
+
+        vallist[self.valueindex['txavg']] += txvalue
+        vallist[self.valueindex['rxavg']] += rxvalue
+
+        return vallist
+
+    def initvalues(self):
+        # list stores interesting values, to be printed
+        # 0     1       2      3      4      5
+        txmax, rxmax, txavg, rxavg, txmin, rxmin = (0.0,) * 6
+        reslist = [txmax, rxmax, txavg, rxavg, txmin, rxmin]
+        return reslist
+
+    def checkalerts(self, lines, index):
+        if '[FATAL]' in lines[index] or '[ERROR]' in lines[index] or '[WARN]' in lines[index]:
+            print'--line of interest: ' + lines[index]
+            self.summarylog.write('line of interest: ' + lines[index] + '\n')
+        elif 'Saving histogram to' in lines[index]:
+            for i in range(index, len(lines)):
+                self.summarylog.write(lines[i])
+            return False
+        return True
+
+    def extractvalues(self, lines, index):
+        return list()
 
     def evaluate(self, lines, index):
         result = True
         # tx / rx values
-        txmax, rxmax, txavg, rxavg, txmin, rxmin = (0.0,) * 6
+        # txmax, rxmax, txavg, rxavg, txmin, rxmin = (0.0,) * 6
+        vallist = self.initvalues()
         avgcounter = 0
         firstvalueskip = True
         firstminmax = True
+        # method parses relevant data from the log file
         for i in range(index, len(lines)):
             if not result:
                 break
-            if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
-                print'--line of interest: ' + lines[i]
-                self.summarylog.write('line of interest: ' + lines[i] + '\n')
-            elif 'Saving histogram to' in lines[i]:
-                for j in range(i, len(lines)):
-                    self.summarylog.write(lines[j])
+            # if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
+            #     print'--line of interest: ' + lines[i]
+            #     self.summarylog.write('line of interest: ' + lines[i] + '\n')
+            # elif 'Saving histogram to' in lines[i]:
+            #     for j in range(i, len(lines)):
+            #         self.summarylog.write(lines[j])
+            #     break
+            if self.checkalerts(lines, i) is False:
                 break
             elif '[Device: id=0]' in lines[i]:
                 if firstvalueskip:
                     firstvalueskip = False
                     continue
+                # TODO get the tx value
                 line1 = lines[i].split()
                 for j in range(0, len(line1)):
                     if 'TX' in line1[j]:
                         txvalue = float(line1[j + 1])
+                        # TODO here get the rx value
                         if '[Device: id=1]' not in lines[i + 1]:
                             continue
                         line2 = lines[i + 1].split()
                         for k in range(0, len(line2)):
                             if 'RX' in line2[k]:
                                 rxvalue = float(line2[k + 1])
-                                # self.checkvaluesarezero(txvalue, rxvalue)
-                                if txvalue > txmax:
-                                    txmax = txvalue
-                                    if firstminmax:
-                                        txmin = txmax
-                                if txvalue < txmin:
-                                    txmin = txvalue
-                                if rxvalue > rxmax:
-                                    rxmax = rxvalue
-                                    if firstminmax:
-                                        rxmin = rxvalue
-                                        firstminmax = False
-                                if rxvalue < rxmin:
-                                    rxmin = rxvalue
-                                txavg += txvalue
-                                rxavg += rxvalue
+                                if self.checkvaluesarezero(txvalue, rxvalue) is True
+                                    result = False
+                                # adjust values
+                                vallist = self.adjustvalues(vallist, txvalue, rxvalue, firstminmax)
+                                if firstminmax is True:
+                                    firstminmax = False
+                                # if txvalue > txmax:
+                                #     txmax = txvalue
+                                #     if firstminmax:
+                                #         txmin = txmax
+                                # if txvalue < txmin:
+                                #     txmin = txvalue
+                                # if rxvalue > rxmax:
+                                #     rxmax = rxvalue
+                                #     if firstminmax:
+                                #         rxmin = rxvalue
+                                #         firstminmax = False
+                                # if rxvalue < rxmin:
+                                #     rxmin = rxvalue
+                                # txavg += txvalue
+                                # rxavg += rxvalue
                                 avgcounter += 1
-                                # self.adjustvalues(txmax, rxmax, txavg, rxavg, txmin, rxmin, txvalue, rxvalue)
+                                # TODO here check result condition
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
-        txavg /= float(avgcounter)
-        rxavg /= float(avgcounter)
+        # TODO here adjust avarages
+        vallist[self.valueindex['txavg']] /= float(avgcounter)  # tx avg
+        vallist[self.valueindex['rxavg']] /= float(avgcounter)  # rx avg
         self.summarylog.write('TX / RX Values of this test case')
+        # TODO here write reseults to log
         self.summarylog.write(
-            'TX values are:\n MAX = ' + str(txmax) + '\n MIN = ' + str(txmin) + '\n AVG = ' + str(txavg) + '\n')
+            'TX values are:\n MAX = ' + str(vallist[self.valueindex['txmax']]) + '\n MIN = ' + str(
+                vallist[self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[self.valueindex['txavg']]) + '\n')
         self.summarylog.write(
-            'RX values are:\n MAX = ' + str(rxmax) + '\n MIN = ' + str(rxmin) + '\n AVG = ' + str(rxavg) + '\n')
+            'RX values are:\n MAX = ' + str(vallist[self.valueindex['rxmax']]) + '\n MIN = ' + str(
+                vallist[self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[self.valueindex['rxavg']]) + '\n')
         self.summarylog.write(
             'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX? : ' + str(
                 result) + '\n')
@@ -208,6 +256,130 @@ class TerminatingTest(BindDevices):
             msg = 'TX / RX values are 0. Test might not be suited for testd devices'
             self.summarylog.write(msg + '\n')
             self.assertTrue(False, msg=msg)
+            return True
+
+
+class TwoWayTerminatingTest(TerminatingTest):
+
+    def initvalues(self):
+        # list stores interesting values, to be printed
+
+        tx1max, tx2max, rx1max, rx2max, tx1avg, tx2avg, rx1avg, rx2avg, tx1min, tx2min, rx1min, rx2min = (0.0,) * 12
+        device1 = [tx1max, rx1max, tx1avg, rx1avg, tx1min, rx1min]
+        device2 = [tx2max, rx2max, tx2avg, rx2avg, tx2min, rx2min]
+        reslist = [device1, device2]
+        return reslist
+
+    def parsevalue(self, line, preceeder):
+        for i in range(0, len(line)):
+            if preceeder in line[i]:
+                return float(line[i + 1])
+        return None
+
+    def extractvalues(self, lines, index):
+        reslist = list()
+        if '[Device: id=0]' in lines[index]:
+            reslist.append(self.parsevalue(lines[index].split(), 'RX'))
+        if '[Device: id=1]' in lines[index + 1]:
+            reslist.append(self.parsevalue(lines[index].split(), 'RX'))
+        if '[Device: id=0]' in lines[index + 2]:
+            reslist.append(self.parsevalue(lines[index].split(), 'TX'))
+        if '[Device: id=1]' in lines[index + 3]:
+            reslist.append(self.parsevalue(lines[index].split(), 'TX'))
+
+        if None not in reslist and len(reslist == 4):
+            return reslist
+        else:
+            return None
+
+    def evaluate(self, lines, index):
+        result = True
+        vallist = self.initvalues()
+        avgcounter = 0
+        firstvalueskip = True
+        firstminmax = True
+        for i in range(index, len(lines)):
+            if not result:
+                break
+            # if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
+            #     print'--line of interest: ' + lines[i]
+            #     self.summarylog.write('line of interest: ' + lines[i] + '\n')
+            # elif 'Saving histogram to' in lines[i]:
+            #     for j in range(i, len(lines)):
+            #         self.summarylog.write(lines[j])
+            #     break
+            if self.checkalerts(lines, i) is False:
+                break
+            elif '[Device: id=0]' in lines[i]:
+                if firstvalueskip is True:
+                    i += 3
+                    firstvalueskip = False
+                    continue
+                else:
+                    tmpval = self.extractvalues(lines, i)
+                    if tmpval is not None:
+                        # call adjust values here
+                        vallist = self.adjustvalues(vallist, tmpval[2], tmpval[3], tmpval[0], tmpval[1], firstminmax)
+                        firstminmax = False
+                        avgcounter += 1
+                        result = result and (tmpval[0] > self.resulttolorance * tmpval[3] and
+                                             tmpval[1] > self.resulttolorance * tmpval[2])
+        vallist[0][self.valueindex['txavg']] /= float(avgcounter)  # tx1 avg
+        vallist[0][self.valueindex['rxavg']] /= float(avgcounter)  # rx1 avg
+        vallist[1][self.valueindex['txavg']] /= float(avgcounter)  # tx2 avg
+        vallist[1][self.valueindex['rxavg']] /= float(avgcounter)  # rx2 avg
+
+        self.summarylog.write(
+            'TX values of device 1 are:\n MAX = ' + str(vallist[0][self.valueindex['txmax']]) + '\n MIN = ' + str(
+                vallist[0][self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[0][self.valueindex['txavg']]) + '\n')
+        self.summarylog.write(
+            'RX values of device 1 are:\n MAX = ' + str(vallist[0][self.valueindex['rxmax']]) + '\n MIN = ' + str(
+                vallist[0][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[0][self.valueindex['rxavg']]) + '\n')
+        self.summarylog.write(
+            'TX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['txmax']]) + '\n MIN = ' + str(
+                vallist[1][self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['txavg']]) + '\n')
+        self.summarylog.write(
+            'RX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['rxmax']]) + '\n MIN = ' + str(
+                vallist[1][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['rxavg']]) + '\n')
+        self.summarylog.write(
+            'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX on both ways? : ' + str(
+                result) + '\n')
+        self.assertTrue(result,
+                        msg='This means that the RX values were not over 90 percent of TX values at all times on both ways')
+
+    def adjustvalues(self, vallist, tx1value, tx2value, rx1value, rx2value, firstrun):
+        if tx1value > vallist[0][self.valueindex['txmax']]:
+            vallist[0][self.valueindex['txmax']] = tx1value
+            if firstrun is True:
+                vallist[0][self.valueindex['txmin']] = vallist[0][self.valueindex['txmax']]
+        if tx1value < vallist[0][self.valueindex['txmin']]:
+            vallist[0][self.valueindex['txmin']] = tx1value
+        if rx1value > vallist[0][self.valueindex['rxmax']]:
+            vallist[0][self.valueindex['rxmax']] = rx1value
+            if firstrun is True:
+                vallist[0][self.valueindex['rxmin']] = vallist[0][self.valueindex['rxmax']]
+        if rx1value < vallist[0][self.valueindex['rxmin']]:
+            vallist[0][self.valueindex['rxmin']] = rx1value
+
+        if tx2value > vallist[1][self.valueindex['txmax']]:
+            vallist[1][self.valueindex['txmax']] = tx2value
+            if firstrun is True:
+                vallist[1][self.valueindex['txmin']] = vallist[1][self.valueindex['txmax']]
+        if tx2value < vallist[1][self.valueindex['txmin']]:
+            vallist[1][self.valueindex['txmin']] = tx2value
+        if rx2value > vallist[1][self.valueindex['rxmax']]:
+            vallist[1][self.valueindex['rxmax']] = rx2value
+            if firstrun is True:
+                vallist[1][self.valueindex['rxmin']] = vallist[1][self.valueindex['rxmax']]
+        if rx2value < vallist[1][self.valueindex['rxmin']]:
+            vallist[1][self.valueindex['rxmin']] = rx1value
+
+        vallist[0][self.valueindex['txavg']] += tx1value
+        vallist[0][self.valueindex['rxavg']] += rx1value
+        vallist[1][self.valueindex['txavg']] += tx2value
+        vallist[1][self.valueindex['rxavg']] += rx2value
+
+        return vallist
 
 
 class TestSimpleUDP(TerminatingTest):
@@ -333,7 +505,7 @@ class TestDeviceStatistics(TerminatingTest):
             stdout=self.testlog, cwd=self.path)
 
 
-class TestL2LoadLatency(TerminatingTest):
+class TestL2LoadLatency(TwoWayTerminatingTest):
     logname = 'l2loadlatencylog'
     casename = 'L2 Load Latency'
 
