@@ -277,6 +277,7 @@ class TwoWayTerminatingTest(TerminatingTest):
         return None
 
     def extractvalues(self, lines, index):
+        print 'THIS HAPPENS'
         reslist = list()
         if '[Device: id=0]' in lines[index]:
             reslist.append(self.parsevalue(lines[index].split(), 'RX'))
@@ -318,7 +319,6 @@ class TwoWayTerminatingTest(TerminatingTest):
                 else:
                     tmpval = self.extractvalues(lines, i)
                     if tmpval is not None:
-                        print 'THIS HAPPENS!'
                         # call adjust values here
                         vallist = self.adjustvalues(vallist, tmpval[2], tmpval[3], tmpval[0], tmpval[1], firstminmax)
                         firstminmax = False
