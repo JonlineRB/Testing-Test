@@ -149,6 +149,7 @@ class TerminatingTest(BindDevices):
         elif 'Saving histogram to' in lines[index]:
             for i in range(index, len(lines)):
                 self.summarylog.write(lines[i])
+            self.summarylog.write('\n')
             return False
         return True
 
@@ -198,21 +199,6 @@ class TerminatingTest(BindDevices):
                                 vallist = self.adjustvalues(vallist, txvalue, rxvalue, firstminmax)
                                 if firstminmax is True:
                                     firstminmax = False
-                                # if txvalue > txmax:
-                                #     txmax = txvalue
-                                #     if firstminmax:
-                                #         txmin = txmax
-                                # if txvalue < txmin:
-                                #     txmin = txvalue
-                                # if rxvalue > rxmax:
-                                #     rxmax = rxvalue
-                                #     if firstminmax:
-                                #         rxmin = rxvalue
-                                #         firstminmax = False
-                                # if rxvalue < rxmin:
-                                #     rxmin = rxvalue
-                                # txavg += txvalue
-                                # rxavg += rxvalue
                                 avgcounter += 1
                                 # TODO here check result condition
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
@@ -328,7 +314,7 @@ class TwoWayTerminatingTest(TerminatingTest):
                         avgcounter += 1
                         result = result and (tmpval[0] > self.resulttolorance * tmpval[3] and
                                              tmpval[1] > self.resulttolorance * tmpval[2])
-        print 'this happens'
+
         vallist[0][self.valueindex['txavg']] /= float(avgcounter)  # tx1 avg
         vallist[0][self.valueindex['rxavg']] /= float(avgcounter)  # rx1 avg
         vallist[1][self.valueindex['txavg']] /= float(avgcounter)  # tx2 avg
