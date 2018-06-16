@@ -270,23 +270,26 @@ class TwoWayTerminatingTest(TerminatingTest):
         reslist = [device1, device2]
         return reslist
 
-    def parsevalue(self, line, preceeder):
-        for i in range(0, len(line)):
-            if preceeder in line[i]:
-                return float(line[i + 1])
-        return None
+    # def parsevalue(self, line, preceeder):
+    #     for i in range(0, len(line)):
+    #         if preceeder in line[i]:
+    #             return float(line[i + 1])
+    #     return None
 
     def extractvalues(self, lines, index):
-        print 'THIS HAPPENS'
         reslist = list()
         if '[Device: id=0]' in lines[index]:
-            reslist.append(self.parsevalue(lines[index].split(), 'RX'))
+            # reslist.append(self.parsevalue(lines[index].split(), 'RX'))
+            reslist.append(float(lines[index].split()[3]))
         if '[Device: id=1]' in lines[index + 1]:
-            reslist.append(self.parsevalue(lines[index].split(), 'RX'))
+            reslist.append(float(lines[index].split()[3]))
+            # reslist.append(self.parsevalue(lines[index].split(), 'RX'))
         if '[Device: id=0]' in lines[index + 2]:
-            reslist.append(self.parsevalue(lines[index].split(), 'TX'))
+            reslist.append(float(lines[index].split()[3]))
+            # reslist.append(self.parsevalue(lines[index].split(), 'TX'))
         if '[Device: id=1]' in lines[index + 3]:
-            reslist.append(self.parsevalue(lines[index].split(), 'TX'))
+            reslist.append(float(lines[index].split()[3]))
+            # reslist.append(self.parsevalue(lines[index].split(), 'TX'))
 
         if None not in reslist and len(reslist) == 4:
             return reslist
