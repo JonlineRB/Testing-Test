@@ -287,7 +287,7 @@ class TwoWayTerminatingTest(TerminatingTest):
         if '[Device: id=1]' in lines[index + 3]:
             reslist.append(self.parsevalue(lines[index].split(), 'TX'))
 
-        if None not in reslist and len(reslist == 4):
+        if None not in reslist and len(reslist) == 4:
             return reslist
         else:
             return None
