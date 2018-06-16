@@ -192,7 +192,7 @@ class TerminatingTest(BindDevices):
                         for k in range(0, len(line2)):
                             if 'RX' in line2[k]:
                                 rxvalue = float(line2[k + 1])
-                                if self.checkvaluesarezero(txvalue, rxvalue) is True
+                                if self.checkvaluesarezero(txvalue, rxvalue) is True:
                                     result = False
                                 # adjust values
                                 vallist = self.adjustvalues(vallist, txvalue, rxvalue, firstminmax)
