@@ -318,6 +318,7 @@ class TwoWayTerminatingTest(TerminatingTest):
                 else:
                     tmpval = self.extractvalues(lines, i)
                     if tmpval is not None:
+                        print 'THIS HAPPENS!'
                         # call adjust values here
                         vallist = self.adjustvalues(vallist, tmpval[2], tmpval[3], tmpval[0], tmpval[1], firstminmax)
                         firstminmax = False
@@ -342,10 +343,12 @@ class TwoWayTerminatingTest(TerminatingTest):
             'RX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['rxmax']]) + '\n MIN = ' + str(
                 vallist[1][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['rxavg']]) + '\n')
         self.summarylog.write(
-            'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX on both ways? : ' + str(
+            'Conclusion: has RX value always been at least ' + str(
+                self.resulttolorance * 100) + ' % of TX on both ways? : ' + str(
                 result) + '\n')
         self.assertTrue(result,
-                        msg='This means that the RX values were not over 90 percent of TX values at all times on both ways')
+                        msg='This means that the RX values were not over'
+                            '90 percent of TX values at all times on both ways')
 
     def adjustvalues(self, vallist, tx1value, tx2value, rx1value, rx2value, firstrun):
         if tx1value > vallist[0][self.valueindex['txmax']]:
