@@ -328,6 +328,7 @@ class TwoWayTerminatingTest(TerminatingTest):
                         avgcounter += 1
                         result = result and (tmpval[0] > self.resulttolorance * tmpval[3] and
                                              tmpval[1] > self.resulttolorance * tmpval[2])
+        print 'this happens'
         vallist[0][self.valueindex['txavg']] /= float(avgcounter)  # tx1 avg
         vallist[0][self.valueindex['rxavg']] /= float(avgcounter)  # rx1 avg
         vallist[1][self.valueindex['txavg']] /= float(avgcounter)  # tx2 avg
