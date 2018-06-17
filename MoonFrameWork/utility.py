@@ -115,6 +115,7 @@ def parsetestcases(devicelist, args):
                     elif i == len(args):
                         tmplist = [devicelist[index1]]
                         test = eval(dictionary[casename])(tmplist, path)
+                        print 'THIS HAPPENS<--------------------------------------'
                         suite.addTest(test)
                 elif index2 is None:
                     try:
