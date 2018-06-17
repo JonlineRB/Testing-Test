@@ -42,15 +42,7 @@ class BindDevices(unittest.TestCase):
             os.mkdir('logs/' + datesuffix)
         self.logname = self.logdir + self.logname
         self.logname += '_' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
-
-        # obselete
-        # if os.path.isfile(self.logname):
-        #     i = 2
-        #     while os.path.isfile(self.logname + str(i)):
-        #         i += 1
-        #     self.logname += str(i)
         self.testlog = open(self.logname, 'w')
-        # open a summary log
         self.summarylog = open(self.logname + '_summary', 'w')
         self.summarylog.write('=== SUMMARY ===\n\n')
 
@@ -236,6 +228,10 @@ class TerminatingTest(BindDevices):
             self.assertTrue(False, msg=msg)
             return True
 
+# class ZeroValues(TerminatingTest):
+
+
+
 
 class TwoWayTerminatingTest(TerminatingTest):
 
@@ -274,6 +270,15 @@ class TwoWayTerminatingTest(TerminatingTest):
         else:
             return None
 
+    def checkvaluesarezero(self, values):
+        result = False
+        for value in values:
+            result = result or (value != 0.0)
+        if result is False:
+            msg='All values are 0.0\n'
+            self.summarylog.write(msg)
+            self.assertTrue(False, msg=msg)
+
     def evaluate(self, lines, index):
         result = True
         vallist = self.initvalues()
@@ -283,13 +288,6 @@ class TwoWayTerminatingTest(TerminatingTest):
         for i in range(index, len(lines)):
             if not result:
                 break
-            # if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
-            #     print'--line of interest: ' + lines[i]
-            #     self.summarylog.write('line of interest: ' + lines[i] + '\n')
-            # elif 'Saving histogram to' in lines[i]:
-            #     for j in range(i, len(lines)):
-            #         self.summarylog.write(lines[j])
-            #     break
             if self.checkalerts(lines, i) is False:
                 break
             elif '[Device: id=0]' in lines[i]:
@@ -300,6 +298,7 @@ class TwoWayTerminatingTest(TerminatingTest):
                 else:
                     tmpval = self.extractvalues(lines, i)
                     if tmpval is not None:
+                        self.checkvaluesarezero(tmpval)
                         # call adjust values here
                         vallist = self.adjustvalues(vallist, tmpval[2], tmpval[3], tmpval[0], tmpval[1], firstminmax)
                         firstminmax = False
