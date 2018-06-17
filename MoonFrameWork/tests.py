@@ -24,11 +24,11 @@ class BindDevices(unittest.TestCase):
         self.path = path
 
     def setUp(self):  # set the devices
-        utility.binddevices(self.devicelist)
+        utility.binddevices(self.devicelist, self.path)
         self.initTestlog()
 
     def tearDown(self):
-        utility.unbinddevices(self.devicelist)
+        utility.unbinddevices(self.devicelist, self.path)
         self.testlog.close()
         self.summarylog.write('\n=== END OF SUMMARY ===\n')
         self.summarylog.close()
