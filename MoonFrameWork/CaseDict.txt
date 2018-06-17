@@ -8,3 +8,4 @@ statistics tests.TestDeviceStatistics
 l2loadlatency tests.TestL2LoadLatency
 l2poissonloadlatency tests.TestL2PoissonLoadLatency
 l3loadlatency tests.TestL3LoadLatency
+dump tests.TestDump
