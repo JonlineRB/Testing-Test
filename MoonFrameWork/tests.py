@@ -590,6 +590,7 @@ class TestL3TcpSynFlood(TerminatingTest):
 
     def checkdevicesfound(self, lines):
         for i in range(0, len(lines)):
+            self.checkalerts(lines, i)
             if 'Found 0 usable devices:' in lines[i]:
                 msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
                 self.summarylog.write(msg + '\n')
