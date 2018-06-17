@@ -584,7 +584,7 @@ class TestL3TcpSynFlood(TerminatingTest):
 
     def executetest(self):
         args = ['./build/MoonGen', './examples/l3-tcp-syn-flood.lua', '0']
-        if len(self.devicelist == 2):
+        if len(self.devicelist) == 2:
             args.append('1')
         return subprocess.Popen(args, stdout=self.testlog, cwd=self.path)
 
