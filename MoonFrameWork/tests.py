@@ -544,6 +544,106 @@ class TestDump(SingleZeroValue):
         ], stdout=self.testlog, cwd=self.path)
 
 
+class TestL3TcpSynFlood(TerminatingTest):
+    logname = 'l3tcpsynfloodlog'
+    casename = 'L3 TCP-Syn-Flood'
+
+    def initvalues(self):
+        if len(self.devicelist) == 2:
+            reslist = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            return reslist
+        else
+            return [0.0, 0.0, 0.0]
+
+    valueindex = {'tx1max': 0,
+                  'tx1avg': 1,
+                  'tx1min': 2,
+                  'tx2max': 3,
+                  'tx2avg': 4,
+                  'tx2min': 5}
+
+    def adjustvalues(self, vallist, tx1value, tx2value, firstrun):
+        if tx1value > vallist[self.valueindex['tx1max']]:
+            vallist[self.valueindex['tx1max']] = tx1value
+            if firstrun:
+                vallist[self.valueindex['tx1min']] = tx1value
+        if tx1value < vallist[self.valueindex['tx1min']]:
+            vallist[self.valueindex['tx1min']] = tx1value
+        vallist[self.valueindex['tx1avg']] += tx1value
+
+        if len(self.devicelist) == 2:
+            if tx2value > vallist[self.valueindex['tx2max']]:
+                vallist[self.valueindex['tx2max']] = tx2value
+                if firstrun:
+                    vallist[self.valueindex['tx2min']] = tx2value
+            if tx2value < vallist[self.valueindex['tx2min']]:
+                vallist[self.valueindex['tx2min']] = tx2value
+            vallist[self.valueindex['tx2avg']] += tx2value
+
+        return vallist
+
+    def executetest(self):
+        args = ['./build/MoonGen', './examples/l3-tcp-syn-flood.lua', '0']
+        if len(self.devicelist == 2):
+            args.append('1')
+        return subprocess.Popen(args, stdout=self.testlog, cwd=self.path)
+
+    def checkdevicesfound(self, lines):
+        for i in range(0, len(lines)):
+            if 'Found 0 usable devices:' in lines[i]:
+                msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
+                self.summarylog.write(msg + '\n')
+                self.assertTrue(False, msg=msg)
+            elif 'Device 1' in lines[i] and 'is up' in lines[i]:
+                if len(self.devicelist) == 1:
+                    return i
+                else:
+                    for j in range(i, len(lines)):
+                        if 'Device 2' in lines[j] and 'is up' in lines[j]:
+                            return j
+        self.summarylog.write('Devices were not up\n')
+        self.assertTrue(False, msg='Devices are not up')
+
+    def evaluate(self, lines, index):
+        result = True
+        vallist = self.initvalues()
+        avgcounter = 0
+        firstvalueskip = True
+        firstminmax = True
+        for i in range(index, len(lines)):
+            self.checkalerts(lines, index)
+            if 'Device: id=0' in lines[i]:
+                if firstvalueskip:
+                    firstvalueskip = False
+                    continue
+                tx1value = lines[i].split()[3]
+                if tx1value == 0.0:
+                    self.assertTrue(False, msg='TX value was 0')
+                if len(self.devicelist) == 1:
+                    vallist = self.adjustvalues()
+                    firstminmax = False
+                    avgcounter += 1
+                else:
+                    try:
+                        tx2value = lines[i + 1].split()[3]
+                        self.checkvaluesarezero(tx1value, tx2value)
+                        vallist = self.adjustvalues(vallist, tx1value, tx2value, firstminmax)
+                        firstminmax = False
+                        avgcounter += 1
+                    except IndexError:
+                        continue
+
+        vallist[self.valueindex['tx1avg']] /= avgcounter
+        self.summarylog.write('DEVICE 1 TX values:\nMAX' + str(vallist[self.valueindex['tx1max']]) + '\nMIN: ' + str(
+            vallist[self.valueindex['tx1min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx1avg']]) + '\n')
+        if len(self.devicelist == 2):
+            self.summarylog.write(
+                'DEVICE 2 TX values:\nMAX' + str(vallist[self.valueindex['tx2max']]) + '\nMIN: ' + str(
+                    vallist[self.valueindex['tx2min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx2avg']]) + '\n')
+
+        self.assertTrue(result, msg='Something went wrong')
+
+
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
