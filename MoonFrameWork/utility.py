@@ -112,8 +112,11 @@ def parsetestcases(devicelist, args):
                         print 'index error'
                         casename, index1, index2 = (None,) * 3
                         continue
+                    elif i == len(args):
+                        tmplist = [devicelist[index1]]
+                        test = eval(dictionary[casename])(tmplist, path)
+                        suite.addTest(test)
                 elif index2 is None:
-                    print 'THIS HAPPENS<--------------------------------------'
                     try:
                         index2 = getdeviceindex(devicelist, args[i])
                         if index1 == index2 or index2 == -1:
