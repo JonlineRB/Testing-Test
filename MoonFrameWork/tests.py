@@ -248,6 +248,7 @@ class SingleZeroValue(TerminatingTest):
             self.checkalerts(lines, index)
             if 'RX' in lines[i]:
                 result = result and (float(lines[i].split()[3]) == 0.0)
+        self.summarylog.write('Condition: Have all values been 0? ' + '\nResult: ' + result)
         self.assertTrue(result, msg='Not all values were zero')
 
 
