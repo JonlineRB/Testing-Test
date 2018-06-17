@@ -237,7 +237,7 @@ class SingleZeroValue(TerminatingTest):
                 msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
                 self.summarylog.write(msg + '\n')
                 self.assertTrue(False, msg=msg)
-            elif '1 devices is up' in lines[i]:
+            elif '1 device is up' in lines[i]:
                 return i
         self.summarylog.write('Device is not up\n')
         self.assertTrue(False, msg='Device is not up')
