@@ -96,28 +96,62 @@ def parsetestcases(devicelist, args):
     # at this point, if the args flag is set, parse cases from the command line instead
     try:
         if len(args) > 1 and args[1] == '-t':
-            casename = ''
-            index1 = 0
-            index2 = 0
+            casename = None
+            index1 = None
+            index2 = None
             for i in range(2, len(args)):
-                if (i - 2) % 3 == 0:
-                    casename = args[i]
-                elif (i - 2) % 3 == 1:
-                    index1 = getdeviceindex(devicelist, args[i])
-                else:
-                    index2 = getdeviceindex(devicelist, args[i])
-                    if index1 == -1 or index2 == -1 or index1 == index2:
-                        print('index error')
+                #
+                if casename is None:
+                    if args[i] in dictionary:
+                        casename = args[i]
+                    else:
                         continue
-                    tmplist = list()
-                    tmplist.append(devicelist[index1])
-                    tmplist.append(devicelist[index2])
+                elif index1 is None:
+                    index1 = getdeviceindex(devicelist, args[i])
+                    if index1 == -1:
+                        print 'index error'
+                        casename, index1, index2 = (None,) * 3
+                        continue
+                elif index2 is None:
                     try:
+                        index2 = getdeviceindex(devicelist, args[i])
+                        if index1 == index2 or index2 == -1:
+                            print'index error'
+                            casename, index1, index2 = (None,) * 3
+                            continue
+                        tmplist = [devicelist[index1], devicelist[index2]]
+                        try:
+                            test = eval(dictionary[casename])(tmplist, path)
+                            suite.addTest(test)
+                        except KeyError:
+                            print 'unknown test'
+                        casename, index1, index2 = (None,) * 3
+                    except TypeError:
+                        # in this case, only 1 device is given
+                        tmplist = [devicelist[index1]]
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
-                    except KeyError:
-                        print 'unknown test'
-                        continue
+                        casename, index1, index2 = (None,) * 3
+
+                #
+                # if (i - 2) % 3 == 0:
+                #     casename = args[i]
+                # elif (i - 2) % 3 == 1:
+                #     index1 = getdeviceindex(devicelist, args[i])
+                # else:
+                #     index2 = getdeviceindex(devicelist, args[i])
+                #     if index1 == -1 or index2 == -1 or index1 == index2:
+                #         print('index error')
+                #         continue
+                #     tmplist = list()
+                #     tmplist.append(devicelist[index1])
+                #     tmplist.append(devicelist[index2])
+                #     try:
+                #         test = eval(dictionary[casename])(tmplist, path)
+                #         suite.addTest(test)
+                #     except KeyError:
+                #         print 'unknown test'
+                #         continue
         else:
             for section in parser.sections():
                 try:
@@ -150,6 +184,3 @@ def parsetestcases(devicelist, args):
         unittest.TextTestRunner(verbosity=2).run(suite)
     except TypeError and IndexError:
         print 'arg error'
-
-
-
