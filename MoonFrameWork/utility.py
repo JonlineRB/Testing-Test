@@ -107,13 +107,13 @@ def parsetestcases(devicelist, args):
                     else:
                         continue
                 elif index1 is None:
-                    print 'THIS HAPPENS<--------------------------------------'
                     index1 = getdeviceindex(devicelist, args[i])
                     if index1 == -1:
                         print 'index error'
                         casename, index1, index2 = (None,) * 3
                         continue
                 elif index2 is None:
+                    print 'THIS HAPPENS<--------------------------------------'
                     try:
                         index2 = getdeviceindex(devicelist, args[i])
                         if index1 == index2 or index2 == -1:
