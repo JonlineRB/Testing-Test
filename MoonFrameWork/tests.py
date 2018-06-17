@@ -159,7 +159,6 @@ class TerminatingTest(BindDevices):
     def evaluate(self, lines, index):
         result = True
         # tx / rx values
-        # txmax, rxmax, txavg, rxavg, txmin, rxmin = (0.0,) * 6
         vallist = self.initvalues()
         avgcounter = 0
         firstvalueskip = True
@@ -168,13 +167,6 @@ class TerminatingTest(BindDevices):
         for i in range(index, len(lines)):
             if not result:
                 break
-            # if '[FATAL]' in lines[i] or '[ERROR]' in lines[i] or '[WARN]' in lines[i]:
-            #     print'--line of interest: ' + lines[i]
-            #     self.summarylog.write('line of interest: ' + lines[i] + '\n')
-            # elif 'Saving histogram to' in lines[i]:
-            #     for j in range(i, len(lines)):
-            #         self.summarylog.write(lines[j])
-            #     break
             if self.checkalerts(lines, i) is False:
                 break
             elif '[Device: id=0]' in lines[i]:
