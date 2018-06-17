@@ -95,6 +95,7 @@ def parsetestcases(devicelist, args):
         dictionary[key] = value
     # at this point, if the args flag is set, parse cases from the command line instead
     try:
+        print 'THIS HAPPENS'
         if len(args) > 1 and args[1] == '-t':
             casename = None
             index1 = None
