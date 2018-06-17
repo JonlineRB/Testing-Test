@@ -616,7 +616,7 @@ class TestL3TcpSynFlood(TerminatingTest):
                 if firstvalueskip:
                     firstvalueskip = False
                     continue
-                tx1value = lines[i].split()[3]
+                tx1value = float(lines[i].split()[3])
                 if tx1value == 0.0:
                     self.assertTrue(False, msg='TX value was 0')
                 if len(self.devicelist) == 1:
@@ -625,7 +625,7 @@ class TestL3TcpSynFlood(TerminatingTest):
                     avgcounter += 1
                 else:
                     try:
-                        tx2value = lines[i + 1].split()[3]
+                        tx2value = float(lines[i + 1].split()[3])
                         self.checkvaluesarezero(tx1value, tx2value)
                         vallist = self.adjustvalues(vallist, tx1value, tx2value, firstminmax)
                         firstminmax = False
