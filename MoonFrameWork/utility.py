@@ -111,6 +111,7 @@ def parsetestcases(devicelist, args):
                     if index1 == -1:
                         print 'index error'
                         casename, index1, index2 = (None,) * 3
+                        print 'THIS HAPPENS<--------------------------------------'
                         continue
                     elif i == len(args):
                         tmplist = [devicelist[index1]]
