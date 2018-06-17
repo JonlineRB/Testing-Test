@@ -594,12 +594,12 @@ class TestL3TcpSynFlood(TerminatingTest):
                 msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
                 self.summarylog.write(msg + '\n')
                 self.assertTrue(False, msg=msg)
-            elif 'Device 1' in lines[i] and 'is up' in lines[i]:
+            elif 'Device 0' in lines[i] and 'is up' in lines[i]:
                 if len(self.devicelist) == 1:
                     return i
                 else:
                     for j in range(i, len(lines)):
-                        if 'Device 2' in lines[j] and 'is up' in lines[j]:
+                        if 'Device 1' in lines[j] and 'is up' in lines[j]:
                             return j
         self.summarylog.write('Devices were not up\n')
         self.assertTrue(False, msg='Devices are not up')
