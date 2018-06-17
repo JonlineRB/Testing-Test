@@ -245,7 +245,7 @@ class SingleZeroValue(TerminatingTest):
     def evaluate(self, lines, index):
         result = True
         for i in range(index, len(lines)):
-            self.checkalerts()
+            self.checkalerts(lines, index)
             result = result and (float(lines[i].split()[3]) == 0.0)
         self.assertTrue(result, msg='Not all values were zero')
 
