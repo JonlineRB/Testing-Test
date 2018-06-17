@@ -207,6 +207,7 @@ class TerminatingTest(BindDevices):
 
     def checkdevicesfound(self, lines):
         for i in range(0, len(lines)):
+            self.checkalerts(lines, i)
             if 'Found 0 usable devices:' in lines[i]:
                 msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
                 self.summarylog.write(msg + '\n')
@@ -621,7 +622,7 @@ class TestL3TcpSynFlood(TerminatingTest):
                 if tx1value == 0.0:
                     self.assertTrue(False, msg='TX value was 0')
                 if len(self.devicelist) == 1:
-                    vallist = self.adjustvalues()
+                    vallist = self.adjustvalues(vallist, tx1value, None, firstminmax)
                     firstminmax = False
                     avgcounter += 1
                 else:
