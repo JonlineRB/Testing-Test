@@ -156,7 +156,6 @@ def parsetestcases(devicelist, args):
                         tmplist.append(devicelist[index2])
                     except ConfigParser.NoOptionError:
                         print 'only 1 device'
-                    tmplist.append(devicelist[index2])
                     print('devices to test are:')
                     print tmplist
                     parsedcase = parser.get(section, 'test')
