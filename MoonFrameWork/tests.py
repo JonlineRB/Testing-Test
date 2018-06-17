@@ -552,7 +552,7 @@ class TestL3TcpSynFlood(TerminatingTest):
         if len(self.devicelist) == 2:
             reslist = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
             return reslist
-        else
+        else:
             return [0.0, 0.0, 0.0]
 
     valueindex = {'tx1max': 0,
