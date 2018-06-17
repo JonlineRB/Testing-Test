@@ -637,6 +637,7 @@ class TestL3TcpSynFlood(TerminatingTest):
         self.summarylog.write('DEVICE 1 TX values:\nMAX' + str(vallist[self.valueindex['tx1max']]) + '\nMIN: ' + str(
             vallist[self.valueindex['tx1min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx1avg']]) + '\n')
         if len(self.devicelist) == 2:
+            vallist[self.valueindex['tx2avg']] /= avgcounter
             self.summarylog.write(
                 'DEVICE 2 TX values:\nMAX' + str(vallist[self.valueindex['tx2max']]) + '\nMIN: ' + str(
                     vallist[self.valueindex['tx2min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx2avg']]) + '\n')
