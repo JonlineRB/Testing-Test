@@ -229,9 +229,25 @@ class TerminatingTest(BindDevices):
             return True
 
 
-class ZeroValues(TerminatingTest):
-    def checkvaluesarezero(self, value1, value2):
-        return
+class SingleZeroValue(TerminatingTest):
+
+    def checkdevicesfound(self, lines):
+        for i in range(0, len(lines)):
+            if 'Found 0 usable devices:' in lines[i]:
+                msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
+                self.summarylog.write(msg + '\n')
+                self.assertTrue(False, msg=msg)
+            elif '1 devices is up' in lines[i]:
+                return i
+        self.summarylog.write('Device is not up\n')
+        self.assertTrue(False, msg='Device is not up')
+
+    def evaluate(self, lines, index):
+        result = True
+        for i in range(index, len(lines)):
+            self.checkalerts()
+            result = result and (float(lines[i].split()[3]) == 0.0)
+        self.assertTrue(result, msg='Not all values were zero')
 
 
 class TwoWayTerminatingTest(TerminatingTest):
@@ -244,12 +260,6 @@ class TwoWayTerminatingTest(TerminatingTest):
         device2 = [tx2max, rx2max, tx2avg, rx2avg, tx2min, rx2min]
         reslist = [device1, device2]
         return reslist
-
-    # def parsevalue(self, line, preceeder):
-    #     for i in range(0, len(line)):
-    #         if preceeder in line[i]:
-    #             return float(line[i + 1])
-    #     return None
 
     def extractvalues(self, lines, index):
         reslist = list()
@@ -520,6 +530,16 @@ class TestL3LoadLatency(TerminatingTest):
         return subprocess.Popen([
             './build/MoonGen', './examples/l3-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
+
+
+class TestDump(SingleZeroValue):
+    logname = 'dumplog'
+    casename = 'Dump'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/dump.lua', '0'
+        ], stdout=self.testlog, cwd=self.path)
 
 
 class TestTimeStampCapabilities(BindDevices):
