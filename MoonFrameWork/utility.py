@@ -115,7 +115,6 @@ def parsetestcases(devicelist, args):
                     elif i == (len(args)-1):
                         tmplist = [devicelist[index1]]
                         test = eval(dictionary[casename])(tmplist, path)
-                        print 'THIS HAPPENS<--------------------------------------'
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
                 elif index2 is None:
@@ -139,36 +138,24 @@ def parsetestcases(devicelist, args):
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
 
-                #
-                # if (i - 2) % 3 == 0:
-                #     casename = args[i]
-                # elif (i - 2) % 3 == 1:
-                #     index1 = getdeviceindex(devicelist, args[i])
-                # else:
-                #     index2 = getdeviceindex(devicelist, args[i])
-                #     if index1 == -1 or index2 == -1 or index1 == index2:
-                #         print('index error')
-                #         continue
-                #     tmplist = list()
-                #     tmplist.append(devicelist[index1])
-                #     tmplist.append(devicelist[index2])
-                #     try:
-                #         test = eval(dictionary[casename])(tmplist, path)
-                #         suite.addTest(test)
-                #     except KeyError:
-                #         print 'unknown test'
-                #         continue
         else:
             for section in parser.sections():
                 try:
                     # handle case where the devices are not index, but rather PCI ports
                     index1 = getdeviceindex(devicelist, parser.get(section, 'device1'))
-                    index2 = getdeviceindex(devicelist, parser.get(section, 'device2'))
-                    if index1 == -1 or index2 == -1 or index1 == index2:
+                    if index1 == -1:
                         print 'Error parsing device, please use an index or PCI port'
                         continue
                     tmplist = list()
                     tmplist.append(devicelist[index1])
+                    try:
+                        index2 = getdeviceindex(devicelist, parser.get(section, 'device2'))
+                        if index2 == -1 or index1 == index2:
+                            print 'Error parsing device, please use an index or PCI port'
+                            continue
+                        tmplist.append(devicelist[index2])
+                    except ConfigParser.NoOptionError:
+                        print 'only 1 device'
                     tmplist.append(devicelist[index2])
                     print('devices to test are:')
                     print tmplist
