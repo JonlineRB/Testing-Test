@@ -95,7 +95,6 @@ def parsetestcases(devicelist, args):
         dictionary[key] = value
     # at this point, if the args flag is set, parse cases from the command line instead
     try:
-        print 'THIS HAPPENS'
         if len(args) > 1 and args[1] == '-t':
             casename = None
             index1 = None
@@ -128,6 +127,7 @@ def parsetestcases(devicelist, args):
                             print 'unknown test'
                         casename, index1, index2 = (None,) * 3
                     except TypeError:
+                        print 'THIS HAPPENS'
                         # in this case, only 1 device is given
                         tmplist = [devicelist[index1]]
                         test = eval(dictionary[casename])(tmplist, path)
