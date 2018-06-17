@@ -228,9 +228,10 @@ class TerminatingTest(BindDevices):
             self.assertTrue(False, msg=msg)
             return True
 
-# class ZeroValues(TerminatingTest):
 
-
+class ZeroValues(TerminatingTest):
+    def checkvaluesarezero(self, value1, value2):
+        return
 
 
 class TwoWayTerminatingTest(TerminatingTest):
@@ -275,7 +276,7 @@ class TwoWayTerminatingTest(TerminatingTest):
         for value in values:
             result = result or (value != 0.0)
         if result is False:
-            msg='All values are 0.0\n'
+            msg = 'All values are 0.0\n'
             self.summarylog.write(msg)
             self.assertTrue(False, msg=msg)
 
