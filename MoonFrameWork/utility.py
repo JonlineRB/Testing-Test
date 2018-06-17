@@ -8,14 +8,14 @@ import unittest
 
 # utility class for the MoonGen Testing framework
 
-def parsedevices(dpdkdevlist):
+def parsedevices(dpdkdevlist, path):
     print('Framework: Parsing DPDK bound devices')
     # call a subprocess for dpdk-devbind, store the relevant results in a file
     # create a file
     initialbinds = open('initialBindState', 'w')
     # start this process
     p = subprocess.Popen(
-        ['./dpdk-devbind.py', '-s'], stdout=initialbinds, cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
+        ['./dpdk-devbind.py', '-s'], stdout=initialbinds, cwd=path+'libmoon/deps/dpdk/usertools'
     )
     p.wait()
     # parse and store the results
@@ -34,32 +34,32 @@ def parsedevices(dpdkdevlist):
     return dpdkdevlist
 
 
-def unbinddevices(devicelist):
+def unbinddevices(devicelist, path):
     for x in devicelist:
         p = subprocess.Popen(
-            ['./dpdk-devbind.py', '-u', x.split()[0]], cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
+            ['./dpdk-devbind.py', '-u', x.split()[0]], cwd=path + 'libmoon/deps/dpdk/usertools'
         )
         p.wait()
 
 
-def initdevices(devicelist):
-    parsedevices(devicelist)
+def initdevices(devicelist, path):
+    parsedevices(devicelist, path)
     if not devicelist:
         print('No devices are DPDK bound')
     else:
         print('parsed list is:')
         for x in range(0, len(devicelist)):
             print('device %d: ' % x + devicelist[x])
-        unbinddevices(devicelist)
+        unbinddevices(devicelist, path)
 
 
-def binddevices(devicelist):
+def binddevices(devicelist, path):
     if not devicelist:
         return
     for x in devicelist:
         p = subprocess.Popen(
             ['./dpdk-devbind.py', '--bind=igb_uio', x.split()[0]],
-            cwd='/home/borowski/MoonGen/libmoon/deps/dpdk/usertools'
+            cwd=path+'libmoon/deps/dpdk/usertools'
         )
         p.wait()
     # print('bound devices as they were')
