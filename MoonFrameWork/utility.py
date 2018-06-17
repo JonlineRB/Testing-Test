@@ -126,8 +126,8 @@ def parsetestcases(devicelist, args):
                         except KeyError:
                             print 'unknown test'
                         casename, index1, index2 = (None,) * 3
-                    except TypeError:
                         print 'THIS HAPPENS'
+                    except TypeError:
                         # in this case, only 1 device is given
                         tmplist = [devicelist[index1]]
                         test = eval(dictionary[casename])(tmplist, path)
