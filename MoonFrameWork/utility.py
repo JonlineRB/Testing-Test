@@ -104,6 +104,7 @@ def parsetestcases(devicelist, args):
                 if casename is None:
                     if args[i] in dictionary:
                         casename = args[i]
+                        print 'THIS HAPPENS<--------------------------------------'
                     else:
                         continue
                 elif index1 is None:
@@ -126,7 +127,6 @@ def parsetestcases(devicelist, args):
                         except KeyError:
                             print 'unknown test'
                         casename, index1, index2 = (None,) * 3
-                        print 'THIS HAPPENS'
                     except TypeError:
                         # in this case, only 1 device is given
                         tmplist = [devicelist[index1]]
