@@ -690,7 +690,7 @@ class TestQualityOfService(TerminatingTest):
             if '[Port' in lines[i]:
                 # print 'THIS HAPPENS'
                 value = float(lines[i].split()[3])
-                # print 'THIS HAPPENS' + value
+                print 'THIS HAPPENS' + value
                 if firstport in lines[i]:
                     if 'TX' in lines[i]:
                         firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
