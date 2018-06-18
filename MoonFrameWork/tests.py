@@ -680,6 +680,7 @@ class TestQualityOfService(TerminatingTest):
 
         firstportline = lines[index + 1].split()
         firstport = firstportline[len(firstportline) - 1]
+        print firstport + firstport + firstport
         secondportline = lines[index + 2].split()
         secondport = secondportline[len(secondportline) - 1]
 
@@ -694,7 +695,7 @@ class TestQualityOfService(TerminatingTest):
                 value = float(lines[i].split()[3])
                 # print firstport
                 # print ('THIS HAPPENS. Value: ' + value)
-                if firstport in lines[i].split()[1]:
+                if firstport in lines[i]:
                     print 'THIS HAPPENS'
                     if 'TX' in lines[i]:
                         firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
@@ -704,7 +705,7 @@ class TestQualityOfService(TerminatingTest):
                         firstportrxvalues = self.adjustvalues(firstportrxvalues, value, firstminmax[1])
                         firstminmax[1] = False
                         # print 'THIS HAPPENS'
-                elif secondport in lines[i].split()[1]:
+                elif secondport in lines[i]:
                     if 'TX' in lines[i]:
                         secondporttxvalues = self.adjustvalues(secondporttxvalues, value, firstminmax[2])
                         firstminmax[2] = False
