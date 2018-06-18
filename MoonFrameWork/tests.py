@@ -695,7 +695,7 @@ class TestQualityOfService(TerminatingTest):
                 # print firstport
                 # print ('THIS HAPPENS. Value: ' + value)
                 print lines[i]
-                if firstport in lines[i]:
+                if '[Port ' + firstport + ']' in lines[i]:
                     print 'THIS HAPPENS'
                     if 'TX' in lines[i]:
                         firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
