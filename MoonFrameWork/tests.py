@@ -685,7 +685,7 @@ class TestQualityOfService(TerminatingTest):
 
         # problem with the port string values, fix it
         print('value1: ->' + firstport + '<- || value2: ->' + secondport + '<-')
-        print firstport == '42'
+        print firstport == '43'
 
         firstporttxvalues = [0.0, 0.0, 0.0, 0]
         firstportrxvalues = [0.0, 0.0, 0.0, 0]
