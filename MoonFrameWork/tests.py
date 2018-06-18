@@ -652,7 +652,7 @@ class TestQualityOfService(TerminatingTest):
     casename = 'Quality of Service'
 
     def executetest(self):
-        return subprocess.Popen(['./build/MoonGen', './eamples/quality-of-service-test.lua', '0', '1'],
+        return subprocess.Popen(['./build/MoonGen', './examples/quality-of-service-test.lua', '0', '1'],
                                 stdout=self.testlog, cwd=self.path)
 
     def adjustvalues(self, vallist, value, firstrun):
