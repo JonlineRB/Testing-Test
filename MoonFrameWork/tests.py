@@ -680,7 +680,6 @@ class TestQualityOfService(TerminatingTest):
 
         firstportline = lines[index + 1].split()
         firstport = firstportline[len(firstportline) - 1]
-        print firstport + firstport + firstport
         secondportline = lines[index + 2].split()
         secondport = secondportline[len(secondportline) - 1]
 
@@ -695,6 +694,7 @@ class TestQualityOfService(TerminatingTest):
                 value = float(lines[i].split()[3])
                 # print firstport
                 # print ('THIS HAPPENS. Value: ' + value)
+                print lines[i]
                 if firstport in lines[i]:
                     print 'THIS HAPPENS'
                     if 'TX' in lines[i]:
