@@ -720,7 +720,7 @@ class TestQualityOfService(TerminatingTest):
             + '\nMIN: ' + str(firstporttxvalues[2]) +
             '\nRX Values:\nMAX: ' + str(firstportrxvalues[0]) + '\nAVG: ' + self.getavg(
                 firstportrxvalues) + '\nMIN: ' + str(firstportrxvalues[2]) +
-            'SECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + str(secondporttxvalues[0]) + '\nAVG: ' +
+            '\nSECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + str(secondporttxvalues[0]) + '\nAVG: ' +
             self.getavg(secondportrxvalues) + '\nMIN: ' + str(secondporttxvalues[2]) +
             '\nRX Values:\nMAX: ' + str(secondportrxvalues[0]) + '\nAVG: ' + self.getavg(
                 secondportrxvalues) + '\nMIN: ' +
