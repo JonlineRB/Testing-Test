@@ -670,8 +670,8 @@ class TestQualityOfService(TerminatingTest):
 
     def getavg(self, vallist):
         if vallist[1] == 0.0:
-            return 0
-        return vallist[1] / vallist[3]
+            return str(0)
+        return str(vallist[1] / vallist[3])
 
     def evaluate(self, lines, index):
         # result = True
