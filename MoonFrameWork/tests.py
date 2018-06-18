@@ -715,15 +715,16 @@ class TestQualityOfService(TerminatingTest):
                         # print 'THIS HAPPENS'
 
         self.summarylog.write(
-            'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + firstporttxvalues[0] + '\nAVG: ' + self.getavg(
+            'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + str(firstporttxvalues[0]) + '\nAVG: ' + self.getavg(
                 firstporttxvalues)
-            + '\nMIN: ' + firstporttxvalues[2] +
-            '\nRX Values:\nMAX: ' + firstportrxvalues[0] + '\nAVG: ' + self.getavg(firstportrxvalues) + '\nMIN: ' +
-            firstportrxvalues[2] +
-            'SECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + secondporttxvalues[0] + '\nAVG: ' +
-            self.getavg(secondportrxvalues) + '\nMIN: ' + secondporttxvalues[2] +
-            '\nRX Values:\nMAX: ' + secondportrxvalues[0] + '\nAVG: ' + self.getavg(secondportrxvalues) + '\nMIN: ' +
-            secondportrxvalues[2]
+            + '\nMIN: ' + str(firstporttxvalues[2]) +
+            '\nRX Values:\nMAX: ' + str(firstportrxvalues[0]) + '\nAVG: ' + self.getavg(
+                firstportrxvalues) + '\nMIN: ' + str(firstportrxvalues[2]) +
+            'SECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + str(secondporttxvalues[0]) + '\nAVG: ' +
+            self.getavg(secondportrxvalues) + '\nMIN: ' + str(secondporttxvalues[2]) +
+            '\nRX Values:\nMAX: ' + str(secondportrxvalues[0]) + '\nAVG: ' + self.getavg(
+                secondportrxvalues) + '\nMIN: ' +
+            str(secondportrxvalues[2])
         )
         self.assertTrue(True)  # tmp
 
