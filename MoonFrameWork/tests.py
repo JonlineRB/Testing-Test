@@ -668,8 +668,10 @@ class TestQualityOfService(TerminatingTest):
 
         return vallist
 
-    def applyavg(self, vallist):
-        vallist[1] /= vallist[3]
+    def getavg(self, vallist):
+        if vallist[1] == 0.0:
+            return 0
+        return vallist[1] / vallist[3]
 
     def evaluate(self, lines, index):
         # result = True
@@ -712,18 +714,15 @@ class TestQualityOfService(TerminatingTest):
                         firstminmax[3] = False
                         # print 'THIS HAPPENS'
 
-        self.applyavg(firstporttxvalues)
-        self.applyavg(firstportrxvalues)
-        self.applyavg(secondporttxvalues)
-        self.applyavg(secondportrxvalues)
         self.summarylog.write(
-            'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + firstporttxvalues[0] + '\nAVG: ' + firstporttxvalues[
-                1] + '\nMIN: ' + firstporttxvalues[2] +
-            '\nRX Values:\nMAX: ' + firstportrxvalues[0] + '\nAVG: ' + firstportrxvalues[1] + '\nMIN: ' +
+            'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + firstporttxvalues[0] + '\nAVG: ' + self.getavg(
+                firstporttxvalues)
+            + '\nMIN: ' + firstporttxvalues[2] +
+            '\nRX Values:\nMAX: ' + firstportrxvalues[0] + '\nAVG: ' + self.getavg(firstportrxvalues) + '\nMIN: ' +
             firstportrxvalues[2] +
             'SECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + secondporttxvalues[0] + '\nAVG: ' +
-            secondportrxvalues[1] + '\nMIN: ' + secondporttxvalues[2] +
-            '\nRX Values:\nMAX: ' + secondportrxvalues[0] + '\nAVG: ' + secondportrxvalues[1] + '\nMIN: ' +
+            self.getavg(secondportrxvalues) + '\nMIN: ' + secondporttxvalues[2] +
+            '\nRX Values:\nMAX: ' + secondportrxvalues[0] + '\nAVG: ' + self.getavg(secondportrxvalues) + '\nMIN: ' +
             secondportrxvalues[2]
         )
         self.assertTrue(True)  # tmp
