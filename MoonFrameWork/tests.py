@@ -684,7 +684,7 @@ class TestQualityOfService(TerminatingTest):
         secondport = secondportline[len(secondportline) - 1]
 
         # problem with the port string values, fix it
-        print('value1: ->' + firstport + '<- || value2: ->' + secondport + '<-')
+        # print('value1: ->' + firstport + '<- || value2: ->' + secondport + '<-')
 
         firstporttxvalues = [0.0, 0.0, 0.0, 0]
         firstportrxvalues = [0.0, 0.0, 0.0, 0]
@@ -697,7 +697,7 @@ class TestQualityOfService(TerminatingTest):
                 value = float(lines[i].split()[3])
                 # print firstport
                 # print ('THIS HAPPENS. Value: ' + value)
-                if firstport in lines[i]:
+                if str(firstport) in lines[i]:
                     print 'THIS HAPPENS'
                     if 'TX' in lines[i]:
                         firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
