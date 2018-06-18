@@ -688,7 +688,9 @@ class TestQualityOfService(TerminatingTest):
 
         firstportline = lines[index + 1].split()
         firstport = firstportline[len(firstportline) - 1]
+
         firstport = self.extractport(firstport)
+        self.summarylog.write("value of firstport is: " + firstport + '\n')
         secondportline = lines[index + 2].split()
         secondport = secondportline[len(secondportline) - 1]
         secondport = self.extractport(secondport)
