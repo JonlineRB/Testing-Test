@@ -673,6 +673,14 @@ class TestQualityOfService(TerminatingTest):
             return str(0.0)
         return str(vallist[1] / vallist[3])
 
+    def extractport(self, port):
+        result = ''
+        for c in port:
+            if not str(c).isdigit():
+                break
+            result += str(c)
+        return result
+
     def evaluate(self, lines, index):
         # result = True
         # firstvalueskip = True
@@ -680,8 +688,10 @@ class TestQualityOfService(TerminatingTest):
 
         firstportline = lines[index + 1].split()
         firstport = firstportline[len(firstportline) - 1]
+        firstport = self.extractport(firstport)
         secondportline = lines[index + 2].split()
         secondport = secondportline[len(secondportline) - 1]
+        secondport = self.extractport(secondport)
 
         # problem with the port string values, fix it
         print('value1: ->' + firstport + '<- || value2: ->' + secondport + '<-')
