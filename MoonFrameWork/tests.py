@@ -647,6 +647,80 @@ class TestL3TcpSynFlood(TerminatingTest):
         self.assertTrue(result, msg='Something went wrong')
 
 
+class TestQualityOfService(TerminatingTest):
+    logname = 'qualityofservicelog'
+    casename = 'Quality of Service'
+
+    def executetest(self):
+        return subprocess.Popen(['./build/MoonGen', './eamples/quality-of-service-test.lua', '0', '1'],
+                                stdout=self.testlog, cwd=self.path)
+
+    def adjustvalues(self, vallist, value, firstrun):
+        if value > vallist[0]:
+            vallist[0] = value
+            if firstrun:
+                vallist[2] = value
+        if value < vallist[2]:
+            vallist[2] = value
+
+        vallist[1] += value
+        vallist[3] += 1
+
+        return vallist
+
+    def applyavg(self, vallist):
+        vallist[1] /= vallist[3]
+
+    def evaluate(self, lines, index):
+        # result = True
+        # firstvalueskip = True
+        firstminmax = [True, True, True, True]
+
+        firstportline = lines[index + 1].split()
+        firstport = firstportline[len(firstportline) - 1]
+        secondportline = lines[index + 2].split()
+        secondport = secondportline[len(secondportline) - 1]
+
+        firstporttxvalues = [0.0, 0.0, 0.0, 0]
+        firstportrxvalues = [0.0, 0.0, 0.0, 0]
+        secondporttxvalues = [0.0, 0.0, 0.0, 0]
+        secondportrxvalues = [0.0, 0.0, 0.0, 0]
+
+        for i in range(index, len(lines)):
+            if '[Port' in lines[i]:
+                value = lines[i].split()[3]
+                if firstport in lines[i]:
+                    if 'TX' in lines[i]:
+                        firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
+                        firstminmax[0] = False
+                    elif 'RX' in lines[i]:
+                        firstportrxvalues = self.adjustvalues(firstportrxvalues, value, firstminmax[1])
+                        firstminmax[1] = False
+                elif secondport in lines[i]:
+                    if 'TX' in lines[i]:
+                        secondporttxvalues = self.adjustvalues(secondporttxvalues, value, firstminmax[2])
+                        firstminmax[2] = False
+                    elif 'RX' in lines[i]:
+                        secondportrxvalues = self.adjustvalues(secondportrxvalues, value, firstminmax[3])
+                        firstminmax[3] = False
+
+        self.applyavg(firstporttxvalues)
+        self.applyavg(firstportrxvalues)
+        self.applyavg(secondporttxvalues)
+        self.applyavg(secondportrxvalues)
+        self.summarylog.write(
+            'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + firstporttxvalues[0] + '\nAVG: ' + firstporttxvalues[
+                1] + '\nMIN: ' + firstporttxvalues[2] +
+            '\nRX Values:\nMAX: ' + firstportrxvalues[0] + '\nAVG: ' + firstportrxvalues[1] + '\nMIN: ' +
+            firstportrxvalues[2] +
+            'SECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + secondporttxvalues[0] + '\nAVG: ' +
+            secondportrxvalues[1] + '\nMIN: ' + secondporttxvalues[2] +
+            '\nRX Values:\nMAX: ' + secondportrxvalues[0] + '\nAVG: ' + secondportrxvalues[1] + '\nMIN: ' +
+            secondportrxvalues[2]
+        )
+        self.assertTrue(True)  # tmp
+
+
 class TestTimeStampCapabilities(BindDevices):
     reqpasses = 2
     logname = 'timestamplog'
