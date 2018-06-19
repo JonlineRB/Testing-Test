@@ -238,7 +238,7 @@ class SingleDevice(TerminatingTest):
                 msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
                 self.summarylog.write(msg + '\n')
                 self.assertTrue(False, msg=msg)
-            elif '1 device is up' in lines[i]:
+            elif '1 device is up' in lines[i] or ('Device 0' in lines[i] and 'is up' in lines[i]):
                 return i
         self.summarylog.write('Device is not up\n')
         self.assertTrue(False, msg='Device is not up')
@@ -905,6 +905,28 @@ class TestVXLANexample(DevicesUpCheckedSeperately):
         return subprocess.Popen([
             './build/MoonGen', './examples/vxlan-example.lua', '0', '1', '0', '0', '0'
         ], stdout=self.testlog, cwd=self.path)
+
+
+class TestInterArrivalTimes(SingleDevice):
+    logname = 'interarrivaltimeslog'
+    casename = 'Inter Arrival Times'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/Moongen', './examples/inter-arrival-times.lua', '0', '0'
+        ], stdout=self.testlog, cwd=self.path)
+
+    def evaluate(self, lines, index):
+        result = False
+        for i in range(index, len(lines)):
+            self.checkalerts(lines, i)
+            if 'Lost Packets: ' in lines[i]:
+                value = int(lines[i].split()[3])
+                result = value == 0
+                self.summarylog.write('Verdict: 0 packets have been lost: ' + result)
+                self.assertTrue(result, 'This means packets have been lost')
+
+        self.assertTrue(result, 'Unable to parse amount of packets lost')
 
 
 class TestTimeStampCapabilities(BindDevices):
