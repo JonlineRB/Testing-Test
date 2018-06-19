@@ -913,7 +913,7 @@ class TestInterArrivalTimes(SingleDevice):
 
     def executetest(self):
         return subprocess.Popen([
-            './build/Moongen', './examples/inter-arrival-times.lua', '0', '0'
+            './build/MoonGen', './examples/inter-arrival-times.lua', '0', '0'
         ], stdout=self.testlog, cwd=self.path)
 
     def evaluate(self, lines, index):
