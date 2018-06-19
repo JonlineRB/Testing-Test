@@ -437,6 +437,7 @@ class OneTXTwoRXQueues(TerminatingTest):
 
         for i in range(0, 3):
             if currvalues[i] > vallist[i][0]:
+                vallist[i][0] = currvalues[i]
                 if firstrun:
                     vallist[i][2] = currvalues[i]
             if currvalues[i] < vallist[i][2]:
@@ -472,10 +473,10 @@ class OneTXTwoRXQueues(TerminatingTest):
         titles = ['TX Values', 'RX 1 Values', 'RX 2 Values']
         for i in range(0, 3):
             self.summarylog.write(
-                '\n' + titles[i] + '\nMAX: ' + str(vallist[i][0]) + '\nAVG: ' + str(vallist[i][2] / vallist[3])
+                '\n' + titles[i] + '\nMAX: ' + str(vallist[i][0]) + '\nAVG: ' + str(vallist[i][1] / vallist[3])
                 + '\nMIN: ' + str(vallist[i][2]) + '\n'
             )
-        self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(self.resulttolorance * 100))
+        self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(self.resulttolorance * 100)) +
         '% at all times: ' + str(True)
         self.assertTrue(result,
                         msg='This means RX sum has not been ' + str(self.resulttolorance * 100) + '% at all times')
