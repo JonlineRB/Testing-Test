@@ -923,7 +923,7 @@ class TestInterArrivalTimes(SingleDevice):
             if 'Lost packets: ' in lines[i]:
                 value = int(lines[i].split()[3])
                 result = value == 0
-                self.summarylog.write('Verdict: 0 packets have been lost: ' + result)
+                self.summarylog.write('Verdict: 0 packets have been lost: ' + str(result))
                 self.assertTrue(result, 'This means packets have been lost')
 
         self.assertTrue(result, 'Unable to parse amount of packets lost')
