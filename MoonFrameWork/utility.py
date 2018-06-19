@@ -54,6 +54,7 @@ def initdevices(devicelist, path):
 
 
 def binddevices(devicelist, path):
+    print ('binding devices: ' + devicelist)
     if not devicelist:
         return
     for x in devicelist:
@@ -62,7 +63,6 @@ def binddevices(devicelist, path):
             cwd=path+'libmoon/deps/dpdk/usertools'
         )
         p.wait()
-    # print('bound devices as they were')
 
 
 def getdeviceindex(devicelist, arg):
