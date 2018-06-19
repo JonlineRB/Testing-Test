@@ -294,7 +294,7 @@ class SingleNonZeroTXValue(SingleDevice):
                 firstminmax = False
 
         self.summarylog.write(
-            '\nTX Values: \nMAX: ' + str(vallist[0]) + '\nAVG: ' + str(vallist[2] / vallist[3]) + '\nMIN: ' + str(
+            '\nTX Values: \nMAX: ' + str(vallist[0]) + '\nAVG: ' + str(vallist[1] / vallist[3]) + '\nMIN: ' + str(
                 vallist[2]) + '\n')
         self.summarylog.write('\nVerdict: have all values been greater than zero at all times: ' + str(result))
         self.assertTrue(result, msg='This means a value has been zero')
