@@ -14,3 +14,4 @@ qualityofservice tests.TestQualityOfService
 ratecontrolmethods tests.TestRateControlMethods
 rss tests.TestRSS
 rxpktsdistribution tests.TestRXPktsDistribution
+vxlanexample tests.TestVXLANexample

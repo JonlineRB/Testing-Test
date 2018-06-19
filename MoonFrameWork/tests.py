@@ -482,6 +482,26 @@ class OneTXTwoRXQueues(TerminatingTest):
                         msg='This means RX sum has not been ' + str(self.resulttolorance * 100) + '% at all times')
 
 
+class DevicesUpCheckedSeperately(TerminatingTest):
+
+    def checkdevicesfound(self, lines):
+        for i in range(0, len(lines)):
+            self.checkalerts(lines, i)
+            if 'Found 0 usable devices:' in lines[i]:
+                msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
+                self.summarylog.write(msg + '\n')
+                self.assertTrue(False, msg=msg)
+            elif 'Device 0' in lines[i] and 'is up' in lines[i]:
+                if len(self.devicelist) == 1:
+                    return i
+                else:
+                    for j in range(i, len(lines)):
+                        if 'Device 1' in lines[j] and 'is up' in lines[j]:
+                            return j
+        self.summarylog.write('Devices were not up\n')
+        self.assertTrue(False, msg='Devices are not up')
+
+
 class TestSimpleUDP(TerminatingTest):
     logname = 'udpSimpleTestLog'
     # testlog = open(logname, 'w')
@@ -647,7 +667,7 @@ class TestDump(SingleZeroRXValue):
         ], stdout=self.testlog, cwd=self.path)
 
 
-class TestL3TcpSynFlood(TerminatingTest):
+class TestL3TcpSynFlood(DevicesUpCheckedSeperately):
     logname = 'l3tcpsynfloodlog'
     casename = 'L3 TCP-Syn-Flood'
 
@@ -691,22 +711,22 @@ class TestL3TcpSynFlood(TerminatingTest):
             args.append('1')
         return subprocess.Popen(args, stdout=self.testlog, cwd=self.path)
 
-    def checkdevicesfound(self, lines):
-        for i in range(0, len(lines)):
-            self.checkalerts(lines, i)
-            if 'Found 0 usable devices:' in lines[i]:
-                msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
-                self.summarylog.write(msg + '\n')
-                self.assertTrue(False, msg=msg)
-            elif 'Device 0' in lines[i] and 'is up' in lines[i]:
-                if len(self.devicelist) == 1:
-                    return i
-                else:
-                    for j in range(i, len(lines)):
-                        if 'Device 1' in lines[j] and 'is up' in lines[j]:
-                            return j
-        self.summarylog.write('Devices were not up\n')
-        self.assertTrue(False, msg='Devices are not up')
+    # def checkdevicesfound(self, lines):
+    #     for i in range(0, len(lines)):
+    #         self.checkalerts(lines, i)
+    #         if 'Found 0 usable devices:' in lines[i]:
+    #             msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
+    #             self.summarylog.write(msg + '\n')
+    #             self.assertTrue(False, msg=msg)
+    #         elif 'Device 0' in lines[i] and 'is up' in lines[i]:
+    #             if len(self.devicelist) == 1:
+    #                 return i
+    #             else:
+    #                 for j in range(i, len(lines)):
+    #                     if 'Device 1' in lines[j] and 'is up' in lines[j]:
+    #                         return j
+    #     self.summarylog.write('Devices were not up\n')
+    #     self.assertTrue(False, msg='Devices are not up')
 
     def evaluate(self, lines, index):
         result = True
@@ -874,6 +894,16 @@ class TestRXPktsDistribution(SingleZeroRXValue):
     def executetest(self):
         return subprocess.Popen([
             './build/MoonGen', './examples/rx-pkts-distribution.lua', '0', '60'
+        ], stdout=self.testlog, cwd=self.path)
+
+
+class TestVXLANexample(DevicesUpCheckedSeperately):
+    logname = 'vxlanexamplelog'
+    casename = 'VXLAN Example'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/vxlan-example.lua', '0', '1', '0', '0', '0'
         ], stdout=self.testlog, cwd=self.path)
 
 
