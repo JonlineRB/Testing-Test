@@ -427,6 +427,60 @@ class TwoWayTerminatingTest(TerminatingTest):
         return vallist
 
 
+class OneTXTwoRXQueues(TerminatingTest):
+
+    def checkvaluesarezero(self, value1, value2, value3):
+        if value1 == 0 and value2 == 0 and value3 == 0:
+            self.assertTrue(False, msg='Values are 0')
+
+    def adjustvalues(self, vallist, currvalues, firstrun):
+
+        for i in range(0, 3):
+            if currvalues[i] > vallist[i][0]:
+                if firstrun:
+                    vallist[i][2] = currvalues[i]
+            if currvalues[i] < vallist[i][2]:
+                vallist[i][2] = currvalues[i]
+            vallist[i][1] += currvalues[i]
+        vallist[3] += 1
+        return vallist
+
+    def evaluate(self, lines, index):
+        result = True
+        ignorefirst = True
+        firstmimax = True
+        vallist = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], 0.0]
+        for i in range(index, len(lines)):
+            if (not result) and (not self.checkalerts(lines, i)):
+                break
+            if 'TX' in lines[i]:
+                if ignorefirst:
+                    ignorefirst = False
+                    continue
+                try:
+                    txvalue = float(lines[i].split()[3])
+                    if 'qid=1' in lines[i + 1] and 'qid=2' in lines[i + 2]:
+                        rx1value = float(lines[i + 1].split()[4])
+                        rx2value = float(lines[i + 2].split()[4])
+                        result = result and ((rx1value + rx2value) > self.resulttolorance * txvalue)
+                        curvalues = [txvalue, rx1value, rx2value]
+                        vallist = self.adjustvalues(vallist, curvalues, firstmimax)
+                        firstmimax = False
+                except IndexError:
+                    continue
+
+        titles = ['TX Values', 'RX 1 Values', 'RX 2 Values']
+        for i in range(0, 3):
+            self.summarylog.write(
+                '\n' + titles[i] + '\nMAX: ' + str(vallist[i][0]) + '\nAVG: ' + str(vallist[i][2] / vallist[3])
+                + '\nMIN: ' + str(vallist[i][2]) + '\n'
+            )
+        self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(self.resulttolorance * 100))
+        '% at all times: ' + str(True)
+        self.assertTrue(result,
+                        msg='This means RX sum has not been ' + str(self.resulttolorance * 100) + '% at all times')
+
+
 class TestSimpleUDP(TerminatingTest):
     logname = 'udpSimpleTestLog'
     # testlog = open(logname, 'w')
@@ -800,6 +854,16 @@ class TestRateControlMethods(SingleNonZeroTXValue):
         return subprocess.Popen(
             ['./build/MoonGen', './examples/rate-control-methods.lua', '0', '2', 'moongen', 'cbr', '1'],
             stdout=self.testlog, cwd=self.path)
+
+
+class TestRSS(OneTXTwoRXQueues):
+    logname = 'rsslog'
+    casename = 'RSS'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/rss.lua', '0', '1', '2'
+        ], stdout=self.testlog, cwd=self.path)
 
 
 class TestTimeStampCapabilities(BindDevices):
