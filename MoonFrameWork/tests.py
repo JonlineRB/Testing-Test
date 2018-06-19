@@ -476,8 +476,8 @@ class OneTXTwoRXQueues(TerminatingTest):
                 '\n' + titles[i] + '\nMAX: ' + str(vallist[i][0]) + '\nAVG: ' + str(vallist[i][1] / vallist[3])
                 + '\nMIN: ' + str(vallist[i][2]) + '\n'
             )
-        self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(self.resulttolorance * 100)) +
-        '% at all times: ' + str(True)
+        self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(
+            self.resulttolorance * 100) + '% at all times: ' + str(True))
         self.assertTrue(result,
                         msg='This means RX sum has not been ' + str(self.resulttolorance * 100) + '% at all times')
 
