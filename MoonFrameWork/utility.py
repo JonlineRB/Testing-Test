@@ -54,7 +54,6 @@ def initdevices(devicelist, path):
 
 
 def binddevices(devicelist, path):
-    print ('binding devices: ' + str(devicelist))
     if not devicelist:
         return
     for x in devicelist:
