@@ -230,7 +230,7 @@ class TerminatingTest(BindDevices):
             return True
 
 
-class SingleZeroValue(TerminatingTest):
+class SingleDevice(TerminatingTest):
 
     def checkdevicesfound(self, lines):
         for i in range(0, len(lines)):
@@ -243,6 +243,9 @@ class SingleZeroValue(TerminatingTest):
         self.summarylog.write('Device is not up\n')
         self.assertTrue(False, msg='Device is not up')
 
+
+class SingleZeroRXValue(SingleDevice):
+
     def evaluate(self, lines, index):
         result = True
         for i in range(index, len(lines)):
@@ -251,6 +254,50 @@ class SingleZeroValue(TerminatingTest):
                 result = result and (float(lines[i].split()[3]) == 0.0)
         self.summarylog.write('Condition: Have all values been 0? ' + '\nResult: ' + str(result))
         self.assertTrue(result, msg='Not all values were zero')
+
+
+class SingleNonZeroTXValue(SingleDevice):
+
+    def checkvaluesarezero(self, value1):
+        if value1 == 0.0:
+            return True
+        return False
+
+    def adjustvalues(self, vallist, txvalue, firstrun):
+        if txvalue > vallist[0]:
+            vallist[0] = txvalue
+            if firstrun:
+                vallist[2] = txvalue
+        if txvalue < vallist[2]:
+            vallist[2] = txvalue
+        vallist[1] += txvalue
+        vallist[4] += 1
+
+        return vallist
+
+    def evaluate(self, lines, index):
+        result = True
+        ignorefirst = True
+        firstminmax = True
+        vallist = [0.0, 0.0, 0.0, 0.0]  # value list with: max, avg, min, counter
+        for i in range(index, len(lines)):
+            if not result:
+                break
+            self.checkalerts(lines, i)
+            if 'TX' in lines[i]:
+                if ignorefirst:
+                    ignorefirst = False
+                    continue
+                value = float(lines[i].split()[3])
+                vallist = self.adjustvalues(vallist, value, firstminmax)
+                result = result and not self.checkvaluesarezero(value)
+                firstminmax = False
+
+        self.summarylog.write(
+            '\nTX Values: \nMAX: ' + str(vallist[0]) + '\nAVG: ' + str(vallist[2] / vallist[3]) + '\nMIN: ' + str(
+                vallist[2] + '\n'))
+        self.summarylog.write('\nVerdict: have all values been greater than zero at all times: ' + str(result))
+        self.assertTrue(result, msg='This means a value has been zero')
 
 
 class TwoWayTerminatingTest(TerminatingTest):
@@ -535,7 +582,7 @@ class TestL3LoadLatency(TerminatingTest):
             stdout=self.testlog, cwd=self.path)
 
 
-class TestDump(SingleZeroValue):
+class TestDump(SingleZeroRXValue):
     logname = 'dumplog'
     casename = 'Dump'
 
@@ -743,6 +790,16 @@ class TestQualityOfService(TerminatingTest):
             str(secondportrxvalues[2])
         )
         self.assertTrue(True)  # tmp
+
+
+class TestRateControlMethods(SingleNonZeroTXValue):
+    logname = 'ratecontrolmethodslog'
+    casename = 'Rate Control Methods'
+
+    def executetest(self):
+        return subprocess.Popen(
+            ['./build/MoonGen', './examples/rate-control-methods.lua', '0', '2', 'moongen', 'cbr', '1'],
+            stdout=self.testlog, cwd=self.path)
 
 
 class TestTimeStampCapabilities(BindDevices):

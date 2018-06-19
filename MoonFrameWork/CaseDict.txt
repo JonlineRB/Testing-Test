@@ -11,3 +11,4 @@ l3loadlatency tests.TestL3LoadLatency
 dump tests.TestDump
 l3tcpsynflood tests.TestL3TcpSynFlood
 qualityofservice tests.TestQualityOfService
+ratecontrolmethods tests.TestRateControlMethods
