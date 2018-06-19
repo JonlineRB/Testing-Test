@@ -271,7 +271,7 @@ class SingleNonZeroTXValue(SingleDevice):
         if txvalue < vallist[2]:
             vallist[2] = txvalue
         vallist[1] += txvalue
-        vallist[4] += 1
+        vallist[3] += 1
 
         return vallist
 
