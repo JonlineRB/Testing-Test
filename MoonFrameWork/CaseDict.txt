@@ -13,3 +13,4 @@ l3tcpsynflood tests.TestL3TcpSynFlood
 qualityofservice tests.TestQualityOfService
 ratecontrolmethods tests.TestRateControlMethods
 rss tests.TestRSS
+rxpktsdistribution tests.TestRXPktsDistribution

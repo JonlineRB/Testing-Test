@@ -250,7 +250,7 @@ class SingleZeroRXValue(SingleDevice):
         result = True
         for i in range(index, len(lines)):
             self.checkalerts(lines, index)
-            if 'RX' in lines[i]:
+            if 'Packets counted' in lines[i]:
                 result = result and (float(lines[i].split()[3]) == 0.0)
         self.summarylog.write('Condition: Have all values been 0? ' + '\nResult: ' + str(result))
         self.assertTrue(result, msg='Not all values were zero')
@@ -864,6 +864,16 @@ class TestRSS(OneTXTwoRXQueues):
     def executetest(self):
         return subprocess.Popen([
             './build/MoonGen', './examples/rss.lua', '0', '1', '2'
+        ], stdout=self.testlog, cwd=self.path)
+
+
+class TestRXPktsDistribution(SingleZeroRXValue):
+    logname = 'rxpktsdistributionlog'
+    casename = 'RX Pkts Distribution'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/rx-pkts-distribution.lua', '0', '60'
         ], stdout=self.testlog, cwd=self.path)
 
 
