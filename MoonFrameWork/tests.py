@@ -136,8 +136,8 @@ class TerminatingTest(BindDevices):
 
     def checkalerts(self, lines, index):
         if '[FATAL]' in lines[index] or '[ERROR]' in lines[index] or '[WARN]' in lines[index]:
-            print'--line of interest: ' + lines[index]
-            self.summarylog.write('line of interest: ' + lines[index] + '\n')
+            print lines[index]
+            self.summarylog.write(lines[index] + '\n')
         elif 'Saving histogram to' in lines[index]:
             for i in range(index, len(lines)):
                 self.summarylog.write(lines[i])
@@ -920,7 +920,7 @@ class TestInterArrivalTimes(SingleDevice):
         result = False
         for i in range(index, len(lines)):
             self.checkalerts(lines, i)
-            if 'Lost Packets: ' in lines[i]:
+            if 'Lost packets: ' in lines[i]:
                 value = int(lines[i].split()[3])
                 result = value == 0
                 self.summarylog.write('Verdict: 0 packets have been lost: ' + result)
