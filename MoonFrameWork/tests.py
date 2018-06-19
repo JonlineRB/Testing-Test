@@ -804,7 +804,7 @@ class TestQualityOfService(TerminatingTest):
         return result
 
     def evaluate(self, lines, index):
-        # result = True
+        result = True
         # firstvalueskip = True
         firstminmax = [True, True, True, True]
 
@@ -827,13 +827,13 @@ class TestQualityOfService(TerminatingTest):
         secondportrxvalues = [0.0, 0.0, 0.0, 0]
 
         for i in range(index, len(lines)):
+
             if '[Port' in lines[i]:
                 # print 'THIS HAPPENS'
                 value = float(lines[i].split()[3])
                 # print firstport
                 # print ('THIS HAPPENS. Value: ' + value)
                 if str(firstport) in lines[i]:
-                    print 'THIS HAPPENS'
                     if 'TX' in lines[i]:
                         firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
                         firstminmax[0] = False
@@ -864,7 +864,9 @@ class TestQualityOfService(TerminatingTest):
                 secondportrxvalues) + '\nMIN: ' +
             str(secondportrxvalues[2])
         )
-        self.assertTrue(True)  # tmp
+        result = result and firstportrxvalues[0] != 0 and firstportrxvalues[
+            0] != 0 and secondporttxvalues != 0 and secondportrxvalues != 0
+        self.assertTrue(result, 'Some values were 0z')  # tmp
 
 
 class TestRateControlMethods(SingleNonZeroTXValue):
