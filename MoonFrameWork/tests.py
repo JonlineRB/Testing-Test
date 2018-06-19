@@ -817,10 +817,6 @@ class TestQualityOfService(TerminatingTest):
         secondport = secondportline[len(secondportline) - 1]
         secondport = self.extractport(secondport)
 
-        # problem with the port string values, fix it
-        print('value1: ->' + firstport + '<- || value2: ->' + secondport + '<-')
-        print firstport == '43'
-
         firstporttxvalues = [0.0, 0.0, 0.0, 0]
         firstportrxvalues = [0.0, 0.0, 0.0, 0]
         secondporttxvalues = [0.0, 0.0, 0.0, 0]
