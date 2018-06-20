@@ -8,6 +8,15 @@ from datetime import datetime
 from FrameworkSubprocess import SubHandler
 
 
+# stores all of the relevant test cases for MoonGen
+# how to expand: run the script you wish to expand and identify
+# to what it fits. For example, simple UDP will be a direct subclass
+# of TerminatingTest, but dump.lua will inherit from SingleDevice.
+# once a suitable superclass has been found, following need to be overriden:
+# logname - name of the log files, casename - name to print while running the test,
+# self.executetest - should return a subprocess.Popen that runs the desired test.
+# for any further handling, look into the other methods and override them as needed.
+
 class BindDevices(unittest.TestCase):
     # devicelist = list()
     logdir = 'logs/'
