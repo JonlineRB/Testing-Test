@@ -115,7 +115,6 @@ def parsetestcases(devicelist, args):
     # at this point, if the args flag is set, parse cases from the command line instead
     try:
         if len(args) > 1 and args[1] == '-t':
-            print'THIS HAPPENS'
             casename = None
             index1 = None
             index2 = None
@@ -139,6 +138,7 @@ def parsetestcases(devicelist, args):
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
                 elif index2 is None:
+                    print'THIS HAPPENS'
                     try:
                         index2 = getdeviceindex(devicelist, args[i])
                         if index1 == index2 or index2 == -1:
@@ -147,7 +147,7 @@ def parsetestcases(devicelist, args):
                             continue
                         tmplist = [devicelist[index1], devicelist[index2]]
                         try:
-                            print'THIS HAPPENS'
+                            # print'THIS HAPPENS'
                             suite = handletags(casename, tmplist, dictionary, path, suite)
                             test = eval(dictionary[casename])(tmplist, path)
                             suite.addTest(test)
