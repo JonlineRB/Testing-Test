@@ -960,8 +960,13 @@ class TestTimeStampCapabilities(BindDevices):
                     backtrack += 1
                 print'Following case failed:'
                 print(out)
+                self.summarylog.write('Error in: ' + out + ':\n' + lines[index])
 
-        print'Timestamping conducted %d tests, %d errors came up' % (testquant, errorcounter)
-        self.assertTrue(testquant - errorcounter > self.reqpasses,
+        msg = 'Timestamping conducted %d tests, %d errors came up\n' % (testquant, errorcounter)
+        print msg
+        self.summarylog.write(msg)
+        result = testquant - errorcounter > self.reqpasses
+        self.summarylog.write('Verdict: Have the passed tests surpassed ' + str(self.reqpasses) + ': ' + str(result))
+        self.assertTrue(result,
                         msg='Selected devices have passed less than %d tests in Test Timestamping Capabilities'
                             % self.reqpasses)
