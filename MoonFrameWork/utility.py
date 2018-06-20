@@ -15,7 +15,7 @@ def parsedevices(dpdkdevlist, path):
     initialbinds = open('initialBindState', 'w')
     # start this process
     p = subprocess.Popen(
-        ['./dpdk-devbind.py', '-s'], stdout=initialbinds, cwd=path+'libmoon/deps/dpdk/usertools'
+        ['./dpdk-devbind.py', '-s'], stdout=initialbinds, cwd=path + 'libmoon/deps/dpdk/usertools'
     )
     p.wait()
     # parse and store the results
@@ -59,7 +59,7 @@ def binddevices(devicelist, path):
     for x in devicelist:
         p = subprocess.Popen(
             ['./dpdk-devbind.py', '--bind=igb_uio', x.split()[0]],
-            cwd=path+'libmoon/deps/dpdk/usertools'
+            cwd=path + 'libmoon/deps/dpdk/usertools'
         )
         p.wait()
 
@@ -76,15 +76,16 @@ def getdeviceindex(devicelist, arg):
     else:
         return int(arg)
 
-def handletags(name, devicelist, cases, path):
 
+def handletags(name, devicelist, cases, path):
     if name == 'all':
         suite = unittest.TestSuite()
         # generate all tests for this piar
-        for key in cases
+        for key in cases:
             test = eval(cases[key])(devicelist, path)
             suite.addTest(test)
         unittest.TextTestRunner(verbosity=2).run(suite)
+
 
 def parsetestcases(devicelist, args):
     parser = ConfigParser.ConfigParser()
@@ -120,7 +121,7 @@ def parsetestcases(devicelist, args):
                         print 'index error'
                         casename, index1, index2 = (None,) * 3
                         continue
-                    elif i == (len(args)-1):
+                    elif i == (len(args) - 1):
                         tmplist = [devicelist[index1]]
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
