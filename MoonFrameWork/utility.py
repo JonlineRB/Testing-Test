@@ -1,8 +1,9 @@
 import os
 import subprocess
 import ConfigParser
-from FrameworkSubprocess import SubHandler
-import tests
+# from FrameworkSubprocess import SubHandler
+# import tests
+from tap import TAPTestRunner
 import unittest
 
 
@@ -97,7 +98,8 @@ def handletags(name, devicelist, cases, path, suite):
     return suite
 
 
-def parsetestcases(devicelist, args):
+def parse
+    testcases(devicelist, args):
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
     try:
@@ -196,4 +198,8 @@ def parsetestcases(devicelist, args):
 
     except TypeError and IndexError:
         print 'arg error'
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    runner = TAPTestRunner()
+    runner.set_outdir('log/TAP/')
+    runner.set_format('Hi : {method_name} - {short-description}')
+    runner.run(suite)
+    # unittest.TextTestRunner(verbosity=2).run(suite)

@@ -5,7 +5,7 @@ import time
 import sys
 import os.path
 from datetime import datetime
-from FrameworkSubprocess import SubHandler
+# from FrameworkSubprocess import SubHandler
 
 
 # stores all of the relevant test cases for MoonGen
@@ -24,6 +24,7 @@ class BindDevices(unittest.TestCase):
     casename = 'default case name'
     testlog = None
     summarylog = None
+    # TAPlog = None
 
     # testlog = open(logname, 'w') # this has to be overridden by subclass
 
@@ -53,6 +54,7 @@ class BindDevices(unittest.TestCase):
         self.logname += '_' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
         self.testlog = open(self.logname, 'w')
         self.summarylog = open(self.logname + '_summary', 'w')
+        # self.TAPlog = open(self.logname + '_TAP', 'w')
         self.summarylog.write('=== SUMMARY ===\n\n')
 
     def writetoread(self):
