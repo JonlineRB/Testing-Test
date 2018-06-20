@@ -134,9 +134,6 @@ def parsetestcases(devicelist, args):
                     elif i == (len(args) - 1):
                         tmplist = [devicelist[index1]]
                         suite = handletags(casename, tmplist, dictionary, path, suite)
-                        # if handletags(casename, tmplist, dictionary, path):
-                        #     casename, index1, index2 = (None,) * 3
-                        #     continue
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
@@ -150,10 +147,6 @@ def parsetestcases(devicelist, args):
                         tmplist = [devicelist[index1], devicelist[index2]]
                         try:
                             suite = handletags(casename, tmplist, dictionary, path, suite)
-                            # print 'THIS HAPPENS'
-                            # if handletags(casename, tmplist, dictionary, path):
-                            #     casename, index1, index2 = (None,) * 3
-                            #     continue
                             test = eval(dictionary[casename])(tmplist, path)
                             suite.addTest(test)
                         except KeyError:
@@ -162,6 +155,7 @@ def parsetestcases(devicelist, args):
                     except TypeError:
                         # in this case, only 1 device is given
                         tmplist = [devicelist[index1]]
+                        suite = handletags(casename, tmplist, dictionary, path, suite)
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
