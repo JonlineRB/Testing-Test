@@ -198,6 +198,6 @@ def parsetestcases(devicelist, args):
                     else:
                         print ('section %s has no test option, or devices' % section)
 
-        unittest.TextTestRunner(verbosity=2).run(suite)
     except TypeError and IndexError:
         print 'arg error'
+    unittest.TextTestRunner(verbosity=2).run(suite)
