@@ -98,8 +98,7 @@ def handletags(name, devicelist, cases, path, suite):
     return suite
 
 
-def parse
-    testcases(devicelist, args):
+def parsetestcases(devicelist, args):
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
     try:
