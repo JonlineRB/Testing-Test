@@ -78,6 +78,7 @@ def getdeviceindex(devicelist, arg):
 
 
 def handletags(name, devicelist, cases, path):
+    print 'THIS HAPPENS'
     suite = unittest.TestSuite()
     parser = ConfigParser.ConfigParser()
     parser.read('TagConfig.cfg')
