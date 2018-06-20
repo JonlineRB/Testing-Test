@@ -78,13 +78,24 @@ def getdeviceindex(devicelist, arg):
 
 
 def handletags(name, devicelist, cases, path):
+    suite = unittest.TestSuite()
+    parser = ConfigParser.ConfigParser()
+    parser.read('TagConfig.cfg')
     if name == 'all':
-        suite = unittest.TestSuite()
         # generate all tests for this piar
         for key in cases:
             test = eval(cases[key])(devicelist, path)
             suite.addTest(test)
         unittest.TextTestRunner(verbosity=2).run(suite)
+        return True
+    for section in parser.sections():
+        if name == section:
+            for option in parser.options(section):
+                testname = parser.get(section, option)
+                test = eval(cases[testname])(devicelist, path)
+                suite.addTest(test)
+            unittest.TextTestRunner(verbosity=2).run(suite)
+            return True
 
 
 def parsetestcases(devicelist, args):
@@ -123,6 +134,9 @@ def parsetestcases(devicelist, args):
                         continue
                     elif i == (len(args) - 1):
                         tmplist = [devicelist[index1]]
+                        if handletags(casename, tmplist, dictionary, path):
+                            casename, index1, index2 = (None,) * 3
+                            continue
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
@@ -135,6 +149,9 @@ def parsetestcases(devicelist, args):
                             continue
                         tmplist = [devicelist[index1], devicelist[index2]]
                         try:
+                            if handletags(casename, tmplist, dictionary, path):
+                                casename, index1, index2 = (None,) * 3
+                                continue
                             test = eval(dictionary[casename])(tmplist, path)
                             suite.addTest(test)
                         except KeyError:
@@ -169,6 +186,8 @@ def parsetestcases(devicelist, args):
                     print tmplist
                     parsedcase = parser.get(section, 'test')
                     try:
+                        if handletags(parsedcase, tmplist, dictionary, path):
+                            continue
                         test = eval(dictionary[parsedcase])(tmplist, path)
                     except KeyError:
                         print 'unknown test'
