@@ -150,6 +150,7 @@ def parsetestcases(devicelist, args):
                             continue
                         tmplist = [devicelist[index1], devicelist[index2]]
                         try:
+                            print 'THIS HAPPENS'
                             if handletags(casename, tmplist, dictionary, path):
                                 casename, index1, index2 = (None,) * 3
                                 continue
