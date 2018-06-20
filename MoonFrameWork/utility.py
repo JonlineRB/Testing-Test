@@ -2,7 +2,7 @@ import os
 import subprocess
 import ConfigParser
 # from FrameworkSubprocess import SubHandler
-# import tests
+import tests
 from tap import TAPTestRunner
 import unittest
 
