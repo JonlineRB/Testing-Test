@@ -132,9 +132,9 @@ def parsetestcases(devicelist, args):
                         casename, index1, index2 = (None,) * 3
                         continue
                     elif i == (len(args) - 1):
+                        print'THIS HAPPENS'
                         tmplist = [devicelist[index1]]
                         suite = handletags(casename, tmplist, dictionary, path, suite)
-                        print'THIS HAPPENS'
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
