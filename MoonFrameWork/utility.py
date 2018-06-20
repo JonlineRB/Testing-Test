@@ -77,9 +77,8 @@ def getdeviceindex(devicelist, arg):
         return int(arg)
 
 
-def handletags(name, devicelist, cases, path):
+def handletags(name, devicelist, cases, path, suite):
     print 'THIS HAPPENS'
-    suite = unittest.TestSuite()
     parser = ConfigParser.ConfigParser()
     parser.read('TagConfig.cfg')
     if name == 'all':
@@ -88,7 +87,7 @@ def handletags(name, devicelist, cases, path):
             test = eval(cases[key])(devicelist, path)
             suite.addTest(test)
         unittest.TextTestRunner(verbosity=2).run(suite)
-        return True
+        return suite
     for section in parser.sections():
         if name == section:
             for option in parser.options(section):
@@ -96,7 +95,7 @@ def handletags(name, devicelist, cases, path):
                 test = eval(cases[testname])(devicelist, path)
                 suite.addTest(test)
             unittest.TextTestRunner(verbosity=2).run(suite)
-            return True
+            return suite
 
 
 def parsetestcases(devicelist, args):
@@ -135,9 +134,10 @@ def parsetestcases(devicelist, args):
                         continue
                     elif i == (len(args) - 1):
                         tmplist = [devicelist[index1]]
-                        if handletags(casename, tmplist, dictionary, path):
-                            casename, index1, index2 = (None,) * 3
-                            continue
+                        suite = handletags(casename, tmplist, dictionary, path, suite)
+                        # if handletags(casename, tmplist, dictionary, path):
+                        #     casename, index1, index2 = (None,) * 3
+                        #     continue
                         test = eval(dictionary[casename])(tmplist, path)
                         suite.addTest(test)
                         casename, index1, index2 = (None,) * 3
@@ -150,10 +150,11 @@ def parsetestcases(devicelist, args):
                             continue
                         tmplist = [devicelist[index1], devicelist[index2]]
                         try:
-                            print 'THIS HAPPENS'
-                            if handletags(casename, tmplist, dictionary, path):
-                                casename, index1, index2 = (None,) * 3
-                                continue
+                            suite = handletags(casename, tmplist, dictionary, path, suite)
+                            # print 'THIS HAPPENS'
+                            # if handletags(casename, tmplist, dictionary, path):
+                            #     casename, index1, index2 = (None,) * 3
+                            #     continue
                             test = eval(dictionary[casename])(tmplist, path)
                             suite.addTest(test)
                         except KeyError:
@@ -188,8 +189,9 @@ def parsetestcases(devicelist, args):
                     print tmplist
                     parsedcase = parser.get(section, 'test')
                     try:
-                        if handletags(parsedcase, tmplist, dictionary, path):
-                            continue
+                        suite = handletags(parsedcase, tmplist, dictionary, path, suite)
+                        # if handletags(parsedcase, tmplist, dictionary, path):
+                        #     continue
                         test = eval(dictionary[parsedcase])(tmplist, path)
                     except KeyError:
                         print 'unknown test'
