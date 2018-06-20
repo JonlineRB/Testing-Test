@@ -119,11 +119,10 @@ def parsetestcases(devicelist, args):
             index1 = None
             index2 = None
             for i in range(2, len(args)):
-                #
+                print'THIS HAPPENS'
                 if casename is None:
                     if args[i] in dictionary:
                         casename = args[i]
-                        print'THIS HAPPENS'
                     else:
                         continue
                 elif index1 is None:
