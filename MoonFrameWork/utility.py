@@ -123,6 +123,7 @@ def parsetestcases(devicelist, args):
                 if casename is None:
                     if args[i] in dictionary:
                         casename = args[i]
+                        print'THIS HAPPENS'
                     else:
                         continue
                 elif index1 is None:
@@ -132,7 +133,6 @@ def parsetestcases(devicelist, args):
                         casename, index1, index2 = (None,) * 3
                         continue
                     elif i == (len(args) - 1):
-                        print'THIS HAPPENS'
                         tmplist = [devicelist[index1]]
                         suite = handletags(casename, tmplist, dictionary, path, suite)
                         test = eval(dictionary[casename])(tmplist, path)
