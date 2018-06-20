@@ -86,7 +86,7 @@ class TerminatingTest(BindDevices):
             print'Process not terminated!--'
 
     def runTest(self):
-        print("=====Testing MoonGen Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
+        print("Testing MoonGen Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
         p = self.executetest()
         # p.wait()
         # print 'udp simple test launched, terminates in 20 seconds'

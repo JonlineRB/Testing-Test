@@ -146,6 +146,7 @@ def parsetestcases(devicelist, args):
                             continue
                         tmplist = [devicelist[index1], devicelist[index2]]
                         try:
+                            print'THIS HAPPENS'
                             suite = handletags(casename, tmplist, dictionary, path, suite)
                             test = eval(dictionary[casename])(tmplist, path)
                             suite.addTest(test)
