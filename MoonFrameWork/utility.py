@@ -86,16 +86,15 @@ def handletags(name, devicelist, cases, path, suite):
         for key in cases:
             test = eval(cases[key])(devicelist, path)
             suite.addTest(test)
-        unittest.TextTestRunner(verbosity=2).run(suite)
-        return suite
-    for section in parser.sections():
-        if name == section:
-            for option in parser.options(section):
-                testname = parser.get(section, option)
-                test = eval(cases[testname])(devicelist, path)
-                suite.addTest(test)
-            unittest.TextTestRunner(verbosity=2).run(suite)
-            return suite
+    else:
+        for section in parser.sections():
+            if name == section:
+                for option in parser.options(section):
+                    testname = parser.get(section, option)
+                    test = eval(cases[testname])(devicelist, path)
+                    suite.addTest(test)
+
+    return suite
 
 
 def parsetestcases(devicelist, args):
