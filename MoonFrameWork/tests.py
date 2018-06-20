@@ -142,6 +142,8 @@ class TerminatingTest(BindDevices):
         return reslist
 
     def checkalerts(self, lines, index):
+        if 'not supported on this device' in lines[index]:
+            self.assertTrue(False, msg='Device is not suited for this test')
         if '[FATAL]' in lines[index] or '[ERROR]' in lines[index] or '[WARN]' in lines[index]:
             print lines[index]
             self.summarylog.write(lines[index] + '\n')
@@ -831,6 +833,7 @@ class TestQualityOfService(TerminatingTest):
 
         for i in range(index, len(lines)):
 
+            self.checkalerts(lines, i)
             if '[Port' in lines[i]:
                 value = float(lines[i].split()[3])
                 if str(firstport) in lines[i]:
