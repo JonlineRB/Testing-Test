@@ -31,8 +31,8 @@ utility.initdevices(dpdkdevlist, MoonGenPath)
 
 utility.parsetestcases(dpdkdevlist, sys.argv)
 
-print('Printing device list before exit')
-print(dpdkdevlist)
+# print('Printing device list before exit')
+# print(dpdkdevlist)
 utility.binddevices(dpdkdevlist, MoonGenPath)
 
 print('Framework: end')
