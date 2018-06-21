@@ -8,7 +8,6 @@ import sys
 print('Framework: start')
 
 # case of arg -h
-
 try:
     if sys.argv[1] == '-h':
         print 'execute to run the config file.'
@@ -19,7 +18,7 @@ try:
         print 'please refer to CaseDict.txt for supported cases'
         exit()
 except IndexError:
-
+    pass
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
