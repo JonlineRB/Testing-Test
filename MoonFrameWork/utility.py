@@ -2,7 +2,7 @@ import os
 import subprocess
 import ConfigParser
 # from FrameworkSubprocess import SubHandler
-import tests
+import tests  # dont remove this, it is actually used on eval() calls
 from tap import TAPTestRunner
 import unittest
 
@@ -199,5 +199,6 @@ def parsetestcases(devicelist, args):
     runner = TAPTestRunner()
     runner.set_outdir('logs/TAP/')
     runner.set_format('{short_description} and {method_name}')
+    runner.set_combined(True)
     runner.run(suite)
     # unittest.TextTestRunner(verbosity=2).run(suite)
