@@ -198,7 +198,7 @@ def parsetestcases(devicelist, args):
         print 'arg error'
     runner = TAPTestRunner()
     runner.set_outdir('logs/TAP/')
-    runner.set_format('{short_description} and {method_name}')
+    runner.set_format('{method_name} and {short_description}')
     runner.set_combined(True)
     runner.run(suite)
     # unittest.TextTestRunner(verbosity=2).run(suite)
