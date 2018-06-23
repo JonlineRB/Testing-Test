@@ -916,7 +916,7 @@ class TestTimeStampsDrift(TerminatingTest):
 
     def executetest(self):
         return subprocess.Popen([
-            './build/MoonGen', './examples/timestamping-tests/drift.lua 0 1'
+            './build/MoonGen', './examples/timestamping-tests/drift.lua', '0', '1'
         ], stdout=self.testlog, cwd=self.path)
 
     def getvalue(self, string):
