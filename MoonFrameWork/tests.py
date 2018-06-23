@@ -58,7 +58,7 @@ class BindDevices(unittest.TestCase):
 
     def writetoread(self):
         self.testlog.close()
-        self.testlog = open(self.logname, 'r')
+        self.testlog = open(self.logname + '.txt', 'r')
 
 
 class TerminatingTest(BindDevices):
