@@ -5,6 +5,7 @@ import time
 import sys
 import os.path
 from datetime import datetime
+from DisplayValue import DisplayValue
 
 
 # from FrameworkSubprocess import SubHandler
@@ -146,6 +147,8 @@ class TerminatingTest(BindDevices):
     def checkalerts(self, lines, index):
         if 'not supported on this device' in lines[index]:
             self.assertTrue(False, msg='Device is not suited for this test')
+        elif 'NICs incompatible' in lines[index]:
+            self.assertTrue(False, msg='Devices are not compatible')
         if '[FATAL]' in lines[index] or '[ERROR]' in lines[index] or '[WARN]' in lines[index]:
             print lines[index]
             self.summarylog.write(lines[index] + '\n')
@@ -905,6 +908,37 @@ class TestTimeStampsSoftware(SingleNonZeroTXValue):
         return subprocess.Popen([
             './build/MoonGen', './examples/timestamping-tests/timestamps-software.lua', '0', '1', '1'
         ], stdout=self.testlog, cwd=self.path)
+
+
+class TestTimeStampsDrift(TerminatingTest):
+    logname = 'timestampdriftlog'
+    casename = 'Time Stamping tests - Drift'
+
+    def executetest(self):
+        return subprocess.Popen([
+            './build/MoonGen', './examples/timestamping-tests/drift.lua 0 1'
+        ], stdout=self.testlog, cwd=self.path)
+
+    def getvalue(self, string):
+        result = ''
+        for i in range(1, len(string)):
+            result += string[i]
+            return float(result)
+
+    def evaluate(self, lines, index):
+        ignorefirst = True
+        values = DisplayValue('Nano Seconds')
+        for i in range(index, len(lines)):
+            self.checkalerts()
+            if lines[i][0] == '-':
+                if ignorefirst:
+                    ignorefirst = False
+                    continue
+                value = self.getvalue(lines[i])
+                values.aggregate(value)
+
+            self.summarylog.write('Clock difference values are: ' + values.tostring())
+            self.assertTrue(True)
 
 
 class TestTimeStampCapabilities(BindDevices):

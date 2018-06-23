@@ -17,3 +17,4 @@ rxpktsdistribution tests.TestRXPktsDistribution
 vxlanexample tests.TestVXLANexample
 interarrivaltimes tests.TestInterArrivalTimes
 timestampssoftware tests.TestTimeStampsSoftware
+timestampdrift tests.TestTimeStampsDrift
