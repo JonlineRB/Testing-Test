@@ -937,8 +937,8 @@ class TestTimeStampsDrift(TerminatingTest):
                 value = self.getvalue(lines[i])
                 values.aggregate(value)
 
-            self.summarylog.write('Clock difference values are: ' + values.tostring())
-            self.assertTrue(True)
+        self.summarylog.write('Clock difference values are: ' + values.tostring())
+        self.assertTrue(True)
 
 
 class TestTimeStampCapabilities(BindDevices):
