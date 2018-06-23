@@ -1,4 +1,4 @@
-class DisplayValue(Object):
+class DisplayValue:
     maxval = 0.0
     valuesum = 0.0
     minval = 0.0
