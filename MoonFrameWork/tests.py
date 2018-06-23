@@ -921,10 +921,9 @@ class TestTimeStampsDrift(TerminatingTest):
 
     def getvalue(self, string):
         result = ''
-        print len(string)
         for i in range(1, len(string)):
             result += string[i]
-            return float(result)
+        return float(result)
 
     def evaluate(self, lines, index):
         ignorefirst = True
