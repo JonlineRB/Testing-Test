@@ -2,7 +2,7 @@ class DisplayValue:
     maxval = 0.0
     valuesum = 0.0
     minval = 0.0
-    firstvalue = true
+    firstvalue = True
     avrgcount = 0
     unit = None
 
