@@ -51,8 +51,8 @@ class BindDevices(unittest.TestCase):
         if not os.path.isdir(self.logdir):
             os.mkdir('logs/' + datesuffix)
         self.logname = self.logdir + self.logname
-        self.logname += '_' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second) + '.txt'
-        self.testlog = open(self.logname, 'w')
+        self.logname += '_' + str(now.hour) + ':' + str(now.minute) + ':' + str(now.second)
+        self.testlog = open(self.logname + '.txt', 'w')
         self.summarylog = open(self.logname + '_summary.txt', 'w')
         self.summarylog.write('=== SUMMARY ===\n\n')
 
