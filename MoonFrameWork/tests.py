@@ -929,7 +929,7 @@ class TestTimeStampsDrift(TerminatingTest):
         ignorefirst = True
         values = DisplayValue('Nano Seconds')
         for i in range(index, len(lines)):
-            self.checkalerts()
+            self.checkalerts(lines, i)
             if lines[i][0] == '-':
                 if ignorefirst:
                     ignorefirst = False
