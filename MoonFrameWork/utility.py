@@ -181,7 +181,7 @@ class TestExecutor:
                     print 'only 1 device'
                 print('devices to test are:')
                 print tmplist
-                parsedcase = parser.get(section, 'test')
+                parsedcase = self.parser.get(section, 'test')
                 try:
                     self.suite = handletags(parsedcase, tmplist, self.casedictionary, self.path, self.suite)
                     # if handletags(parsedcase, tmplist, dictionary, path):
