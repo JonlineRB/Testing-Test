@@ -96,7 +96,7 @@ class TerminatingTest(BindDevices):
             print'Process not terminated!--'
 
     def runTest(self):
-        print("Testing MoonGen Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
+        print("\nTesting MoonGen Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
         p = self.executetest()
         # p.wait()
         # print 'udp simple test launched, terminates in 20 seconds'
@@ -950,7 +950,7 @@ class TestTimeStampCapabilities(BindDevices):
 
     # test timestamp between NICs
     def runTest(self):
-        print("Testing MoonGen TimeStamp Capabilities of devices: %s and %s"
+        print("\nTesting MoonGen TimeStamp Capabilities of devices: %s and %s"
               % (self.devicelist[0], self.devicelist[1]))
         p = subprocess.Popen(['./build/MoonGen',
                               './examples/timestamping-tests/test-timestamping-capabilities.lua',
