@@ -960,8 +960,9 @@ class TestTimeStampCapabilities(BindDevices):
             sys.stdout.write('.')
             sys.stdout.flush()
         print''
-        self.testlog.close()
-        self.testlog = open(self.logname, 'r')
+        # self.testlog.close()
+        # self.testlog = open(self.logname, 'r')
+        self.writetoread()
         lines = self.testlog.readlines()
         testquant = 0
         errorcounter = 0
