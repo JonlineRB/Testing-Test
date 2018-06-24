@@ -29,4 +29,5 @@ class DisplayValue:
     def tostring(self):
         return ('\nMAX: ' + str(self.maxval) + ' ' + self.unit +
                 '\nAVARAGE: ' + str(self.getavrg()) + ' ' + self.unit +
-                '\nMIN: ' + str(self.minval) + ' ' + self.unit)
+                '\nMIN: ' + str(self.minval) + ' ' + self.unit +
+                '\n')

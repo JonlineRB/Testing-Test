@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 
-import subprocess
 import utility
 import ConfigParser
 import sys
@@ -28,14 +27,25 @@ except IndexError:
 # general setup, unbind all devices so that each test case may set up and tear down
 parser = ConfigParser.ConfigParser()
 parser.read('FrameworkConfig.cfg')
-MoonGenPath = parser.get('Meta', 'path')
+try:
+    MoonGenPath = parser.get('Meta', 'path')
+except ConfigParser.NoSectionError or ConfigParser.NoOptionError:
+    print 'Please set the path to moongen in the config file Meta section'
+    exit()
 dpdkdevlist = list()
 utility.initdevices(dpdkdevlist, MoonGenPath)
 
-utility.parsetestcases(dpdkdevlist, sys.argv)
+testexecutor = utility.TestExecutor(MoonGenPath)
 
-# print('Printing device list before exit')
-# print(dpdkdevlist)
+if sys.argv >= 2 and sys.argv[1] == '-t':
+    print 'parsing from command line'
+    testexecutor.parsefromargs(dpdkdevlist, sys.argv)
+else:
+    print 'parsing from config file'
+    testexecutor.parsefromconfig(dpdkdevlist)
+
+# utility.parsetestcases(dpdkdevlist, sys.argv)
+
 utility.binddevices(dpdkdevlist, MoonGenPath)
 
 print('Framework: end')

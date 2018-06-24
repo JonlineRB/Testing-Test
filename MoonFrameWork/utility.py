@@ -24,6 +24,7 @@ def parsedevices(dpdkdevlist, path):
     initialbinds = open('initialBindState', 'r')
     parsedlines = initialbinds.readlines()
     initialbinds.close()
+
     for x in parsedlines:
         if 'Network devices using DPDK-compatible driver' in x:
             dpdkindex = parsedlines.index(x) + 2
@@ -35,6 +36,7 @@ def parsedevices(dpdkdevlist, path):
     return dpdkdevlist
 
 
+# removes dpdk bound device
 def unbinddevices(devicelist, path):
     for x in devicelist:
         p = subprocess.Popen(
@@ -43,6 +45,7 @@ def unbinddevices(devicelist, path):
         p.wait()
 
 
+# initialize devices at the start
 def initdevices(devicelist, path):
     parsedevices(devicelist, path)
     if not devicelist:
@@ -54,6 +57,7 @@ def initdevices(devicelist, path):
         unbinddevices(devicelist, path)
 
 
+# binds devices to dpdk
 def binddevices(devicelist, path):
     if not devicelist:
         return
@@ -65,6 +69,7 @@ def binddevices(devicelist, path):
         p.wait()
 
 
+# returns the index of the device in the list of devices
 def getdeviceindex(devicelist, arg):
     # case of PCI express handeled
     if ':' in arg:
@@ -95,6 +100,112 @@ def handletags(name, devicelist, cases, path, suite):
                     suite.addTest(test)
 
     return suite
+
+
+class TestExecutor:
+    parser = ConfigParser.ConfigParser()
+    parser.read('FrameworkConfig.cfg')
+    path = None
+    suite = unittest.TestSuite()
+    casedictionary = {}
+
+    def __init__(self, path):
+        self.path = path
+        dictfile = open('CaseDict.txt', 'r')
+        dictlines = dictfile.readlines()
+        dictfile.close()
+        for line in dictlines:
+            (key, value) = line.split()
+            self.casedictionary[key] = value
+
+    def parsefromargs(self, devicelist, args):
+        casename, index1, index2 = (None,) * 3
+        for i in range(2, len(args)):
+            if casename is None:
+                casename = args[i]
+            elif index1 is None:
+                index1 = getdeviceindex(devicelist, args[i])
+                if index1 == -1:
+                    print 'index error'
+                    casename, index1, index2 = (None,) * 3
+                    continue
+                elif i == (len(args) - 1):
+                    tmplist = [devicelist[index1]]
+                    self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
+                    test = eval(self.casedictionary[casename])(tmplist, self.path)
+                    self.suite.addTest(test)
+                    casename, index1, index2 = (None,) * 3
+            elif index2 is None:
+                try:
+                    index2 = getdeviceindex(devicelist, args[i])
+                    if index1 == index2 or index2 == -1:
+                        print'index error'
+                        casename, index1, index2 = (None,) * 3
+                        continue
+                    tmplist = [devicelist[index1], devicelist[index2]]
+                    try:
+                        self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
+                        test = eval(self.casedictionary[casename])(tmplist, self.path)
+                        self.suite.addTest(test)
+                    except KeyError:
+                        print 'unknown test'
+                    casename, index1, index2 = (None,) * 3
+                except TypeError:
+                    # in this case, only 1 device is given
+                    tmplist = [devicelist[index1]]
+                    self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
+                    test = eval(self.casedictionary[casename])(tmplist, self.path)
+                    self.suite.addTest(test)
+                    casename, index1, index2 = (None,) * 3
+
+        self.execute()
+
+    def parsefromconfig(self, devicelist):
+
+        for section in self.parser.sections():
+            try:
+                # handle case where the devices are not index, but rather PCI ports
+                index1 = getdeviceindex(devicelist, self.parser.get(section, 'device1'))
+                if index1 == -1:
+                    print 'Error parsing device, please use an index or PCI port'
+                    continue
+                tmplist = list()
+                tmplist.append(devicelist[index1])
+                try:
+                    index2 = getdeviceindex(devicelist, self.parser.get(section, 'device2'))
+                    if index2 == -1 or index1 == index2:
+                        print 'Error parsing device, please use an index or PCI port'
+                        continue
+                    tmplist.append(devicelist[index2])
+                except ConfigParser.NoOptionError:
+                    print 'only 1 device'
+                print('devices to test are:')
+                print tmplist
+                parsedcase = parser.get(section, 'test')
+                try:
+                    self.suite = handletags(parsedcase, tmplist, self.casedictionary, self.path, self.suite)
+                    # if handletags(parsedcase, tmplist, dictionary, path):
+                    #     continue
+                    test = eval(self.casedictionary[parsedcase])(tmplist, self.path)
+                except KeyError:
+                    print 'unknown test'
+                    test = None
+
+                if test is not None:
+                    self.suite.addTest(test)
+            except ConfigParser.NoOptionError:
+                if section == 'Meta':
+                    pass
+                else:
+                    print ('section %s has no test option, or devices' % section)
+        self.execute()
+
+    def execute(self):
+        runner = TAPTestRunner()
+        runner.set_outdir('logs/TAP/')
+        runner.set_format('{method_name} and {short_description}')
+        runner.set_combined(True)
+        runner.run(self.suite)
 
 
 def parsetestcases(devicelist, args):
