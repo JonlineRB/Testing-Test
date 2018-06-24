@@ -37,7 +37,7 @@ utility.initdevices(dpdkdevlist, MoonGenPath)
 
 testexecutor = utility.TestExecutor(MoonGenPath)
 
-if sys.argv >= 2:
+if len(sys.argv) >= 2:
     if sys.argv[1] == '-t':
         print 'parsing from command line'
         testexecutor.parsefromargs(dpdkdevlist, sys.argv)
