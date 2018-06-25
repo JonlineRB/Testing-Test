@@ -106,31 +106,31 @@ class TerminatingTest(BindDevices):
     def executetest(self):
         return subprocess.Popen()
 
-    valueindex = {'txmax': 0,
-                  'rxmax': 1,
-                  'txavg': 2,
-                  'rxavg': 3,
-                  'txmin': 4,
-                  'rxmin': 5}
+    # valueindex = {'txmax': 0,
+    #               'rxmax': 1,
+    #               'txavg': 2,
+    #               'rxavg': 3,
+    #               'txmin': 4,
+    #               'rxmin': 5}
 
-    def adjustvalues(self, vallist, txvalue, rxvalue, firstrun):
-        if txvalue > vallist[self.valueindex['txmax']]:
-            vallist[self.valueindex['txmax']] = txvalue
-            if firstrun is True:
-                vallist[self.valueindex['txmin']] = vallist[self.valueindex['txmax']]
-        if txvalue < vallist[self.valueindex['txmin']]:
-            vallist[self.valueindex['txmin']] = txvalue
-        if rxvalue > vallist[self.valueindex['rxmax']]:
-            vallist[self.valueindex['rxmax']] = rxvalue
-            if firstrun is True:
-                vallist[self.valueindex['rxmin']] = vallist[self.valueindex['rxmax']]
-        if rxvalue < vallist[self.valueindex['rxmin']]:
-            vallist[self.valueindex['rxmin']] = rxvalue
-
-        vallist[self.valueindex['txavg']] += txvalue
-        vallist[self.valueindex['rxavg']] += rxvalue
-
-        return vallist
+    # def adjustvalues(self, vallist, txvalue, rxvalue, firstrun):
+    #     if txvalue > vallist[self.valueindex['txmax']]:
+    #         vallist[self.valueindex['txmax']] = txvalue
+    #         if firstrun is True:
+    #             vallist[self.valueindex['txmin']] = vallist[self.valueindex['txmax']]
+    #     if txvalue < vallist[self.valueindex['txmin']]:
+    #         vallist[self.valueindex['txmin']] = txvalue
+    #     if rxvalue > vallist[self.valueindex['rxmax']]:
+    #         vallist[self.valueindex['rxmax']] = rxvalue
+    #         if firstrun is True:
+    #             vallist[self.valueindex['rxmin']] = vallist[self.valueindex['rxmax']]
+    #     if rxvalue < vallist[self.valueindex['rxmin']]:
+    #         vallist[self.valueindex['rxmin']] = rxvalue
+    #
+    #     vallist[self.valueindex['txavg']] += txvalue
+    #     vallist[self.valueindex['rxavg']] += rxvalue
+    #
+    #     return vallist
 
     def initvalues(self):
         # list stores interesting values, to be printed
@@ -161,8 +161,8 @@ class TerminatingTest(BindDevices):
         result = True
         # tx / rx values
         # vallist = self.initvalues()
-        txvalues = DisplayValue('Mpps')
-        rxvalues = DisplayValue('Mpps')
+        txvalues = DisplayValue('Mpps', 'TX Values:')
+        rxvalues = DisplayValue('Mpps', 'RX Values:')
         avgcounter = 0
         firstvalueskip = True
         # firstminmax = True
@@ -202,9 +202,8 @@ class TerminatingTest(BindDevices):
                                 break
                         break
 
-        self.summarylog.write('\nTX Values are:' + txvalues.tostring())
-        self.summarylog.write('\nRX Values are:' + rxvalues.tostring())
-        print''
+        self.summarylog.write(txvalues.tostring())
+        self.summarylog.write(rxvalues.tostring())
 
         # TODO here adjust avarages
         # vallist[self.valueindex['txavg']] /= float(avgcounter)  # tx avg
@@ -218,7 +217,7 @@ class TerminatingTest(BindDevices):
         #     'RX values are:\n MAX = ' + str(vallist[self.valueindex['rxmax']]) + '\n MIN = ' + str(
         #         vallist[self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[self.valueindex['rxavg']]) + '\n')
         self.summarylog.write(
-            'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX? : ' + str(
+            '\nConclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX? : ' + str(
                 result) + '\n')
         self.assertTrue(result,
                         msg='This means that the RX values were not over 90 percent of TX values at all times')
@@ -298,7 +297,7 @@ class SingleNonZeroTXValue(SingleDevice):
         ignorefirst = True
         # firstminmax = True
         # vallist = [0.0, 0.0, 0.0, 0.0]  # value list with: max, avg, min, counter
-        txvalues = DisplayValue('Mpps')
+        txvalues = DisplayValue('Mpps', 'TX Values')
         for i in range(index, len(lines)):
             if not result:
                 break
@@ -316,7 +315,7 @@ class SingleNonZeroTXValue(SingleDevice):
         # self.summarylog.write(
         #     '\nTX Values: \nMAX: ' + str(vallist[0]) + '\nAVG: ' + str(vallist[1] / vallist[3]) + '\nMIN: ' + str(
         #         vallist[2]) + '\n')
-        self.summarylog.write('\nTX Values:' + txvalues.tostring())
+        self.summarylog.write(txvalues.tostring())
         self.summarylog.write('\nVerdict: have all values been greater than zero at all times: ' + str(result))
         self.assertTrue(result, msg='This means a value has been zero')
 
@@ -326,26 +325,30 @@ class TwoWayTerminatingTest(TerminatingTest):
     def initvalues(self):
         # list stores interesting values, to be printed
 
-        tx1max, tx2max, rx1max, rx2max, tx1avg, tx2avg, rx1avg, rx2avg, tx1min, tx2min, rx1min, rx2min = (0.0,) * 12
-        device1 = [tx1max, rx1max, tx1avg, rx1avg, tx1min, rx1min]
-        device2 = [tx2max, rx2max, tx2avg, rx2avg, tx2min, rx2min]
-        reslist = [device1, device2]
+        # tx1max, tx2max, rx1max, rx2max, tx1avg, tx2avg, rx1avg, rx2avg, tx1min, tx2min, rx1min, rx2min = (0.0,) * 12
+        # device1 = [tx1max, rx1max, tx1avg, rx1avg, tx1min, rx1min]
+        # device2 = [tx2max, rx2max, tx2avg, rx2avg, tx2min, rx2min]
+        # reslist = [device1, device2]
+        # return reslist
+
+        device1TX = DisplayValue('Mpps', 'Device 1 TX Values')
+        device2TX = DisplayValue('Mpps', 'Device 2 TX Values')
+        device1RX = DisplayValue('Mpps', 'Device 1 RX Values')
+        device2RX = DisplayValue('Mpps', 'Device 2 RX Values')
+
+        reslist = [device1TX, device2TX, device1RX, device2RX]
         return reslist
 
     def extractvalues(self, lines, index):
         reslist = list()
-        if '[Device: id=0]' in lines[index]:
-            # reslist.append(self.parsevalue(lines[index].split(), 'RX'))
+        if '[Device: id=0]' in lines[index] and 'TX' in lines[index]:
             reslist.append(float(lines[index].split()[3]))
-        if '[Device: id=1]' in lines[index + 1]:
+        if '[Device: id=1]' in lines[index + 1] and 'TX' in lines[index]:
             reslist.append(float(lines[index].split()[3]))
-            # reslist.append(self.parsevalue(lines[index].split(), 'RX'))
-        if '[Device: id=0]' in lines[index + 2]:
+        if '[Device: id=0]' in lines[index + 2] and 'RX' in lines[index]:
             reslist.append(float(lines[index].split()[3]))
-            # reslist.append(self.parsevalue(lines[index].split(), 'TX'))
-        if '[Device: id=1]' in lines[index + 3]:
+        if '[Device: id=1]' in lines[index + 3] and 'RX' in lines[index]:
             reslist.append(float(lines[index].split()[3]))
-            # reslist.append(self.parsevalue(lines[index].split(), 'TX'))
 
         if None not in reslist and len(reslist) == 4:
             return reslist
@@ -364,15 +367,15 @@ class TwoWayTerminatingTest(TerminatingTest):
     def evaluate(self, lines, index):
         result = True
         vallist = self.initvalues()
-        avgcounter = 0
+        # avgcounter = 0
         firstvalueskip = True
-        firstminmax = True
+        # firstminmax = True
         for i in range(index, len(lines)):
             if not result:
                 break
             if self.checkalerts(lines, i) is False:
                 break
-            elif '[Device: id=0]' in lines[i]:
+            elif '[Device: id=0]' in lines[i] and 'TX' in lines[i]:
                 if firstvalueskip is True:
                     i += 3
                     firstvalueskip = False
@@ -382,29 +385,35 @@ class TwoWayTerminatingTest(TerminatingTest):
                     if tmpval is not None:
                         self.checkvaluesarezero(tmpval)
                         # call adjust values here
-                        vallist = self.adjustvalues(vallist, tmpval[2], tmpval[3], tmpval[0], tmpval[1], firstminmax)
-                        firstminmax = False
-                        avgcounter += 1
-                        result = result and (tmpval[0] > self.resulttolorance * tmpval[3] and
-                                             tmpval[1] > self.resulttolorance * tmpval[2])
+                        # vallist = self.adjustvalues(vallist, tmpval[2], tmpval[3], tmpval[0], tmpval[1], firstminmax)
+                        # firstminmax = False
+                        for j in range(0, len(vallist)):
+                            vallist[j].aggregate(tmpval[j])
+                        # avgcounter += 1
+                        result = result and (tmpval[3] > self.resulttolorance * tmpval[0] and
+                                             tmpval[2] > self.resulttolorance * tmpval[1])
 
-        vallist[0][self.valueindex['txavg']] /= float(avgcounter)  # tx1 avg
-        vallist[0][self.valueindex['rxavg']] /= float(avgcounter)  # rx1 avg
-        vallist[1][self.valueindex['txavg']] /= float(avgcounter)  # tx2 avg
-        vallist[1][self.valueindex['rxavg']] /= float(avgcounter)  # rx2 avg
+        # vallist[0][self.valueindex['txavg']] /= float(avgcounter)  # tx1 avg
+        # vallist[0][self.valueindex['rxavg']] /= float(avgcounter)  # rx1 avg
+        # vallist[1][self.valueindex['txavg']] /= float(avgcounter)  # tx2 avg
+        # vallist[1][self.valueindex['rxavg']] /= float(avgcounter)  # rx2 avg
 
-        self.summarylog.write(
-            'TX values of device 1 are:\n MAX = ' + str(vallist[0][self.valueindex['txmax']]) + '\n MIN = ' + str(
-                vallist[0][self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[0][self.valueindex['txavg']]) + '\n')
-        self.summarylog.write(
-            'RX values of device 1 are:\n MAX = ' + str(vallist[0][self.valueindex['rxmax']]) + '\n MIN = ' + str(
-                vallist[0][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[0][self.valueindex['rxavg']]) + '\n')
-        self.summarylog.write(
-            'TX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['txmax']]) + '\n MIN = ' + str(
-                vallist[1][self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['txavg']]) + '\n')
-        self.summarylog.write(
-            'RX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['rxmax']]) + '\n MIN = ' + str(
-                vallist[1][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['rxavg']]) + '\n')
+        # self.summarylog.write(
+        #     'TX values of device 1 are:\n MAX = ' + str(vallist[0][self.valueindex['txmax']]) + '\n MIN = ' + str(
+        #         vallist[0][self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[0][self.valueindex['txavg']]) + '\n')
+        # self.summarylog.write(
+        #     'RX values of device 1 are:\n MAX = ' + str(vallist[0][self.valueindex['rxmax']]) + '\n MIN = ' + str(
+        #         vallist[0][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[0][self.valueindex['rxavg']]) + '\n')
+        # self.summarylog.write(
+        #     'TX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['txmax']]) + '\n MIN = ' + str(
+        #         vallist[1][self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['txavg']]) + '\n')
+        # self.summarylog.write(
+        #     'RX values of device 2 are:\n MAX = ' + str(vallist[1][self.valueindex['rxmax']]) + '\n MIN = ' + str(
+        #         vallist[1][self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[1][self.valueindex['rxavg']]) + '\n')
+
+        for value in vallist:
+            self.summarylog.write(value.tostring())
+
         self.summarylog.write(
             'Conclusion: has RX value always been at least ' + str(
                 self.resulttolorance * 100) + ' % of TX on both ways? : ' + str(
@@ -413,39 +422,39 @@ class TwoWayTerminatingTest(TerminatingTest):
                         msg='This means that the RX values were not over'
                             '90 percent of TX values at all times on both ways')
 
-    def adjustvalues(self, vallist, tx1value, tx2value, rx1value, rx2value, firstrun):
-        if tx1value > vallist[0][self.valueindex['txmax']]:
-            vallist[0][self.valueindex['txmax']] = tx1value
-            if firstrun is True:
-                vallist[0][self.valueindex['txmin']] = vallist[0][self.valueindex['txmax']]
-        if tx1value < vallist[0][self.valueindex['txmin']]:
-            vallist[0][self.valueindex['txmin']] = tx1value
-        if rx1value > vallist[0][self.valueindex['rxmax']]:
-            vallist[0][self.valueindex['rxmax']] = rx1value
-            if firstrun is True:
-                vallist[0][self.valueindex['rxmin']] = vallist[0][self.valueindex['rxmax']]
-        if rx1value < vallist[0][self.valueindex['rxmin']]:
-            vallist[0][self.valueindex['rxmin']] = rx1value
-
-        if tx2value > vallist[1][self.valueindex['txmax']]:
-            vallist[1][self.valueindex['txmax']] = tx2value
-            if firstrun is True:
-                vallist[1][self.valueindex['txmin']] = vallist[1][self.valueindex['txmax']]
-        if tx2value < vallist[1][self.valueindex['txmin']]:
-            vallist[1][self.valueindex['txmin']] = tx2value
-        if rx2value > vallist[1][self.valueindex['rxmax']]:
-            vallist[1][self.valueindex['rxmax']] = rx2value
-            if firstrun is True:
-                vallist[1][self.valueindex['rxmin']] = vallist[1][self.valueindex['rxmax']]
-        if rx2value < vallist[1][self.valueindex['rxmin']]:
-            vallist[1][self.valueindex['rxmin']] = rx1value
-
-        vallist[0][self.valueindex['txavg']] += tx1value
-        vallist[0][self.valueindex['rxavg']] += rx1value
-        vallist[1][self.valueindex['txavg']] += tx2value
-        vallist[1][self.valueindex['rxavg']] += rx2value
-
-        return vallist
+    # def adjustvalues(self, vallist, tx1value, tx2value, rx1value, rx2value, firstrun):
+    #     if tx1value > vallist[0][self.valueindex['txmax']]:
+    #         vallist[0][self.valueindex['txmax']] = tx1value
+    #         if firstrun is True:
+    #             vallist[0][self.valueindex['txmin']] = vallist[0][self.valueindex['txmax']]
+    #     if tx1value < vallist[0][self.valueindex['txmin']]:
+    #         vallist[0][self.valueindex['txmin']] = tx1value
+    #     if rx1value > vallist[0][self.valueindex['rxmax']]:
+    #         vallist[0][self.valueindex['rxmax']] = rx1value
+    #         if firstrun is True:
+    #             vallist[0][self.valueindex['rxmin']] = vallist[0][self.valueindex['rxmax']]
+    #     if rx1value < vallist[0][self.valueindex['rxmin']]:
+    #         vallist[0][self.valueindex['rxmin']] = rx1value
+    #
+    #     if tx2value > vallist[1][self.valueindex['txmax']]:
+    #         vallist[1][self.valueindex['txmax']] = tx2value
+    #         if firstrun is True:
+    #             vallist[1][self.valueindex['txmin']] = vallist[1][self.valueindex['txmax']]
+    #     if tx2value < vallist[1][self.valueindex['txmin']]:
+    #         vallist[1][self.valueindex['txmin']] = tx2value
+    #     if rx2value > vallist[1][self.valueindex['rxmax']]:
+    #         vallist[1][self.valueindex['rxmax']] = rx2value
+    #         if firstrun is True:
+    #             vallist[1][self.valueindex['rxmin']] = vallist[1][self.valueindex['rxmax']]
+    #     if rx2value < vallist[1][self.valueindex['rxmin']]:
+    #         vallist[1][self.valueindex['rxmin']] = rx1value
+    #
+    #     vallist[0][self.valueindex['txavg']] += tx1value
+    #     vallist[0][self.valueindex['rxavg']] += rx1value
+    #     vallist[1][self.valueindex['txavg']] += tx2value
+    #     vallist[1][self.valueindex['rxavg']] += rx2value
+    #
+    #     return vallist
 
 
 class OneTXTwoRXQueues(TerminatingTest):
@@ -470,8 +479,10 @@ class OneTXTwoRXQueues(TerminatingTest):
     def evaluate(self, lines, index):
         result = True
         ignorefirst = True
-        firstmimax = True
-        vallist = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], 0.0]
+        # firstmimax = True
+        # vallist = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], 0.0]
+        vallist = [DisplayValue('Mpps', 'TX Values'), DisplayValue('Mpps', 'RX 1 Values'),
+                   DisplayValue('Mpps', 'RX 2 Values')]
         for i in range(index, len(lines)):
             if (not result) and (not self.checkalerts(lines, i)):
                 break
@@ -486,17 +497,22 @@ class OneTXTwoRXQueues(TerminatingTest):
                         rx2value = float(lines[i + 2].split()[4])
                         result = result and ((rx1value + rx2value) > self.resulttolorance * txvalue)
                         curvalues = [txvalue, rx1value, rx2value]
-                        vallist = self.adjustvalues(vallist, curvalues, firstmimax)
-                        firstmimax = False
+                        # vallist = self.adjustvalues(vallist, curvalues, firstmimax)
+                        # firstmimax = False
+                        for j in range(0, len(vallist)):
+                            vallist[j].aggregate(curvalues[j])
                 except IndexError:
                     continue
 
-        titles = ['TX Values', 'RX 1 Values', 'RX 2 Values']
-        for i in range(0, 3):
-            self.summarylog.write(
-                '\n' + titles[i] + '\nMAX: ' + str(vallist[i][0]) + '\nAVG: ' + str(vallist[i][1] / vallist[3])
-                + '\nMIN: ' + str(vallist[i][2]) + '\n'
-            )
+        # titles = ['TX Values', 'RX 1 Values', 'RX 2 Values']
+        for i in range(0, len(vallist)):
+            # self.summarylog.write(
+            #     '\n' + titles[i] + '\nMAX: ' + str(vallist[i][0]) + '\nAVG: ' + str(vallist[i][1] / vallist[3])
+            #     + '\nMIN: ' + str(vallist[i][2]) + '\n'
+            # )
+
+            self.summarylog.write(vallist[i].tostring())
+
         self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(
             self.resulttolorance * 100) + '% at all times: ' + str(True))
         self.assertTrue(result,
