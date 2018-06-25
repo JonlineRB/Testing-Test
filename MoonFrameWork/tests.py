@@ -296,8 +296,9 @@ class SingleNonZeroTXValue(SingleDevice):
     def evaluate(self, lines, index):
         result = True
         ignorefirst = True
-        firstminmax = True
-        vallist = [0.0, 0.0, 0.0, 0.0]  # value list with: max, avg, min, counter
+        # firstminmax = True
+        # vallist = [0.0, 0.0, 0.0, 0.0]  # value list with: max, avg, min, counter
+        txvalues = DisplayValue('Mpps')
         for i in range(index, len(lines)):
             if not result:
                 break
@@ -307,13 +308,15 @@ class SingleNonZeroTXValue(SingleDevice):
                     ignorefirst = False
                     continue
                 value = float(lines[i].split()[3])
-                vallist = self.adjustvalues(vallist, value, firstminmax)
+                # vallist = self.adjustvalues(vallist, value, firstminmax)
+                txvalues.aggregate(value)
                 result = result and not self.checkvaluesarezero(value)
-                firstminmax = False
+                # firstminmax = False
 
-        self.summarylog.write(
-            '\nTX Values: \nMAX: ' + str(vallist[0]) + '\nAVG: ' + str(vallist[1] / vallist[3]) + '\nMIN: ' + str(
-                vallist[2]) + '\n')
+        # self.summarylog.write(
+        #     '\nTX Values: \nMAX: ' + str(vallist[0]) + '\nAVG: ' + str(vallist[1] / vallist[3]) + '\nMIN: ' + str(
+        #         vallist[2]) + '\n')
+        self.summarylog.write('\nTX Values:' + txvalues.tostring())
         self.summarylog.write('\nVerdict: have all values been greater than zero at all times: ' + str(result))
         self.assertTrue(result, msg='This means a value has been zero')
 
