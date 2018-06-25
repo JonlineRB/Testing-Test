@@ -749,23 +749,23 @@ class TestQualityOfService(TerminatingTest):
         return subprocess.Popen(['./build/MoonGen', './examples/quality-of-service-test.lua', '0', '1'],
                                 stdout=self.testlog, cwd=self.path)
 
-    def adjustvalues(self, vallist, value, firstrun):
-        if value > vallist[0]:
-            vallist[0] = value
-            if firstrun:
-                vallist[2] = value
-        if value < vallist[2]:
-            vallist[2] = value
+    # def adjustvalues(self, vallist, value, firstrun):
+    #     if value > vallist[0]:
+    #         vallist[0] = value
+    #         if firstrun:
+    #             vallist[2] = value
+    #     if value < vallist[2]:
+    #         vallist[2] = value
+    #
+    #     vallist[1] += value
+    #     vallist[3] += 1
+    #
+    #     return vallist
 
-        vallist[1] += value
-        vallist[3] += 1
-
-        return vallist
-
-    def getavg(self, vallist):
-        if vallist[1] == 0.0:
-            return str(0.0)
-        return str(vallist[1] / vallist[3])
+    # def getavg(self, vallist):
+    #     if vallist[1] == 0.0:
+    #         return str(0.0)
+    #     return str(vallist[1] / vallist[3])
 
     def extractport(self, port):
         result = ''
@@ -778,7 +778,7 @@ class TestQualityOfService(TerminatingTest):
     def evaluate(self, lines, index):
         result = True
         # firstvalueskip = True
-        firstminmax = [True, True, True, True]
+        # firstminmax = [True, True, True, True]
 
         firstportline = lines[index + 1].split()
         firstport = firstportline[len(firstportline) - 1]
@@ -789,10 +789,14 @@ class TestQualityOfService(TerminatingTest):
         secondport = secondportline[len(secondportline) - 1]
         secondport = self.extractport(secondport)
 
-        firstporttxvalues = [0.0, 0.0, 0.0, 0]
-        firstportrxvalues = [0.0, 0.0, 0.0, 0]
-        secondporttxvalues = [0.0, 0.0, 0.0, 0]
-        secondportrxvalues = [0.0, 0.0, 0.0, 0]
+        # firstporttxvalues = [0.0, 0.0, 0.0, 0]
+        # firstportrxvalues = [0.0, 0.0, 0.0, 0]
+        # secondporttxvalues = [0.0, 0.0, 0.0, 0]
+        # secondportrxvalues = [0.0, 0.0, 0.0, 0]
+        firstporttxvalues = DisplayValue('Mpps', 'First Port TX Values')
+        firstportrxvalues = DisplayValue('Mpps', 'First Port RX Values')
+        secondporttxvalues = DisplayValue('Mpps', 'Second Port TX Values')
+        secondportrxvalues = DisplayValue('Mpps', 'Second Port RX Values')
 
         for i in range(index, len(lines)):
 
@@ -801,34 +805,41 @@ class TestQualityOfService(TerminatingTest):
                 value = float(lines[i].split()[3])
                 if str(firstport) in lines[i]:
                     if 'TX' in lines[i]:
-                        firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
-                        firstminmax[0] = False
+                        # firstporttxvalues = self.adjustvalues(firstporttxvalues, value, firstminmax[0])
+                        # firstminmax[0] = False
+                        firstporttxvalues.aggregate(value)
                     elif 'RX' in lines[i]:
-                        firstportrxvalues = self.adjustvalues(firstportrxvalues, value, firstminmax[1])
-                        firstminmax[1] = False
+                        # firstportrxvalues = self.adjustvalues(firstportrxvalues, value, firstminmax[1])
+                        # firstminmax[1] = False
+                        firstportrxvalues.aggregate(value)
                 elif secondport in lines[i]:
                     if 'TX' in lines[i]:
-                        secondporttxvalues = self.adjustvalues(secondporttxvalues, value, firstminmax[2])
-                        firstminmax[2] = False
+                        # secondporttxvalues = self.adjustvalues(secondporttxvalues, value, firstminmax[2])
+                        # firstminmax[2] = False
+                        secondporttxvalues.aggregate(value)
                     elif 'RX' in lines[i]:
-                        secondportrxvalues = self.adjustvalues(secondportrxvalues, value, firstminmax[3])
-                        firstminmax[3] = False
+                        # secondportrxvalues = self.adjustvalues(secondportrxvalues, value, firstminmax[3])
+                        # firstminmax[3] = False
+                        secondportrxvalues.aggregate(value)
 
-        self.summarylog.write(
-            'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + str(firstporttxvalues[0]) + '\nAVG: ' + self.getavg(
-                firstporttxvalues)
-            + '\nMIN: ' + str(firstporttxvalues[2]) +
-            '\nRX Values:\nMAX: ' + str(firstportrxvalues[0]) + '\nAVG: ' + self.getavg(
-                firstportrxvalues) + '\nMIN: ' + str(firstportrxvalues[2]) +
-            '\nSECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + str(secondporttxvalues[0]) + '\nAVG: ' +
-            self.getavg(secondportrxvalues) + '\nMIN: ' + str(secondporttxvalues[2]) +
-            '\nRX Values:\nMAX: ' + str(secondportrxvalues[0]) + '\nAVG: ' + self.getavg(
-                secondportrxvalues) + '\nMIN: ' +
-            str(secondportrxvalues[2])
-        )
-        result = result and firstportrxvalues[0] != 0 and firstportrxvalues[
-            0] != 0 and secondporttxvalues != 0 and secondportrxvalues != 0
-        self.assertTrue(result, 'Some values were 0z')  # tmp
+        # self.summarylog.write(
+        #     'FIRST PORT: ' + firstport + '\nTX Values:\nMAX: ' + str(firstporttxvalues[0]) + '\nAVG: ' + self.getavg(
+        #         firstporttxvalues)
+        #     + '\nMIN: ' + str(firstporttxvalues[2]) +
+        #     '\nRX Values:\nMAX: ' + str(firstportrxvalues[0]) + '\nAVG: ' + self.getavg(
+        #         firstportrxvalues) + '\nMIN: ' + str(firstportrxvalues[2]) +
+        #     '\nSECOND PORT: ' + secondport + '\nTX Values:\nMAX: ' + str(secondporttxvalues[0]) + '\nAVG: ' +
+        #     self.getavg(secondportrxvalues) + '\nMIN: ' + str(secondporttxvalues[2]) +
+        #     '\nRX Values:\nMAX: ' + str(secondportrxvalues[0]) + '\nAVG: ' + self.getavg(
+        #         secondportrxvalues) + '\nMIN: ' +
+        #     str(secondportrxvalues[2])
+        # )
+        printlist = [firstporttxvalues, firstportrxvalues, secondporttxvalues, secondportrxvalues]
+        for value in printlist:
+            self.summarylog.write(value.tostring())
+
+        result = result and firstportrxvalues.maxval != 0 and firstportrxvalues.maxval != 0 and secondporttxvalues.maxval != 0 and secondportrxvalues.maxval != 0
+        self.assertTrue(result, 'Some values were 0')  # tmp, may be refined
 
 
 class TestRateControlMethods(SingleNonZeroTXValue):
