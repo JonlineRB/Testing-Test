@@ -341,13 +341,17 @@ class TwoWayTerminatingTest(TerminatingTest):
 
     def extractvalues(self, lines, index):
         reslist = list()
-        if '[Device: id=0]' in lines[index] and 'TX' in lines[index]:
+        # if '[Device: id=0]' in lines[index] and 'TX' in lines[index]:
+        if '[Device: id=0]' in lines[index]:
             reslist.append(float(lines[index].split()[3]))
-        if '[Device: id=1]' in lines[index + 1] and 'TX' in lines[index]:
+        # if '[Device: id=1]' in lines[index + 1] and 'TX' in lines[index]:
+        if '[Device: id=1]' in lines[index + 1]:
             reslist.append(float(lines[index].split()[3]))
-        if '[Device: id=0]' in lines[index + 2] and 'RX' in lines[index]:
+        # if '[Device: id=0]' in lines[index + 2] and 'RX' in lines[index]:
+        if '[Device: id=0]' in lines[index + 2]:
             reslist.append(float(lines[index].split()[3]))
-        if '[Device: id=1]' in lines[index + 3] and 'RX' in lines[index]:
+        # if '[Device: id=1]' in lines[index + 3] and 'RX' in lines[index]:
+        if '[Device: id=1]' in lines[index + 3]:
             reslist.append(float(lines[index].split()[3]))
 
         if None not in reslist and len(reslist) == 4:
@@ -463,18 +467,18 @@ class OneTXTwoRXQueues(TerminatingTest):
         if value1 == 0 and value2 == 0 and value3 == 0:
             self.assertTrue(False, msg='Values are 0')
 
-    def adjustvalues(self, vallist, currvalues, firstrun):
-
-        for i in range(0, 3):
-            if currvalues[i] > vallist[i][0]:
-                vallist[i][0] = currvalues[i]
-                if firstrun:
-                    vallist[i][2] = currvalues[i]
-            if currvalues[i] < vallist[i][2]:
-                vallist[i][2] = currvalues[i]
-            vallist[i][1] += currvalues[i]
-        vallist[3] += 1
-        return vallist
+    # def adjustvalues(self, vallist, currvalues, firstrun):
+    #
+    #     for i in range(0, 3):
+    #         if currvalues[i] > vallist[i][0]:
+    #             vallist[i][0] = currvalues[i]
+    #             if firstrun:
+    #                 vallist[i][2] = currvalues[i]
+    #         if currvalues[i] < vallist[i][2]:
+    #             vallist[i][2] = currvalues[i]
+    #         vallist[i][1] += currvalues[i]
+    #     vallist[3] += 1
+    #     return vallist
 
     def evaluate(self, lines, index):
         result = True
@@ -513,7 +517,7 @@ class OneTXTwoRXQueues(TerminatingTest):
 
             self.summarylog.write(vallist[i].tostring())
 
-        self.summarylog.write('Verdict: Has the sum of RX values been at least ' + str(
+        self.summarylog.write('\nVerdict: Has the sum of RX values been at least ' + str(
             self.resulttolorance * 100) + '% at all times: ' + str(True))
         self.assertTrue(result,
                         msg='This means RX sum has not been ' + str(self.resulttolorance * 100) + '% at all times')
