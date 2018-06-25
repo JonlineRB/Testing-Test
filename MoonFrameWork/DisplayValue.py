@@ -29,7 +29,7 @@ class DisplayValue:
             return 0
 
     def tostring(self):
-        return ('\n' + self.name + ':'
+        return ('\n' + self.name + ':\n'
                 '\nMAX: ' + str(self.maxval) + ' ' + self.unit +
                 '\nAVARAGE: ' + str(self.getavrg()) + ' ' + self.unit +
                 '\nMIN: ' + str(self.minval) + ' ' + self.unit +
