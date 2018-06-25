@@ -204,6 +204,7 @@ class TerminatingTest(BindDevices):
 
         self.summarylog.write('\nTX Values are:' + txvalues.tostring())
         self.summarylog.write('\nRX Values are:' + rxvalues.tostring())
+        print''
 
         # TODO here adjust avarages
         # vallist[self.valueindex['txavg']] /= float(avgcounter)  # tx avg
