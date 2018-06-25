@@ -564,30 +564,6 @@ class TestLoadLatency(TerminatingTest):
             './moongen-simple', 'start', 'load-latency:0:1:rate=1000,timeLimit=10m'],
             stdout=self.testlog, cwd=self.path)
 
-    # def evaluate(self, lines, index):
-    #     result = True
-    #     for i in range(index, len(lines)):
-    #         if not result:
-    #             break
-    #         if '[Device: id=0]' in lines[i]:
-    #             line1 = lines[i].split()
-    #             for j in range(0, len(line1)):
-    #                 if 'TX:' in line1[j]:
-    #                     txvalue = float(line1[j + 1])
-    #                     if '[Device: id=1]' not in lines[i + 1]:
-    #                         continue
-    #                     line2 = lines[i + 1].split()
-    #                     for k in range(0, len(line2)):
-    #                         if 'RX:' in line2[k]:
-    #                             rxvalue = float(line2[k + 1])
-    #                             self.checkvaluesarezero(txvalue, rxvalue)
-    #                             result = result and (rxvalue > txvalue * self.resulttolorance)
-    #                             break
-    #                     break
-    #     self.assertTrue(result,
-    #                     msg='This means that the RX values were not over %d \% of TX values at all times'
-    #                         % (self.resulttolorance * 100.0))
-
 
 class TestUdpLoad(TerminatingTest):
     logname = 'udploadlog'
@@ -602,7 +578,6 @@ class TestUdpLoad(TerminatingTest):
 
 class TestQosForeground(TerminatingTest):
     logname = 'qosforegroundlog'
-    # testlog = open(logname, 'w')
     casename = 'qos-foreground'
 
     def executetest(self):
@@ -639,8 +614,6 @@ class TestL2LoadLatency(TwoWayTerminatingTest):
         return subprocess.Popen([
             './build/MoonGen', './examples/l2-load-latency.lua', '0', '1'],
             stdout=self.testlog, cwd=self.path)
-
-    # this class needs to read the log differently, it prints the values pairwise
 
 
 class TestL2PoissonLoadLatency(TerminatingTest):
@@ -679,37 +652,39 @@ class TestL3TcpSynFlood(DevicesUpCheckedSeperately):
 
     def initvalues(self):
         if len(self.devicelist) == 2:
-            reslist = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            # reslist = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            reslist = [DisplayValue('Mpps', 'TX Values of Device 1'),
+                       DisplayValue('Mpps', 'TX Values of Device 2')]
             return reslist
         else:
-            return [0.0, 0.0, 0.0]
+            return [DisplayValue('Mpps', 'TX Values')]
 
-    valueindex = {'tx1max': 0,
-                  'tx1avg': 1,
-                  'tx1min': 2,
-                  'tx2max': 3,
-                  'tx2avg': 4,
-                  'tx2min': 5}
+    # valueindex = {'tx1max': 0,
+    #               'tx1avg': 1,
+    #               'tx1min': 2,
+    #               'tx2max': 3,
+    #               'tx2avg': 4,
+    #               'tx2min': 5}
 
-    def adjustvalues(self, vallist, tx1value, tx2value, firstrun):
-        if tx1value > vallist[self.valueindex['tx1max']]:
-            vallist[self.valueindex['tx1max']] = tx1value
-            if firstrun:
-                vallist[self.valueindex['tx1min']] = tx1value
-        if tx1value < vallist[self.valueindex['tx1min']]:
-            vallist[self.valueindex['tx1min']] = tx1value
-        vallist[self.valueindex['tx1avg']] += tx1value
-
-        if len(self.devicelist) == 2:
-            if tx2value > vallist[self.valueindex['tx2max']]:
-                vallist[self.valueindex['tx2max']] = tx2value
-                if firstrun:
-                    vallist[self.valueindex['tx2min']] = tx2value
-            if tx2value < vallist[self.valueindex['tx2min']]:
-                vallist[self.valueindex['tx2min']] = tx2value
-            vallist[self.valueindex['tx2avg']] += tx2value
-
-        return vallist
+    # def adjustvalues(self, vallist, tx1value, tx2value, firstrun):
+    #     if tx1value > vallist[self.valueindex['tx1max']]:
+    #         vallist[self.valueindex['tx1max']] = tx1value
+    #         if firstrun:
+    #             vallist[self.valueindex['tx1min']] = tx1value
+    #     if tx1value < vallist[self.valueindex['tx1min']]:
+    #         vallist[self.valueindex['tx1min']] = tx1value
+    #     vallist[self.valueindex['tx1avg']] += tx1value
+    #
+    #     if len(self.devicelist) == 2:
+    #         if tx2value > vallist[self.valueindex['tx2max']]:
+    #             vallist[self.valueindex['tx2max']] = tx2value
+    #             if firstrun:
+    #                 vallist[self.valueindex['tx2min']] = tx2value
+    #         if tx2value < vallist[self.valueindex['tx2min']]:
+    #             vallist[self.valueindex['tx2min']] = tx2value
+    #         vallist[self.valueindex['tx2avg']] += tx2value
+    #
+    #     return vallist
 
     def executetest(self):
         args = ['./build/MoonGen', './examples/l3-tcp-syn-flood.lua', '0']
@@ -717,29 +692,12 @@ class TestL3TcpSynFlood(DevicesUpCheckedSeperately):
             args.append('1')
         return subprocess.Popen(args, stdout=self.testlog, cwd=self.path)
 
-    # def checkdevicesfound(self, lines):
-    #     for i in range(0, len(lines)):
-    #         self.checkalerts(lines, i)
-    #         if 'Found 0 usable devices:' in lines[i]:
-    #             msg = 'Found 0 usable devices. Possible reasons: no devices, hugepages'
-    #             self.summarylog.write(msg + '\n')
-    #             self.assertTrue(False, msg=msg)
-    #         elif 'Device 0' in lines[i] and 'is up' in lines[i]:
-    #             if len(self.devicelist) == 1:
-    #                 return i
-    #             else:
-    #                 for j in range(i, len(lines)):
-    #                     if 'Device 1' in lines[j] and 'is up' in lines[j]:
-    #                         return j
-    #     self.summarylog.write('Devices were not up\n')
-    #     self.assertTrue(False, msg='Devices are not up')
-
     def evaluate(self, lines, index):
         result = True
         vallist = self.initvalues()
-        avgcounter = 0
+        # avgcounter = 0
         firstvalueskip = True
-        firstminmax = True
+        # firstminmax = True
         for i in range(index, len(lines)):
             self.checkalerts(lines, index)
             if 'Device: id=0' in lines[i]:
@@ -750,28 +708,36 @@ class TestL3TcpSynFlood(DevicesUpCheckedSeperately):
                 if tx1value == 0.0:
                     self.assertTrue(False, msg='TX value was 0')
                 if len(self.devicelist) == 1:
-                    vallist = self.adjustvalues(vallist, tx1value, None, firstminmax)
-                    firstminmax = False
-                    avgcounter += 1
+                    # vallist = self.adjustvalues(vallist, tx1value, None, firstminmax)
+                    vallist[0].aggregate(tx1value)
+                    # firstminmax = False
+                    # avgcounter += 1
                 else:
                     try:
                         tx2value = float(lines[i + 1].split()[3])
                         self.checkvaluesarezero(tx1value, tx2value)
-                        vallist = self.adjustvalues(vallist, tx1value, tx2value, firstminmax)
-                        firstminmax = False
-                        avgcounter += 1
+                        # vallist = self.adjustvalues(vallist, tx1value, tx2value, firstminmax)
+                        # firstminmax = False
+                        # avgcounter += 1
+                        vallist[0].aggregate(tx1value)
+                        vallist[2].aggregate(tx2value)
                     except IndexError:
                         continue
 
-        vallist[self.valueindex['tx1avg']] /= avgcounter
-        self.summarylog.write('DEVICE 1 TX values:\nMAX: ' + str(vallist[self.valueindex['tx1max']]) + '\nMIN: ' + str(
-            vallist[self.valueindex['tx1min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx1avg']]) + '\n')
-        if len(self.devicelist) == 2:
-            vallist[self.valueindex['tx2avg']] /= avgcounter
-            self.summarylog.write(
-                'DEVICE 2 TX values:\nMAX' + str(vallist[self.valueindex['tx2max']]) + '\nMIN: ' + str(
-                    vallist[self.valueindex['tx2min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx2avg']]) + '\n')
+        # vallist[self.valueindex['tx1avg']] /= avgcounter
+        # self.summarylog.write('DEVICE 1 TX values:\nMAX: ' + str(vallist[self.valueindex['tx1max']]) + '\nMIN: ' + str(
+        #     vallist[self.valueindex['tx1min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx1avg']]) + '\n')
+        # if len(self.devicelist) == 2:
+        #     # vallist[self.valueindex['tx2avg']] /= avgcounter
+        #     self.summarylog.write(
+        #         'DEVICE 2 TX values:\nMAX' + str(vallist[self.valueindex['tx2max']]) + '\nMIN: ' + str(
+        #             vallist[self.valueindex['tx2min']]) + '\nAVG: ' + str(vallist[self.valueindex['tx2avg']]) + '\n')
 
+        for value in vallist:
+            self.summarylog.write(value.tostring())
+
+        # might be temporary, this test has no conditions to live up to
+        #  other than it's values aren't 0 and device/s are up
         self.assertTrue(result, msg='Something went wrong')
 
 
