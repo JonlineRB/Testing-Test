@@ -720,7 +720,7 @@ class TestL3TcpSynFlood(DevicesUpCheckedSeperately):
                         # firstminmax = False
                         # avgcounter += 1
                         vallist[0].aggregate(tx1value)
-                        vallist[2].aggregate(tx2value)
+                        vallist[1].aggregate(tx2value)
                     except IndexError:
                         continue
 
