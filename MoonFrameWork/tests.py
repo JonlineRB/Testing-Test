@@ -79,9 +79,8 @@ class TerminatingTest(BindDevices):
             timecounter += self.pollrate
         print''
         process.terminate()
-        # check if process terminated, if not report a bug
+        # check if process terminated
         print'Waiting for termination'
-        # time.sleep(20)  # trying a delay before the poll
         timecounter = 0
         while process.poll() is None or timecounter <= self.termtimelimit:
             time.sleep(self.termloopdelta)
@@ -93,19 +92,15 @@ class TerminatingTest(BindDevices):
         # if process.poll() is None:
         if process.returncode is None:
             process.kill()
-            print'Process not terminated!--'
+            print'Process not terminated!'
+            self.assertTrue(False, msg='Process has not terminated')
 
     def runTest(self):
         print("\nTesting MoonGen Case: %s, this will take %d seconds" % (self.casename, int(self.duration)))
         p = self.executetest()
-        # p.wait()
-        # print 'udp simple test launched, terminates in 20 seconds'
-        # time.sleep(20)
-        # p.terminate()
         self.terminate(p)
         self.writetoread()
         print('terminated, closed test log')
-        # sucess yet to be specified
         self.checkresult()
 
     def executetest(self):
@@ -165,10 +160,12 @@ class TerminatingTest(BindDevices):
     def evaluate(self, lines, index):
         result = True
         # tx / rx values
-        vallist = self.initvalues()
+        # vallist = self.initvalues()
+        txvalues = DisplayValue('Mpps')
+        rxvalues = DisplayValue('Mpps')
         avgcounter = 0
         firstvalueskip = True
-        firstminmax = True
+        # firstminmax = True
         # method parses relevant data from the log file
         for i in range(index, len(lines)):
             if not result:
@@ -194,25 +191,31 @@ class TerminatingTest(BindDevices):
                                 if self.checkvaluesarezero(txvalue, rxvalue) is True:
                                     result = False
                                 # adjust values
-                                vallist = self.adjustvalues(vallist, txvalue, rxvalue, firstminmax)
-                                if firstminmax is True:
-                                    firstminmax = False
-                                avgcounter += 1
+                                # vallist = self.adjustvalues(vallist, txvalue, rxvalue, firstminmax)
+                                txvalues.aggregate(txvalue)
+                                rxvalues.aggregate(rxvalue)
+                                # if firstminmax is True:
+                                #     firstminmax = False
+                                # avgcounter += 1
                                 # TODO here check result condition
                                 result = result and (rxvalue > txvalue * self.resulttolorance)
                                 break
                         break
+
+        self.summarylog.write('\nTX Values are:' + txvalues.tostring())
+        self.summarylog.write('\nRX Values are:' + rxvalues.tostring())
+
         # TODO here adjust avarages
-        vallist[self.valueindex['txavg']] /= float(avgcounter)  # tx avg
-        vallist[self.valueindex['rxavg']] /= float(avgcounter)  # rx avg
-        self.summarylog.write('TX / RX Values of this test case')
+        # vallist[self.valueindex['txavg']] /= float(avgcounter)  # tx avg
+        # vallist[self.valueindex['rxavg']] /= float(avgcounter)  # rx avg
+        # self.summarylog.write('TX / RX Values of this test case')
         # TODO here write reseults to log
-        self.summarylog.write(
-            'TX values are:\n MAX = ' + str(vallist[self.valueindex['txmax']]) + '\n MIN = ' + str(
-                vallist[self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[self.valueindex['txavg']]) + '\n')
-        self.summarylog.write(
-            'RX values are:\n MAX = ' + str(vallist[self.valueindex['rxmax']]) + '\n MIN = ' + str(
-                vallist[self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[self.valueindex['rxavg']]) + '\n')
+        # self.summarylog.write(
+        #     'TX values are:\n MAX = ' + str(vallist[self.valueindex['txmax']]) + '\n MIN = ' + str(
+        #         vallist[self.valueindex['txmin']]) + '\n AVG = ' + str(vallist[self.valueindex['txavg']]) + '\n')
+        # self.summarylog.write(
+        #     'RX values are:\n MAX = ' + str(vallist[self.valueindex['rxmax']]) + '\n MIN = ' + str(
+        #         vallist[self.valueindex['rxmin']]) + '\n AVG = ' + str(vallist[self.valueindex['rxavg']]) + '\n')
         self.summarylog.write(
             'Conclusion: has RX value always been at least ' + str(self.resulttolorance * 100) + ' % of TX? : ' + str(
                 result) + '\n')

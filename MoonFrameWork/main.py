@@ -3,6 +3,8 @@
 import utility
 import ConfigParser
 import sys
+import os.path
+
 
 print('Framework: start')
 
@@ -22,6 +24,10 @@ try:
         exit()
 except IndexError:
     pass
+
+# create logs dir if it does not exist already
+if not os.path.exists('logs'):
+    os.makedirs('logs')
 
 # parse the necessary directories
 # general setup, unbind all devices so that each test case may set up and tear down
