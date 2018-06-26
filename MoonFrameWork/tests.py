@@ -689,7 +689,7 @@ class TestTimeStampsDrift(TerminatingTest):
 
     def evaluate(self, lines, index):
         ignorefirst = True
-        values = DisplayValue('Nano Seconds')
+        values = DisplayValue('Nano Seconds', 'Clock difference values')
         for i in range(index, len(lines)):
             self.checkalerts(lines, i)
             if lines[i][0] == '-':
@@ -699,7 +699,7 @@ class TestTimeStampsDrift(TerminatingTest):
                 value = self.getvalue(lines[i])
                 values.aggregate(value)
 
-        self.summarylog.write('Clock difference values are:\n' + values.tostring())
+        self.summarylog.write(values.tostring())
         self.assertTrue(True)
 
 
