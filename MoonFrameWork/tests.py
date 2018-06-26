@@ -124,8 +124,8 @@ class TerminatingTest(BindDevices):
     def evaluate(self, lines, index):
         result = True
         # tx / rx values
-        txvalues = DisplayValue('Mpps', 'TX Values:')
-        rxvalues = DisplayValue('Mpps', 'RX Values:')
+        txvalues = DisplayValue('Mpps', 'TX Values')
+        rxvalues = DisplayValue('Mpps', 'RX Values')
         firstvalueskip = True
 
         # method parses relevant data from the log file
