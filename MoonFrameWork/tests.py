@@ -710,7 +710,7 @@ class TestPcapReply(SingleDevice):
     casename = 'PCAP Reply'
 
     def executetest(self):
-        ScapyTest.generatepcap(self.path)
+        # ScapyTest.generatepcap(self.path)
         return subprocess.Popen([
             './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', 'tmp.pcap'
         ], stdout=self.testlog, cwd=self.path)
