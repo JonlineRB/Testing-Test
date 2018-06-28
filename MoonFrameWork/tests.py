@@ -721,6 +721,8 @@ class TestPcapReply(SingleDevice):
         for i in range(index, len(lines)):
             self.checkalerts(lines, i)
             if 'Device: id' in lines[i]:
+                print 'parsing this:'
+                print lines[i].split()[5]
                 value = int(lines[i].split()[5])
                 print 'values is %d' % value
                 result = value > 0
