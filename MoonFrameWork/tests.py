@@ -712,7 +712,7 @@ class TestPcapReply(SingleDevice):
     def executetest(self):
         ScapyTest.generatepcap(self.path)
         return subprocess.Popen([
-            './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', 'tmp.pcap'
+            './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', '/tmp/tmp.pcap'
         ], stdout=self.testlog, cwd=self.path)
 
     def evaluate(self, lines, index):
@@ -729,6 +729,7 @@ class TestPcapReply(SingleDevice):
                 result = value > 0
                 break
 
+        ScapyTest.cleanpcap()
         self.summarylog.write('Is the value greater than 0 : ' + str(result))
         self.assertTrue(result, msg='Value has been 0')
 
