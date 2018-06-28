@@ -711,7 +711,7 @@ class TestPcapReply(SingleDevice):
 
     def executetest(self):
         prefix = os.path.commonprefix([self.path, os.path.dirname(os.path.abspath(__file__))])
-        relpath = os.path.realpath(os.path.dirname(os.path.abspath(__file__)), prefix)
+        relpath = os.path.realpath(os.path.dirname(os.path.abspath(__file__)))
         print 'relpath is: ' + relpath
         ScapyTest.generatepcap()
         return subprocess.Popen([
