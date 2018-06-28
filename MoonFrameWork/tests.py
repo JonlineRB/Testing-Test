@@ -710,6 +710,9 @@ class TestPcapReply(SingleDevice):
     casename = 'PCAP Reply'
 
     def executetest(self):
+        prefix = os.path.commonprefix([self.path, os.path.dirname(os.path.abspath(__file__))])
+        relpath = os.path.realpath(os.path.dirname(os.path.abspath(__file__)), prefix)
+        print 'relpath is: ' + relpath
         ScapyTest.generatepcap()
         return subprocess.Popen([
             './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', '../Testing-Test/MoonFrameWork/tmp.pcap'
@@ -719,13 +722,9 @@ class TestPcapReply(SingleDevice):
         # clean the tmp file here
         result = False
         for i in range(index, len(lines)):
-            print lines[i]
             self.checkalerts(lines, i)
             if 'TX' in lines[i]:
-                print 'parsing this:'
-                print lines[i].split()[5]
                 value = int(lines[i].split()[5])
-                print 'values is %d' % value
                 result = value > 0
                 break
 
