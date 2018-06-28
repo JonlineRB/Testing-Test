@@ -717,7 +717,7 @@ class TestPcapReply(SingleDevice):
 
     def evaluate(self, lines, index):
         # clean the tmp file here
-
+        result = False
         for i in range(index, len(lines)):
             print lines[i]
             self.checkalerts(lines, i)
@@ -727,10 +727,10 @@ class TestPcapReply(SingleDevice):
                 value = int(lines[i].split()[5])
                 print 'values is %d' % value
                 result = value > 0
-                self.summarylog.write('Is the value greater than 0 : ' + str(result))
-                self.assertTrue(result, msg='Value has been 0')
+                break
 
-        self.assertTrue(False, 'Unable to evaluate')
+        self.summarylog.write('Is the value greater than 0 : ' + str(result))
+        self.assertTrue(result, msg='Value has been 0')
 
 
 class TestTimeStampCapabilities(BindDevices):
