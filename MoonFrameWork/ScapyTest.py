@@ -8,7 +8,7 @@ from scapy.all import *
 def generatepcap():
     # pcapfile = open(path + 'tmp.pcap', 'w+')
     pkts = sniff(prn=lambda x: x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"), count=2000)
-    wrpcap('tmp/tmp.pcap', pkts)
+    wrpcap('tmp.pcap', pkts)
     # pcapfile.close()
 
 
