@@ -5,12 +5,12 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 from scapy.all import *
 
 
-def generatepcap(path):
+def generatepcap():
     # pcapfile = open(path + 'tmp.pcap', 'w+')
     pkts = sniff(prn=lambda x: x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"), count=2000)
-    wrpcap(path + 'tmp/tmp.pcap', pkts)
+    wrpcap('tmp/tmp.pcap', pkts)
     # pcapfile.close()
 
 
-def cleanpcap(path):
-    shutil.rmtree(path + '/tmp', ignore_errors=True)
+def cleanpcap():
+    shutil.rmtree('/tmp', ignore_errors=True)
