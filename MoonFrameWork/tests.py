@@ -712,7 +712,7 @@ class TestPcapReply(SingleDevice):
     def executetest(self):
         ScapyTest.generatepcap()
         return subprocess.Popen([
-            './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', '~/Testing-Test/MoonFrameWork/tmp.pcap'
+            './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', '../Testing-Test/MoonFrameWork/tmp.pcap'
         ], stdout=self.testlog, cwd=self.path)
 
     def evaluate(self, lines, index):

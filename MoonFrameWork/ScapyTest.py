@@ -1,4 +1,4 @@
-import shutil
+import os
 import logging
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
@@ -13,4 +13,4 @@ def generatepcap():
 
 
 def cleanpcap():
-    shutil.rmtree('/tmp', ignore_errors=True)
+    os.remove('tmp.pcap')
