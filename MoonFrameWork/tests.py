@@ -6,7 +6,7 @@ import sys
 import os.path
 from datetime import datetime
 from DisplayValue import DisplayValue
-import ScapyTest
+import ScapyGenerator
 
 
 # from FrameworkSubprocess import SubHandler
@@ -710,12 +710,10 @@ class TestPcapReply(SingleDevice):
     casename = 'PCAP Reply'
 
     def executetest(self):
-        # prefix = os.path.commonprefix([self.path, os.path.dirname(os.path.abspath(__file__))])
         relpath = os.path.relpath(os.path.dirname(os.path.abspath(__file__)), self.path)
-        ScapyTest.generatepcap()
+        ScapyGenerator.generatepcap()
         print 'relpath is: ' + relpath
         return subprocess.Popen([
-            # './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', '../Testing-Test/MoonFrameWork/tmp.pcap'
             './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', relpath + '/tmp.pcap'
         ], stdout=self.testlog, cwd=self.path)
 
@@ -729,7 +727,7 @@ class TestPcapReply(SingleDevice):
                 result = value > 0
                 break
 
-        ScapyTest.cleanpcap()
+        ScapyGenerator.cleanpcap()
         self.summarylog.write('Is the value greater than 0 : ' + str(result))
         self.assertTrue(result, msg='Value has been 0')
 
