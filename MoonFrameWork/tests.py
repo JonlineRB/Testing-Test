@@ -712,8 +712,8 @@ class TestPcapReply(SingleDevice):
     def executetest(self):
         prefix = os.path.commonprefix([self.path, os.path.dirname(os.path.abspath(__file__))])
         relpath = os.path.realpath(os.path.dirname(os.path.abspath(__file__)))
-        print 'relpath is: ' + relpath
         ScapyTest.generatepcap()
+        print 'relpath is: ' + relpath
         return subprocess.Popen([
             './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', '../Testing-Test/MoonFrameWork/tmp.pcap'
         ], stdout=self.testlog, cwd=self.path)
