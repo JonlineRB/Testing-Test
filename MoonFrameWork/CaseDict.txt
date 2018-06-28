@@ -18,3 +18,4 @@ vxlanexample tests.TestVXLANexample
 interarrivaltimes tests.TestInterArrivalTimes
 timestampssoftware tests.TestTimeStampsSoftware
 timestampdrift tests.TestTimeStampsDrift
+pcapreplay tests.TestPcapReply

@@ -551,6 +551,7 @@ class TestQualityOfService(TerminatingTest):
     def executetest(self):
         return subprocess.Popen(['./build/MoonGen', './examples/quality-of-service-test.lua', '0', '1'],
                                 stdout=self.testlog, cwd=self.path)
+
     def extractport(self, port):
         result = ''
         for c in port:
@@ -702,6 +703,30 @@ class TestTimeStampsDrift(TerminatingTest):
 
         self.summarylog.write(values.tostring())
         self.assertTrue(True)
+
+
+class TestPcapReply(SingleDevice):
+    logname = 'pcapreplylog'
+    casename = 'PCAP Reply'
+
+    def executetest(self):
+        ScapyTest.generatepcap(self.path)
+        return subprocess.Popen([
+            './build/MoonGen', './examples/pcap/reply.lua', '0', 'tmp/tmp.pcap'
+        ], stdout=self.testlog, cwd=self.path)
+
+    def evaluate(self, lines, index):
+        # clean the tmp file here
+
+        for i in range(index, len(lines)):
+            self.checkalerts(lines, i)
+            if 'Device: id' in lines[i]:
+                value = int(lines[i].split()[5])
+                result = value > 0
+                self.summarylog.write('Is the value greater than 0 : ' + str(result))
+                self.assertTrue(result, msg='Value has been 0')
+
+        self.assertTrue(False, 'Unable to evaluate')
 
 
 class TestTimeStampCapabilities(BindDevices):
