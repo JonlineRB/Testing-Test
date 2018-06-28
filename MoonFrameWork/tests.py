@@ -719,6 +719,7 @@ class TestPcapReply(SingleDevice):
         # clean the tmp file here
 
         for i in range(index, len(lines)):
+            print lines[i]
             self.checkalerts(lines, i)
             if 'TX' in lines[i]:
                 print 'parsing this:'
