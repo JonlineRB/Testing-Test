@@ -5,10 +5,10 @@ from scapy.all import *
 
 
 def generatepcap(path):
-    pcapfile = open(path + 'tmp.pcap', 'w+')
+    # pcapfile = open(path + 'tmp.pcap', 'w+')
     pkts = sniff(prn=lambda x: x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"), count=2000)
-    wrpcap('tmp.pcap', pkts)
-    pcapfile.close()
+    wrpcap(path + 'tmp.pcap', pkts)
+    # pcapfile.close()
 
 def cleanpcap(path):
     return
