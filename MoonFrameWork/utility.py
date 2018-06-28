@@ -1,7 +1,6 @@
 import os
 import subprocess
 import ConfigParser
-# from FrameworkSubprocess import SubHandler
 import tests  # dont remove this, it is actually used on eval() calls
 from tap import TAPTestRunner
 import unittest
