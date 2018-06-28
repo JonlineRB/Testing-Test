@@ -9,4 +9,5 @@ def generatepcap(path):
     wrpcap(path + '/tmp/tmp.pcap', pkts)
 
 def cleanpcap(path):
+    return
     # os.remove()
