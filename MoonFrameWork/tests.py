@@ -717,10 +717,10 @@ class TestPcapReply(SingleDevice):
         p = subprocess.Popen(['python', 'PcapGen.py'], stdout=self.pcapgenlog)
         polfreq = 5
         counter = 0
-        while p.poll() is None:
-            sys.stdout.write('.')
-            sys.stdout.flush()
-            time.sleep(polfreq)
+        # while p.poll() is None:
+        #     sys.stdout.write('.')
+        #     sys.stdout.flush()
+        #     time.sleep(polfreq)
         print 'relpath is: ' + relpath
         return subprocess.Popen([
             './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', relpath + '/tmp.pcap'
