@@ -708,12 +708,13 @@ class TestTimeStampsDrift(TerminatingTest):
 class TestPcapReply(SingleDevice):
     logname = 'pcapreplylog'
     casename = 'PCAP Reply'
+    pcapgenlog = open('pcapgenlog.txt', 'w')
 
     def executetest(self):
         relpath = os.path.relpath(os.path.dirname(os.path.abspath(__file__)), self.path)
         print 'Generating PCAP file, the duration may vary but is usually 1-2 minutes\n'
         # ScapyGenerator.generatepcap()
-        p = subprocess.Popen(['python', 'PcapGen.py'], stdout=None)
+        p = subprocess.Popen(['python', 'PcapGen.py'], stdout=self.pcapgenlog)
         polfreq = 5
         counter = 0
         while p.poll() is None:
