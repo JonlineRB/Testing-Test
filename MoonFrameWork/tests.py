@@ -713,7 +713,7 @@ class TestPcapReply(SingleDevice):
         relpath = os.path.relpath(os.path.dirname(os.path.abspath(__file__)), self.path)
         print 'Generating PCAP file, the duration may vary but is usually 1-2 minutes\n'
         # ScapyGenerator.generatepcap()
-        p = subprocess.Popen(['./python', 'PcapGen.py'])
+        p = subprocess.Popen(['./python', 'PcapGen.py'], cwd=relpath)
         polfreq = 5
         counter = 0
         while p.poll() is None:
