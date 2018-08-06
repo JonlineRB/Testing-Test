@@ -5,7 +5,7 @@ import os, sys
 from scapy.all import *
 from contextlib import contextmanager
 
-
+@contextmanager
 def mute_console():
     with open(os.devnull, "w") as devnull:
         original_stdout = sys.stdout
