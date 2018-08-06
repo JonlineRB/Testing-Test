@@ -715,6 +715,7 @@ class TestPcapReply(SingleDevice):
         print 'Generating PCAP file, the duration may vary but is usually 1-2 minutes\n'
         # ScapyGenerator.generatepcap()
         p = subprocess.Popen(['python', 'PcapGen.py'], stdout=self.pcapgenlog)
+        p.wait()
         polfreq = 5
         counter = 0
         # while p.poll() is None:
