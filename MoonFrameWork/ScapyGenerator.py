@@ -17,7 +17,7 @@ def mute_console():
 
 
 def generatepcap():
-    print 'Generating PCAP file'
+    print 'Generating PCAP file, the duration may vary but is usually 1-2 minutes'
     pkts = sniff(prn=lambda x: x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"), count=2000)
     wrpcap('tmp.pcap', pkts)
 

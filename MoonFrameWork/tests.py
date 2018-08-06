@@ -711,7 +711,15 @@ class TestPcapReply(SingleDevice):
 
     def executetest(self):
         relpath = os.path.relpath(os.path.dirname(os.path.abspath(__file__)), self.path)
-        ScapyGenerator.generatepcap()
+        print 'Generating PCAP file, the duration may vary but is usually 1-2 minutes\n'
+        # ScapyGenerator.generatepcap()
+        p = subprocess.Popen(['./python', 'PcapGen.py'])
+        polfreq = 5
+        counter = 0
+        while p.poll() is None:
+            sys.stdout.write('.')
+            sys.stdout.flush()
+            time.sleep(polfreq)
         print 'relpath is: ' + relpath
         return subprocess.Popen([
             './build/MoonGen', './examples/pcap/replay-pcap.lua', '0', relpath + '/tmp.pcap'
