@@ -18,9 +18,8 @@ def mute_console():
 
 def generatepcap():
     print 'Generating PCAP file'
-    with mute_console():
-        pkts = sniff(prn=lambda x: x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"), count=2000)
-        wrpcap('tmp.pcap', pkts)
+    pkts = sniff(prn=lambda x: x.sprintf("{IP:%IP.src% -> %IP.dst%\n}{Raw:%Raw.load%\n}"), count=2000)
+    wrpcap('tmp.pcap', pkts)
 
 
 def cleanpcap():
