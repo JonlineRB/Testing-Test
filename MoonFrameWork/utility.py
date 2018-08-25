@@ -107,6 +107,8 @@ class TestExecutor:
     path = None
     suite = unittest.TestSuite()
     casedictionary = {}
+    metadevice1 = None
+    metadevice2 = None
 
     def __init__(self, path):
         self.path = path
@@ -116,6 +118,15 @@ class TestExecutor:
         for line in dictlines:
             (key, value) = line.split()
             self.casedictionary[key] = value
+        # set the values of default devices
+        try:
+            self.metadevice1 = getdeviceindex('Meta','device1')
+            self.metadevice2 = getdeviceindex('Meta','device2')
+            print('default devices set: %d, %d' % self.metadevice1, self.metadevice2)
+        except ConfigParser.NoOptionError:
+            print('Not all default devices set')
+
+
 
     def parsefromargs(self, devicelist, args):
         casename, index1, index2 = (None,) * 3
