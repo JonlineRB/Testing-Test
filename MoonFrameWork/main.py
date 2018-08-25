@@ -41,7 +41,7 @@ except ConfigParser.NoSectionError or ConfigParser.NoOptionError:
 dpdkdevlist = list()
 utility.initdevices(dpdkdevlist, MoonGenPath)
 
-testexecutor = utility.TestExecutor(MoonGenPath)
+testexecutor = utility.TestExecutor(MoonGenPath, dpdkdevlist)
 
 if len(sys.argv) >= 2:
     if sys.argv[1] == '-t':

@@ -110,7 +110,7 @@ class TestExecutor:
     metadevice1 = None
     metadevice2 = None
 
-    def __init__(self, path):
+    def __init__(self, path, devicelist):
         self.path = path
         dictfile = open('CaseDict.txt', 'r')
         dictlines = dictfile.readlines()
@@ -120,13 +120,11 @@ class TestExecutor:
             self.casedictionary[key] = value
         # set the values of default devices
         try:
-            self.metadevice1 = getdeviceindex('Meta','device1')
-            self.metadevice2 = getdeviceindex('Meta','device2')
+            self.metadevice1 = getdeviceindex(devicelist, self.parser.get('Meta','device1'))
+            self.metadevice2 = getdeviceindex(devicelist, self.parser.get('Meta','device2'))
             print('default devices set: %d, %d' % self.metadevice1, self.metadevice2)
         except ConfigParser.NoOptionError:
             print('Not all default devices set')
-
-
 
     def parsefromargs(self, devicelist, args):
         casename, index1, index2 = (None,) * 3
