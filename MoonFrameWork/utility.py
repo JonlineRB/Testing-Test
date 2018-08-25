@@ -122,7 +122,7 @@ class TestExecutor:
         try:
             self.metadevice1 = getdeviceindex(devicelist, self.parser.get('Meta','device1'))
             self.metadevice2 = getdeviceindex(devicelist, self.parser.get('Meta','device2'))
-            print('default devices set: %d, %d' % self.metadevice1, self.metadevice2)
+            print('default devices set: %d, %d' % (self.metadevice1, self.metadevice2))
         except ConfigParser.NoOptionError:
             print('Not all default devices set')
 
