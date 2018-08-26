@@ -107,8 +107,8 @@ class TestExecutor:
     path = None
     suite = unittest.TestSuite()
     casedictionary = {}
-    metadevice1 = None
-    metadevice2 = None
+    metadevice1 = -1
+    metadevice2 = -1
 
     def __init__(self, path, devicelist):
         self.path = path
@@ -171,16 +171,29 @@ class TestExecutor:
     def parsefromconfig(self, devicelist):
 
         for section in self.parser.sections():
+
+            # check whether the section has devices listed. if not, use the default ones
+            # if not self.parser.has_option(section, 'device1') and not self.parser.has_option(section, 'device2'):
+            #     tmplist = list()
+            #     tmplist.append(self.metadevice1)
+            #     tmplist.append(self.metadevice2)
+
             try:
                 # handle case where the devices are not index, but rather PCI ports
-                index1 = getdeviceindex(devicelist, self.parser.get(section, 'device1'))
+                if not self.parser.has_option(section, 'device1'):
+                    index1 = self.metadevice1
+                else:
+                    index1 = getdeviceindex(devicelist, self.parser.get(section, 'device1'))
                 if index1 == -1:
                     print 'Error parsing device, please use an index or PCI port'
                     continue
                 tmplist = list()
                 tmplist.append(devicelist[index1])
                 try:
-                    index2 = getdeviceindex(devicelist, self.parser.get(section, 'device2'))
+                    if not self.parser.has_option(section, 'device2'):
+                        index2 = self.metadevice2
+                    else:
+                        index2 = getdeviceindex(devicelist, self.parser.get(section, 'device2'))
                     if index2 == -1 or index1 == index2:
                         print 'Error parsing device, please use an index or PCI port'
                         continue
