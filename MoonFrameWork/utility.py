@@ -135,7 +135,7 @@ class TestExecutor:
             for option in self.tags.options(name):
                 testname = self.tags.get(name, option)
                 test = eval(testname)(devicelist, self.path)
-                result.add(test)
+                result.addTest(test)
         else:  # add the case as an individual
             test = eval(name)(devicelist, self.path)
             return test
