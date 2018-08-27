@@ -177,6 +177,9 @@ class TestExecutor:
 
         for section in self.parser.sections():
 
+            if section == 'Meta':  # skip the meta section, it should not contain a test case
+                continue
+
             try:
                 # handle case where the devices are not index, but rather PCI ports
                 if not self.parser.has_option(section, 'device1'):
@@ -213,10 +216,7 @@ class TestExecutor:
                 if test is not None:
                     self.suite.addTest(test)
             except ConfigParser.NoOptionError:
-                if section == 'Meta':
-                    pass
-                else:
-                    print ('section %s has no test option, or devices' % section)
+                print ('section %s has no test option' % section)
         self.execute()
 
     def execute(self):
