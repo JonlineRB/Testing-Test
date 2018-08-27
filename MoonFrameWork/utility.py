@@ -138,7 +138,10 @@ class TestExecutor:
                 result.addTest(test)
             return result
         else:  # add the case as an individual
-            test = eval(name)(devicelist, self.path)
+            try:
+                test = eval(name)(devicelist, self.path)
+            except NameError:
+                print 'Unrecognized test: %s' % name
             return test
 
     def parsefromargs(self, devicelist, args):
@@ -229,8 +232,8 @@ class TestExecutor:
                     # continue
                 else:
                     tmplist.append(devicelist[index2])
-                print('devices to test are:')
-                print tmplist
+                # print('devices to test are:')
+                # print tmplist
                 parsedcase = self.parser.get(section, 'test')
                 try:
                     # self.suite = handletags(parsedcase, tmplist, self.casedictionary, self.path, self.suite)
