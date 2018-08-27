@@ -140,9 +140,9 @@ class TestExecutor:
         else:  # add the case as an individual
             try:
                 test = eval(name)(devicelist, self.path)
+                return test
             except NameError:
                 print 'Unrecognized test: %s' % name
-            return test
 
     def parsefromargs(self, devicelist, args):
         casename, index1, index2 = (None,) * 3
