@@ -118,13 +118,6 @@ class TestExecutor:
         for line in dictlines:
             (key, value) = line.split()
             self.casedictionary[key] = value
-        # set the values of default devices
-        try:
-            self.metadevice1 = getdeviceindex(devicelist, self.parser.get('Meta','device1'))
-            self.metadevice2 = getdeviceindex(devicelist, self.parser.get('Meta','device2'))
-            print('default devices set: %d, %d' % (self.metadevice1, self.metadevice2))
-        except ConfigParser.NoOptionError:
-            print('Not all default devices set')
 
     def parsefromargs(self, devicelist, args):
         casename, index1, index2 = (None,) * 3
@@ -170,13 +163,19 @@ class TestExecutor:
 
     def parsefromconfig(self, devicelist):
 
-        for section in self.parser.sections():
+        # set the values of default devices
+        try:
+            self.metadevice1 = getdeviceindex(devicelist, self.parser.get('Meta', 'device1'))
+            print('default devices set: %d' % self.metadevice1)
+        except ConfigParser.NoOptionError:
+            print('no default device1 set')
+        try:
+            self.metadevice2 = getdeviceindex(devicelist, self.parser.get('Meta', 'device2'))
+            print('default devices set: %d' % self.metadevice2)
+        except ConfigParser.NoOptionError:
+            print('no default device2 set')
 
-            # check whether the section has devices listed. if not, use the default ones
-            # if not self.parser.has_option(section, 'device1') and not self.parser.has_option(section, 'device2'):
-            #     tmplist = list()
-            #     tmplist.append(self.metadevice1)
-            #     tmplist.append(self.metadevice2)
+        for section in self.parser.sections():
 
             try:
                 # handle case where the devices are not index, but rather PCI ports
@@ -189,17 +188,16 @@ class TestExecutor:
                     continue
                 tmplist = list()
                 tmplist.append(devicelist[index1])
-                try:
-                    if not self.parser.has_option(section, 'device2'):
-                        index2 = self.metadevice2
-                    else:
-                        index2 = getdeviceindex(devicelist, self.parser.get(section, 'device2'))
-                    if index2 == -1 or index1 == index2:
-                        print 'Error parsing device, please use an index or PCI port'
-                        continue
+                if not self.parser.has_option(section, 'device2'):
+                    index2 = self.metadevice2
+                else:
+                    index2 = getdeviceindex(devicelist, self.parser.get(section, 'device2'))
+                if index2 == -1 or index1 == index2:
+                    print 'device2 not included. This can also be an error' \
+                          'due to value of -1, or identical value to device1'
+                    # continue
+                else:
                     tmplist.append(devicelist[index2])
-                except ConfigParser.NoOptionError:
-                    print 'only 1 device'
                 print('devices to test are:')
                 print tmplist
                 parsedcase = self.parser.get(section, 'test')
