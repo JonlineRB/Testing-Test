@@ -71,15 +71,22 @@ def binddevices(devicelist, path):
 # returns the index of the device in the list of devices
 def getdeviceindex(devicelist, arg):
     # case of PCI express handeled
-    if ':' in arg:
-        for i in range(0, len(devicelist)):
-            if arg == devicelist[i].split()[0]:
-                return i
-        return -1
-    elif int(arg) >= len(devicelist) or int(arg) < 0:
-        return -1
-    else:
-        return int(arg)
+    # if ':' in arg:
+    #     for i in range(0, len(devicelist)):
+    #         if arg == devicelist[i].split()[0]:
+    #             return i
+    #     return -1
+    # elif int(arg) >= len(devicelist) or int(arg) < 0:
+    #     return -1
+    # else:
+    #     return int(arg)
+
+    # modifying: only PCIe allowed
+    for i in range(0, len(devicelist)):
+        if arg == devicelist[i].split()[0]:
+            return i
+    print 'device not found! use PCI Express only!'
+    return -1
 
 
 # def handletags(name, devicelist, cases, path, suite):

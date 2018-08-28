@@ -186,7 +186,7 @@ class TerminatingTest(BindDevices):
 
     def checkvaluesarezero(self, value1, value2):
         if value1 == 0.0 and value2 == 0.0:
-            msg = 'TX / RX values are 0. Test might not be suited for testd devices'
+            msg = 'TX / RX values are 0. Test might not be suited for tested devices.'
             self.summarylog.write(msg + '\n')
             self.assertTrue(False, msg=msg)
             return True
