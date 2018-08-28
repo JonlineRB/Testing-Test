@@ -128,10 +128,7 @@ class TestExecutor:
     def handletags(self, name, devicelist):
         result = unittest.TestSuite()
         # check whether the name is a tag or class
-        if name == 'all':
-            # add all existing tests
-            pass
-        elif self.tags.has_section(name):  # check for a tag
+        if self.tags.has_section(name):  # check for a tag
             for option in self.tags.options(name):
                 testname = self.tags.get(name, option)
                 test = eval(testname)(devicelist, self.path)
