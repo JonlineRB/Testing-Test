@@ -809,6 +809,7 @@ class TestFile(BindDevices):  # do not invoke this class, it's meant to be used 
             sys.stdout.write('.')
             sys.stdout.flush()
         print'Process terminated'
+        self.summarylog.write('Return code: %d' % p.returncode)
         self.assertTrue(p.returncode == 0, 'test file %s failed' % self.filename)
 
 
