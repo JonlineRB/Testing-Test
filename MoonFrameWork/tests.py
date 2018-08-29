@@ -813,9 +813,11 @@ class TestFile(BindDevices):  # do not invoke this class, it's meant to be used 
 
 
 class TestFiles(unittest.TestSuite):
+
     directory = None
 
     def __init__(self, devicelist, path):
+        super(TestFiles, self).__init__()
         self.directory = path + 'test/tests/'
         # look for test files in a dedicated directory, aggregate them to this sutie
         for filename in os.listdir(self.directory):
