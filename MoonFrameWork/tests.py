@@ -794,15 +794,17 @@ class TestTimeStampCapabilities(BindDevices):
 class TestFile(BindDevices):  # do not invoke this class, it's meant to be used by TestFiles
     filename = None
     waitinterval = 2
+    filedirectory = None
 
-    def __init__(self, devicelist, path, filename):
+    def __init__(self, devicelist, path, filename, directory):
         super(TestFile, self).__init__(devicelist=devicelist, path=path)
         self.logname = filename + 'log'
         self.filename = filename
+        self.filedirectory = directory
 
     def runTest(self):
-        print 'Testing file %s:' % self.filename
-        p = subprocess.Popen(['./build/MoonGen', self.filename, '0', '1'],
+        print '\nTesting file %s:' % self.filename
+        p = subprocess.Popen(['./build/MoonGen', 'test/tests/' + self.filename, '0', '1'],
                              stdout=self.testlog, cwd=self.path)
         while p.poll() is None:
             time.sleep(self.waitinterval)
@@ -822,4 +824,4 @@ class TestFiles(unittest.TestSuite):
         # look for test files in a dedicated directory, aggregate them to this sutie
         for filename in os.listdir(self.directory):
             if filename.endswith(".lua"):
-                self.addTest(TestFile(devicelist, path, filename))
+                self.addTest(TestFile(devicelist, path, filename, self.directory))
