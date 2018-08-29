@@ -794,13 +794,11 @@ class TestTimeStampCapabilities(BindDevices):
 class TestFile(BindDevices):  # do not invoke this class, it's meant to be used by TestFiles
     filename = None
     waitinterval = 2
-    filedirectory = None
 
     def __init__(self, devicelist, path, filename, directory):
         super(TestFile, self).__init__(devicelist=devicelist, path=path)
         self.logname = filename + 'log'
         self.filename = filename
-        self.filedirectory = directory
 
     def runTest(self):
         print '\nTesting file %s:' % self.filename
@@ -824,4 +822,4 @@ class TestFiles(unittest.TestSuite):
         # look for test files in a dedicated directory, aggregate them to this sutie
         for filename in os.listdir(self.directory):
             if filename.endswith(".lua"):
-                self.addTest(TestFile(devicelist, path, filename, self.directory))
+                self.addTest(TestFile(devicelist, path, filename))
