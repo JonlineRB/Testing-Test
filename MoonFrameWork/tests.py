@@ -795,7 +795,7 @@ class TestFile(BindDevices):  # do not invoke this class, it's meant to be used 
     filename = None
     waitinterval = 2
 
-    def __init__(self, devicelist, path, filename, directory):
+    def __init__(self, devicelist, path, filename):
         super(TestFile, self).__init__(devicelist=devicelist, path=path)
         self.logname = filename + 'log'
         self.filename = filename
