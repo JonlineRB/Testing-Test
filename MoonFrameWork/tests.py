@@ -789,3 +789,35 @@ class TestTimeStampCapabilities(BindDevices):
         self.assertTrue(result,
                         msg='Selected devices have passed less than %d tests in Test Timestamping Capabilities'
                             % self.reqpasses)
+
+
+class TestFile(BindDevices):  # do not invoke this class, it's meant to be used by TestFiles
+    filename = None
+    waitinterval = 2
+
+    def __init__(self, devicelist, path, filename):
+        super(TestFile, self).__init__(devicelist=devicelist, path=path)
+        self.logname = filename + 'log'
+        self.filename = filename
+
+    def runTest(self):
+        print 'Testing file %s:' % self.filename
+        p = subprocess.Popen(['./build/MoonGen', self.filename, '0', '1'],
+                             stdout=self.testlog, cwd=self.path)
+        while p.poll() is None:
+            time.sleep(self.waitinterval)
+            sys.stdout.write('.')
+            sys.stdout.flush()
+        print'Process terminated'
+        self.assertTrue(p.returncode == 0, 'test file %s failed' % self.filename)
+
+
+class TestFiles(unittest.TestSuite):
+    directory = None
+
+    def __init__(self, devicelist, path):
+        self.directory = path + 'test/tests/'
+        # look for test files in a dedicated directory, aggregate them to this sutie
+        for filename in os.listdir(self.directory):
+            if filename.endswith(".lua"):
+                self.addTest(TestFile(devicelist, path, filename))
