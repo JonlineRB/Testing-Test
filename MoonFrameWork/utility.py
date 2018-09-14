@@ -89,6 +89,16 @@ def getdeviceindex(devicelist, arg):
     return -1
 
 
+# returns the testdir value from FrameworkConfig.cfg
+def gettestdir():
+    parser = ConfigParser.ConfigParser()
+    parser.read('FrameConfig.cfg')
+    try:
+        return parser.get('Meta', 'testdir')
+    except ConfigParser.NoOptionError or ConfigParser.NoSectionError:
+        return None
+
+
 # def handletags(name, devicelist, cases, path, suite):
 #     parser = ConfigParser.ConfigParser()
 #     parser.read('TagConfig.cfg')
@@ -179,7 +189,7 @@ class TestExecutor:
                         # self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
                         # test = eval(self.casedictionary[casename])(tmplist, self.path)
                         # test = eval(casename)(tmplist, self.path)
-                        test = self.handletags(casename,tmplist)
+                        test = self.handletags(casename, tmplist)
                         self.suite.addTest(test)
                     except KeyError:
                         print 'unknown test'

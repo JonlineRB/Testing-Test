@@ -819,7 +819,14 @@ class TestFiles(unittest.TestSuite):
 
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
-        self.directory = path + 'test/tests/'
+        # self.directory = path + 'test/tests/'
+        parsedpath = utility.gettestdir()
+        print "Checking parsedpath value: %s" % parsedpath
+        if parsedpath is not None:
+            self.directory = path + parsedpath
+        else:
+            print 'Test Directory not set in FrameworkConfig.cfg'
+            return
         # look for test files in a dedicated directory, aggregate them to this sutie
         for filename in os.listdir(self.directory):
             if filename.endswith(".lua"):
