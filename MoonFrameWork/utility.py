@@ -92,7 +92,7 @@ def getdeviceindex(devicelist, arg):
 # returns the testdir value from FrameworkConfig.cfg
 def gettestdir():
     parser = ConfigParser.ConfigParser()
-    parser.read('FrameConfig.cfg')
+    parser.read('FrameworkConfig.cfg')
     try:
         return parser.get('Meta', 'testdir')
     except ConfigParser.NoOptionError or ConfigParser.NoSectionError:
