@@ -832,7 +832,7 @@ class TestFiles(unittest.TestSuite):
         print "Testing the new search: "
         for subdir, dirs, files in os.walk(self.directory):
             for file in files:
-                print file
+                print subdir + file
                 # self.addTest(TestFile(devicelist, path, file, parsedpath))
         print "Test concluded"
         # for filename in os.listdir(self.directory):
