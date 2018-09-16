@@ -835,7 +835,8 @@ class TestFiles(unittest.TestSuite):
             for file in files:
                 # print os.path.relpath(os.path.abspath(file), os.path.normpath(self.directory))
                 # print subdir + file
-                print os.path.abspath(file)
+                # print os.path.abspath(file)
+                print os.path.join(self.directory, file)
                 # self.addTest(TestFile(devicelist, path, file, parsedpath))
         print "Test concluded"
         # for filename in os.listdir(self.directory):
