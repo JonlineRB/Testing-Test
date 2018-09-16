@@ -817,9 +817,6 @@ class TestFiles(unittest.TestSuite):
 
     directory = None
 
-    def scriptsearchhead(self, directory):
-
-
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
         parsedpath = utility.gettestdir()
