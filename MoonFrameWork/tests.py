@@ -837,8 +837,8 @@ class TestFiles(unittest.TestSuite):
                 # print subdir + file
                 # print os.path.abspath(file)
                 # print os.path.join(self.directory, os.path.join(dirs, file))
-                print os.path.relpath(subdir, self.directory)
-                # self.addTest(TestFile(devicelist, path, file, parsedpath))
+                # print subdir
+                self.addTest(TestFile(devicelist, path, _file_, subdir))
         print "Test concluded"
         # for filename in os.listdir(self.directory):
         #     if filename.endswith(".lua"):
