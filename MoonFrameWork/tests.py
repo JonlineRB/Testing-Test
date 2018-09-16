@@ -833,12 +833,12 @@ class TestFiles(unittest.TestSuite):
         print "Testing the new search: "
         for subdir, dirs, files in os.walk(self.directory):
             for _file_ in files:
-                # print os.path.relpath(os.path.abspath(file), os.path.normpath(self.directory))
-                # print subdir + file
-                # print os.path.abspath(file)
-                # print os.path.join(self.directory, os.path.join(dirs, file))
                 # print subdir
-                self.addTest(TestFile(devicelist, path, _file_, subdir))
+                if _file_.endswith(".lua"):
+                    if subdir.endswith("/"):
+                        self.addTest(TestFile(devicelist, path, _file_, subdir))
+                    else:
+                        self.addTest(TestFile(devicelist, path, _file_, subdir + '/'))
         print "Test concluded"
         # for filename in os.listdir(self.directory):
         #     if filename.endswith(".lua"):
