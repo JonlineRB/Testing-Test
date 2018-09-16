@@ -840,7 +840,4 @@ class TestFiles(unittest.TestSuite):
                     else:
                         self.addTest(TestFile(devicelist, path, _file_, subdir + '/'))
         print "Test concluded"
-        # for filename in os.listdir(self.directory):
-        #     if filename.endswith(".lua"):
-        #         self.addTest(TestFile(devicelist, path, filename))
 
