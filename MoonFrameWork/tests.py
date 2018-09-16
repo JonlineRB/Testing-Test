@@ -817,9 +817,11 @@ class TestFiles(unittest.TestSuite):
 
     directory = None
 
+    def scriptsearchhead(self, directory):
+
+
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
-        # self.directory = path + 'test/tests/'
         parsedpath = utility.gettestdir()
         print "Checking parsedpath value: %s" % parsedpath
         if parsedpath is not None:
@@ -828,6 +830,12 @@ class TestFiles(unittest.TestSuite):
             print 'Test Directory not set in FrameworkConfig.cfg'
             return
         # look for test files in a dedicated directory, aggregate them to this sutie
-        for filename in os.listdir(self.directory):
-            if filename.endswith(".lua"):
-                self.addTest(TestFile(devicelist, path, filename))
+        print "Testing the new search: "
+        for subdir, dirs, files in os.walk(self.directory):
+            for file in files:
+                print os.path.join(subdir, file)
+        print "Test concluded"
+        # for filename in os.listdir(self.directory):
+        #     if filename.endswith(".lua"):
+        #         self.addTest(TestFile(devicelist, path, filename))
+

@@ -70,17 +70,6 @@ def binddevices(devicelist, path):
 
 # returns the index of the device in the list of devices
 def getdeviceindex(devicelist, arg):
-    # case of PCI express handeled
-    # if ':' in arg:
-    #     for i in range(0, len(devicelist)):
-    #         if arg == devicelist[i].split()[0]:
-    #             return i
-    #     return -1
-    # elif int(arg) >= len(devicelist) or int(arg) < 0:
-    #     return -1
-    # else:
-    #     return int(arg)
-
     # modifying: only PCIe allowed
     for i in range(0, len(devicelist)):
         if arg == devicelist[i].split()[0]:
@@ -99,31 +88,11 @@ def gettestdir():
         return None
 
 
-# def handletags(name, devicelist, cases, path, suite):
-#     parser = ConfigParser.ConfigParser()
-#     parser.read('TagConfig.cfg')
-#     if name == 'all':
-#         # generate all tests for this piar
-#         # for key in cases:
-#         #     test = eval(cases[key])(devicelist, path)
-#         #     suite.addTest(test)
-#     else:
-#         for section in parser.sections():
-#             if name == section:
-#                 for option in parser.options(section):
-#                     testname = parser.get(section, option)
-#                     test = eval(cases[testname])(devicelist, path)
-#                     suite.addTest(test)
-#
-#     return suite
-
-
 class TestExecutor:
     parser = ConfigParser.ConfigParser()
     parser.read('FrameworkConfig.cfg')
     path = None
     suite = unittest.TestSuite()
-    # casedictionary = {} #  removed in order to make casedict obselete
     metadevice1 = -1
     metadevice2 = -1
     # adding a tag sotring variable
@@ -131,12 +100,6 @@ class TestExecutor:
 
     def __init__(self, path, devicelist):
         self.path = path
-        # dictfile = open('CaseDict.txt', 'r')
-        # dictlines = dictfile.readlines()
-        # dictfile.close()
-        # for line in dictlines:
-        #     (key, value) = line.split()
-        #     self.casedictionary[key] = value
 
         # construct tags
         self.tags = ConfigParser.ConfigParser()
@@ -171,9 +134,6 @@ class TestExecutor:
                     continue
                 elif i == (len(args) - 1):
                     tmplist = [devicelist[index1]]
-                    # self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
-                    # test = eval(self.casedictionary[casename])(tmplist, self.path)
-                    # test = eval(casename)(tmplist, self.path)
                     test = self.handletags(casename, tmplist)
                     self.suite.addTest(test)
                     casename, index1, index2 = (None,) * 3
@@ -186,9 +146,6 @@ class TestExecutor:
                         continue
                     tmplist = [devicelist[index1], devicelist[index2]]
                     try:
-                        # self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
-                        # test = eval(self.casedictionary[casename])(tmplist, self.path)
-                        # test = eval(casename)(tmplist, self.path)
                         test = self.handletags(casename, tmplist)
                         self.suite.addTest(test)
                     except KeyError:
@@ -197,9 +154,6 @@ class TestExecutor:
                 except TypeError:
                     # in this case, only 1 device is given
                     tmplist = [devicelist[index1]]
-                    # self.suite = handletags(casename, tmplist, self.casedictionary, self.path, self.suite)
-                    # test = eval(self.casedictionary[casename])(tmplist, self.path)
-                    # test = eval(casename)(tmplist, self.path)
                     test = self.handletags(casename, tmplist)
                     self.suite.addTest(test)
                     casename, index1, index2 = (None,) * 3
@@ -243,18 +197,10 @@ class TestExecutor:
                 if index2 == -1 or index1 == index2:
                     print 'device2 not included. This can also be an error' \
                           'due to value of -1, or identical value to device1'
-                    # continue
                 else:
                     tmplist.append(devicelist[index2])
-                # print('devices to test are:')
-                # print tmplist
                 parsedcase = self.parser.get(section, 'test')
                 try:
-                    # self.suite = handletags(parsedcase, tmplist, self.casedictionary, self.path, self.suite)
-                    # if handletags(parsedcase, tmplist, dictionary, path):
-                    #     continue
-                    # test = eval(self.casedictionary[parsedcase])(tmplist, self.path)
-                    # test = eval(parsedcase)(tmplist, self.path)
                     test = self.handletags(parsedcase, tmplist)
                 except KeyError:
                     print 'unknown test'
