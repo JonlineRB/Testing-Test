@@ -825,6 +825,7 @@ class TestFiles(unittest.TestSuite):
         print "Checking parsedpath value: %s" % parsedpath
         if parsedpath is not None:
             self.directory = path + parsedpath
+            print "directory is %s" % self.directory
         else:
             print 'Test Directory not set in FrameworkConfig.cfg'
             return
@@ -832,7 +833,7 @@ class TestFiles(unittest.TestSuite):
         print "Testing the new search: "
         for subdir, dirs, files in os.walk(self.directory):
             for file in files:
-                print os.path.relpath(file, self.directory)
+                # print os.path.relpath(file, self.directory)
                 # print file
                 # self.addTest(TestFile(devicelist, path, file, parsedpath))
         print "Test concluded"
