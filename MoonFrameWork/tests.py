@@ -819,11 +819,17 @@ class TestFiles(unittest.TestSuite):
     directory = None
 
     def testfilenamer(self, testfile, devicelist, path, filename, rootdir):
-        class NamedTestFile(testfile.__new__(devicelist, path, filename, rootdir)):
-            pass
+        # class NamedTestFile(testfile.(devicelist, path, filename, rootdir)):
+        #     pass
+        #
+        # NamedTestFile.__name__ = 'TestFile_%s' % NamedTestFile.filename
+        # return NamedTestFile]
+        unnamed = TestFile(devicelist, path, filename, rootdir)
 
-        NamedTestFile.__name__ = 'TestFile_%s' % NamedTestFile.filename
-        return NamedTestFile
+        class NamedTestFile(testfile):
+            pass
+        NamedTestFile.__name__ = "TestFile_%s" % unnamed.filename
+        return NamedTestFile(super, devicelist, path, filename, rootdir)
 
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
