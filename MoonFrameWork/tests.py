@@ -795,7 +795,6 @@ class TestFile(BindDevices):  # do not invoke this class, it's meant to be used 
     filename = None
     waitinterval = 2
     rootdir = None
-    __name__ = 'TestFile_%s' % filename
 
     def __init__(self, devicelist, path, filename, rootdir):
         super(TestFile, self).__init__(devicelist=devicelist, path=path)
@@ -819,11 +818,12 @@ class TestFile(BindDevices):  # do not invoke this class, it's meant to be used 
 class TestFiles(unittest.TestSuite):
     directory = None
 
-    # def testfilenamer(testfile):
-    #     class NamedTestFile(testfile): pass
-    #
-    #     NamedTestFile.__name__ = 'TestFile_%s' % NamedTestFile.filename
-    #     return NamedTestFile
+    def testfilenamer(self, testfile, devicelist, path, filename, rootdir):
+        class NamedTestFile(testfile(devicelist, path, filename, rootdir)):
+            pass
+
+        NamedTestFile.__name__ = 'TestFile_%s' % NamedTestFile.filename
+        return NamedTestFile
 
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
@@ -840,7 +840,8 @@ class TestFiles(unittest.TestSuite):
                 # print subdir
                 if _file_.endswith(".lua"):
                     if subdir.endswith("/"):
-                        self.addTest(TestFile(devicelist, path, _file_, subdir))
                         # self.addTest(TestFile(devicelist, path, _file_, subdir))
+                        self.addTest(self.testfilenamer(TestFile, devicelist, path, _file_, subdir))
                     else:
-                        self.addTest(TestFile(devicelist, path, _file_, subdir + '/'))
+                        # self.addTest(TestFile(devicelist, path, _file_, subdir + '/'))
+                        self.addTest(self.testfilenamer(TestFile, devicelist, path, _file_, subdir + '/'))
