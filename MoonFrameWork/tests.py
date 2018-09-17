@@ -819,7 +819,6 @@ class TestFiles(unittest.TestSuite):
     directory = None
 
     def testfilenamer(self, testfile, devicelist, path, filename, rootdir):
-        unnamed = TestFile(devicelist, path, filename, rootdir)
 
         class NamedTestFile(testfile):
             pass
