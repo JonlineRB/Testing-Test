@@ -819,7 +819,7 @@ class TestFiles(unittest.TestSuite):
     directory = None
 
     def testfilenamer(self, testfile, devicelist, path, filename, rootdir):
-        class NamedTestFile(testfile(devicelist, path, filename, rootdir)):
+        class NamedTestFile(testfile(testfile, devicelist, path, filename, rootdir)):
             pass
 
         NamedTestFile.__name__ = 'TestFile_%s' % NamedTestFile.filename
