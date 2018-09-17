@@ -829,7 +829,7 @@ class TestFiles(unittest.TestSuite):
         class NamedTestFile(testfile):
             pass
         NamedTestFile.__name__ = "TestFile_%s" % unnamed.filename
-        return NamedTestFile(super, devicelist, path, filename, rootdir)
+        return NamedTestFile(devicelist, path, filename, rootdir)
 
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
