@@ -819,11 +819,6 @@ class TestFiles(unittest.TestSuite):
     directory = None
 
     def testfilenamer(self, testfile, devicelist, path, filename, rootdir):
-        # class NamedTestFile(testfile.(devicelist, path, filename, rootdir)):
-        #     pass
-        #
-        # NamedTestFile.__name__ = 'TestFile_%s' % NamedTestFile.filename
-        # return NamedTestFile]
         unnamed = TestFile(devicelist, path, filename, rootdir)
 
         class NamedTestFile(testfile):
@@ -846,8 +841,6 @@ class TestFiles(unittest.TestSuite):
                 # print subdir
                 if _file_.endswith(".lua"):
                     if subdir.endswith("/"):
-                        # self.addTest(TestFile(devicelist, path, _file_, subdir))
                         self.addTest(self.testfilenamer(TestFile, devicelist, path, _file_, subdir))
                     else:
-                        # self.addTest(TestFile(devicelist, path, _file_, subdir + '/'))
                         self.addTest(self.testfilenamer(TestFile, devicelist, path, _file_, subdir + '/'))
