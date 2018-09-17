@@ -828,7 +828,6 @@ class TestFiles(unittest.TestSuite):
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
         parsedpath = utility.gettestdir()
-        print "Checking parsedpath value: %s" % parsedpath
         if parsedpath is not None:
             self.directory = path + parsedpath
         else:
