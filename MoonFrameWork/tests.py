@@ -823,7 +823,7 @@ class TestFiles(unittest.TestSuite):
 
         class NamedTestFile(testfile):
             pass
-        NamedTestFile.__name__ = "TestFile_%s" % unnamed.filename
+        NamedTestFile.__name__ = "TestFile_%s" % filename
         return NamedTestFile(devicelist, path, filename, rootdir)
 
     def __init__(self, devicelist, path):
