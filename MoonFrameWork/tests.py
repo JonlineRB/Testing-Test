@@ -819,17 +819,15 @@ class TestFiles(unittest.TestSuite):
     directory = None
 
     def testfilenamer(self, testfile, devicelist, path, filename, rootdir):
-        unnamed = TestFile(devicelist, path, filename, rootdir)
 
         class NamedTestFile(testfile):
             pass
-        NamedTestFile.__name__ = "TestFile_%s" % unnamed.filename
+        NamedTestFile.__name__ = "TestFile_%s" % filename
         return NamedTestFile(devicelist, path, filename, rootdir)
 
     def __init__(self, devicelist, path):
         super(TestFiles, self).__init__()
         parsedpath = utility.gettestdir()
-        print "Checking parsedpath value: %s" % parsedpath
         if parsedpath is not None:
             self.directory = path + parsedpath
         else:
